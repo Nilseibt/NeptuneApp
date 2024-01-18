@@ -1,6 +1,15 @@
 package com.example.neptune.ui.views
 
+import com.example.neptune.ui.views.controlView.ControlView
+import com.example.neptune.ui.views.infoView.InfoView
+import com.example.neptune.ui.views.joinView.JoinView
+import com.example.neptune.ui.views.modeSelectView.ModeSelectView
+import com.example.neptune.ui.views.modeSettingsView.ModeSettingsView
+import com.example.neptune.ui.views.searchView.SearchView
+import com.example.neptune.ui.views.sessionEntitiesSearchView.SessionEntitiesSearchView
 import com.example.neptune.ui.views.startView.StartView
+import com.example.neptune.ui.views.statsView.StatsView
+import com.example.neptune.ui.views.voteView.VoteView
 
 
 object ViewsCollection {
@@ -9,7 +18,7 @@ object ViewsCollection {
             name = "START_VIEW",
             Composable = { navController -> StartView(navController) }
         )
-    /*val JOIN_VIEW =
+    val JOIN_VIEW =
         View(
             name = "JOIN_VIEW",
             Composable = { navController -> JoinView(navController) }
@@ -53,5 +62,5 @@ object ViewsCollection {
         View(
             name = "SESSION_ENTITIES_SEARCH_VIEW",
             Composable = { navController -> SessionEntitiesSearchView(navController) }
-        )*/
+        )
 }

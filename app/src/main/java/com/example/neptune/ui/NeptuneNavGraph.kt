@@ -17,7 +17,7 @@ fun NeptuneNavGraph() {
             ViewsCollection.START_VIEW.Composable(navController)
         }
 
-        /*composable(ViewsCollection.JOIN_VIEW.name) {
+        composable(ViewsCollection.JOIN_VIEW.name) {
             ViewsCollection.JOIN_VIEW.Composable(navController)
         }
 
@@ -51,7 +51,7 @@ fun NeptuneNavGraph() {
 
         composable(ViewsCollection.SESSION_ENTITIES_SEARCH_VIEW.name) {
             ViewsCollection.SESSION_ENTITIES_SEARCH_VIEW.Composable(navController)
-        }*/
+        }
 
     }
 

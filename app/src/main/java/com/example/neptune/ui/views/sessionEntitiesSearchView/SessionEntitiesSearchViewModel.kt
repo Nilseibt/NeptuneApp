@@ -1,9 +1,9 @@
-package com.example.neptune.ui.views.startView
+package com.example.neptune.ui.views.sessionEntitiesSearchView
 
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 
-class StartViewModel() : ViewModel() {
+class SessionEntitiesSearchViewModel() : ViewModel() {
 
     fun onBack(navController: NavController){
         //TODO
