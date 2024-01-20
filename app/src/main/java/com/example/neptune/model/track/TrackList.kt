@@ -2,7 +2,7 @@ package com.example.neptune.model.track
 
 class TrackList (val tracks: MutableList<Track>){
 
-    fun removeTrack(index: int){
+    fun removeTrack(index: Int){
             tracks.removeAt(index)
     }
     fun addTrack(track: Track){
