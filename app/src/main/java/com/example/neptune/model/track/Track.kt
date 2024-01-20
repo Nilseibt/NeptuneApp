@@ -14,7 +14,4 @@ class Track (val id: Int,
     fun removeUpvote(){
         upvote -= 1
     }
-    fun setUpvote(upvote: Int){
-        this.upvote = upvote
-    }
 }
