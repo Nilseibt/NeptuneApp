@@ -1,4 +1,4 @@
-package com.example.neptune.model.track
+package com.example.neptune.model.track.src
 
 class TrackList (val tracks: MutableList<Track>){
 
@@ -8,7 +8,7 @@ class TrackList (val tracks: MutableList<Track>){
     fun addTrack(track: Track){
         tracks.add(track)
     }
-    fun containsTrack(track:Track): Boolean{
+    fun containsTrack(track: Track): Boolean{
         for (item in tracks){
             if (item.id == track.id){
                 return true
@@ -16,7 +16,7 @@ class TrackList (val tracks: MutableList<Track>){
         }
         return false
     }
-    fun popFirstTrack(): Track{
+    fun popFirstTrack(): Track {
         var output  = tracks.first()
         tracks.removeAt(0);
         return output;
