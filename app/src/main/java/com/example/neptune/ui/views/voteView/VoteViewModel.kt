@@ -1,9 +1,9 @@
-package com.example.neptune.ui.views.startView
+package com.example.neptune.ui.views.voteView
 
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 
-class StartViewModel() : ViewModel() {
+class VoteViewModel() : ViewModel() {
 
     fun onBack(navController: NavController){
         //TODO
