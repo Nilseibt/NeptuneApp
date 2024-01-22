@@ -1,6 +1,6 @@
 package com.example.neptune.model.track.src
 
-class TrackList (val tracks: MutableList<Track>){
+open class TrackList (val tracks: MutableList<Track>){
 
     fun removeTrack(index: Int){
             tracks.removeAt(index)
@@ -24,4 +24,5 @@ class TrackList (val tracks: MutableList<Track>){
     fun isEmpty(): Boolean{
         return tracks.isEmpty()
     }
+
 }
