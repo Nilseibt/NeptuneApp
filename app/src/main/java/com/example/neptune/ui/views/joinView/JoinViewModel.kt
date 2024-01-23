@@ -5,7 +5,30 @@ import androidx.navigation.NavController
 
 class JoinViewModel() : ViewModel() {
 
-    fun onBack(navController: NavController){
+    fun getCodeInput(): String {
+        //TODO
+        return "PLACEHOLDER"
+    }
+
+    fun isCodeInputFormValid(): Boolean {
+        //TODO
+        return false
+    }
+
+    fun onCodeInputChange(newInput: String) {
+        //TODO
+    }
+
+    fun onConfirmSessionCode(navController: NavController) {
+        //TODO
+    }
+
+    fun onScanQrCode() {
+        //TODO
+    }
+
+
+    fun onBack(navController: NavController) {
         //TODO
     }
 
