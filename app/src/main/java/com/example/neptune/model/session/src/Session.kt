@@ -12,7 +12,8 @@ open class Session(val id:Int,
      * default implementation
      * no restrictions in the GENERAL-Mode
      */
-    fun validateTrack(track: Track): Boolean{
+    open fun validateTrack(track: Track): Boolean{
         return true
     }
+
 }
