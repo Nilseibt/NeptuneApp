@@ -9,7 +9,7 @@ import androidx.navigation.NavController
 @Composable
 fun NavView(navController: NavController) {
 
-    Column() {
+    Column {
 
         Button(onClick = { navController.navigate(ViewsCollection.START_VIEW.name) }) {
             Text(text = "startView")
