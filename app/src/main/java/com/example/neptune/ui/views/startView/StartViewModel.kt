@@ -1,16 +1,23 @@
 package com.example.neptune.ui.views.startView
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.neptune.ui.views.ViewsCollection
 
 class StartViewModel() : ViewModel() {
+
+
+    private var leaveDialogShown by mutableStateOf(false)
 
     fun createSessionPossible(): Boolean {
         //TODO
         return false
     }
 
-    fun toggleConnectedToSpotify() {
+    fun onToggleConnectedToSpotify() {
         //TODO
     }
 
@@ -20,23 +27,28 @@ class StartViewModel() : ViewModel() {
     }
 
     fun onJoinSession(navController: NavController) {
-        //TODO
+        navController.navigate(ViewsCollection.JOIN_VIEW.name)
     }
 
     fun onCreateSession(navController: NavController) {
-        //TODO
+        navController.navigate(ViewsCollection.MODE_SELECT_VIEW.name)
+    }
+
+    fun isLeaveDialogShown(): Boolean {
+        return leaveDialogShown
     }
 
     fun onBack(navController: NavController) {
-        //TODO
+        leaveDialogShown = !leaveDialogShown
     }
 
     fun onConfirmLeave(navController: NavController) {
-        //TODO
+        leaveDialogShown = false
+        navController.popBackStack()
     }
 
     fun onDismissLeave(navController: NavController) {
-        //TODO
+        leaveDialogShown = false
     }
 
 }
