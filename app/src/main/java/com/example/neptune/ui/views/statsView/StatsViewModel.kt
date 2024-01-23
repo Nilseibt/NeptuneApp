@@ -19,7 +19,7 @@ class StatsViewModel() : ViewModel() {
     }
 
     fun onBack(navController: NavController) {
-        //TODO
+        navController.popBackStack()
     }
 
 }

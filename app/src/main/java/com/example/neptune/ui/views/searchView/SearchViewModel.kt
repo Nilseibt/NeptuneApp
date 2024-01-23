@@ -1,20 +1,35 @@
 package com.example.neptune.ui.views.searchView
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.neptune.model.track.src.Track
+import com.example.neptune.ui.commons.TrackListType
+import com.example.neptune.ui.views.ViewsCollection
 
 class SearchViewModel() : ViewModel() {
 
+    private var searchInput by mutableStateOf("")
+
+    fun getSearchTrackListType(): TrackListType {
+        /*if (user is Host) {
+            return TrackListType.HOST_SEARCH
+        } else {
+            return TrackListType.PARTICIPANT_SEARCH
+        }*/
+        return TrackListType.PARTICIPANT_SEARCH // For now //TODO
+    }
 
     fun getTrackSearchInput(): String {
-        //TODO
-        return "NO SEARCH"
+        return searchInput
     }
 
     fun onTrackSearchInputChange(newInput: String) {
+        searchInput = newInput
         //TODO
     }
 
@@ -30,7 +45,6 @@ class SearchViewModel() : ViewModel() {
     fun onToggleUpvote(track: Track) {
         //TODO
     }
-
 
     fun onToggleDropdown(index: Int) {
         //TODO
@@ -79,17 +93,17 @@ class SearchViewModel() : ViewModel() {
     }
 
     fun onOpenInfo(navController: NavController) {
-        //TODO
+        navController.navigate(ViewsCollection.INFO_VIEW.name)
     }
 
 
     fun onOpenStats(navController: NavController) {
-        //TODO
+        navController.navigate(ViewsCollection.INFO_VIEW.name)
     }
 
 
     fun onBack(navController: NavController) {
-        //TODO
+        navController.popBackStack()
     }
 
 }

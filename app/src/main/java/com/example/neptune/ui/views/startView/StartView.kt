@@ -49,7 +49,7 @@ fun StartView(navController: NavController) {
                 Text(text = "App verlassen")
             },
             text = {
-                Text(text = "Sicher, dass du die App verlassen willst")
+                Text(text = "Sicher, dass du die App verlassen willst?")
             },
             onDismissRequest = { },
             confirmButton = {

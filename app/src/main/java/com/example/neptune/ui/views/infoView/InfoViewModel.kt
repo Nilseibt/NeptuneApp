@@ -54,7 +54,7 @@ class InfoViewModel() : ViewModel() {
     }
 
     fun onBack(navController: NavController) {
-        //TODO
+        navController.popBackStack()
     }
 
 }
