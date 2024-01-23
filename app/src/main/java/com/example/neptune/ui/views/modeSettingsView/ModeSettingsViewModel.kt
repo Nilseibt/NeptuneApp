@@ -1,9 +1,18 @@
 package com.example.neptune.ui.views.modeSettingsView
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.neptune.ui.views.ViewsCollection
 
 class ModeSettingsViewModel() : ViewModel() {
+
+    private var playlistLinkInput by mutableStateOf("")
+
+    private var sliderPosition by mutableFloatStateOf(0f)
 
 
     fun isPlaylistLinkInputAvailable(): Boolean {
@@ -11,13 +20,12 @@ class ModeSettingsViewModel() : ViewModel() {
         return false
     }
 
-    fun getPlaylistLinkInput(): String {
-        //TODO
-        return "PLACEHOLDER"
+    fun getCurrentPlaylistLinkInput(): String {
+        return playlistLinkInput
     }
 
     fun onPlaylistLinkInputChange(newInput: String) {
-        //TODO
+        playlistLinkInput = newInput
     }
 
     fun isPlaylistLinkValid(): Boolean {
@@ -26,15 +34,14 @@ class ModeSettingsViewModel() : ViewModel() {
     }
 
     fun getCooldownSliderPosition(): Float {
-        //TODO
-        return 1f
+        return sliderPosition
     }
 
     fun onCooldownSliderPositionChange(newPosition: Float) {
-        //TODO
+        sliderPosition = newPosition
     }
 
-    fun onCooldownSliderFinish(position: Float) {
+    fun onCooldownSliderFinish() {
         //TODO
     }
 
@@ -77,10 +84,11 @@ class ModeSettingsViewModel() : ViewModel() {
 
     fun onConfirmSettings(navController: NavController) {
         //TODO
+        navController.navigate(ViewsCollection.CONTROL_VIEW.name)
     }
 
     fun onBack(navController: NavController) {
-        //TODO
+        navController.popBackStack()
     }
 
 }

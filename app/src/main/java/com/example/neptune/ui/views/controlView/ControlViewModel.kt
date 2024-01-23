@@ -1,12 +1,18 @@
 package com.example.neptune.ui.views.controlView
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.neptune.model.track.src.Track
+import com.example.neptune.ui.views.ViewsCollection
 
 class ControlViewModel() : ViewModel() {
+
+    private var deleteSessionDialogShown by mutableStateOf(false)
 
     fun onToggleUpvote(track: Track) {
         //TODO
@@ -93,7 +99,7 @@ class ControlViewModel() : ViewModel() {
     }
 
     fun onSearchTracks(navController: NavController) {
-        //TODO
+        navController.navigate(ViewsCollection.SEARCH_VIEW.name)
     }
 
     fun getTopBarDescription(): String {
@@ -109,16 +115,26 @@ class ControlViewModel() : ViewModel() {
         //TODO
     }
 
+    fun isDeleteSessionDialogShown(): Boolean {
+        return deleteSessionDialogShown
+    }
+
     fun onBack(navController: NavController) {
-        //TODO
+        deleteSessionDialogShown = !deleteSessionDialogShown
     }
 
     fun onConfirmDeleteSession(navController: NavController) {
         //TODO
+        deleteSessionDialogShown = false
+        navController.popBackStack(
+            ViewsCollection.START_VIEW.name,
+            inclusive = false,
+            saveState = false
+        )
     }
 
     fun onDismissDeleteSession(navController: NavController) {
-        //TODO
+        deleteSessionDialogShown = false
     }
 
 }

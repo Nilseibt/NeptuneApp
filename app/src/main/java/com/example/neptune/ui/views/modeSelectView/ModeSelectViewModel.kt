@@ -2,6 +2,7 @@ package com.example.neptune.ui.views.modeSelectView
 
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.neptune.ui.views.ViewsCollection
 
 class ModeSelectViewModel() : ViewModel() {
 
@@ -20,11 +21,11 @@ class ModeSelectViewModel() : ViewModel() {
     }
 
     fun onConfirmMode(navController: NavController) {
-        //TODO
+        navController.navigate(ViewsCollection.MODE_SETTINGS_VIEW.name)
     }
 
     fun onBack(navController: NavController) {
-        //TODO
+        navController.popBackStack()
     }
 
 }

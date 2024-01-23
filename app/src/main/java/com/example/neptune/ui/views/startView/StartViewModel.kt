@@ -14,7 +14,7 @@ class StartViewModel() : ViewModel() {
 
     fun createSessionPossible(): Boolean {
         //TODO
-        return false
+        return true
     }
 
     fun onToggleConnectedToSpotify() {
