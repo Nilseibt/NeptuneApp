@@ -9,7 +9,7 @@ class Track(
     val artists: List<String>,
     val genres: List<String>,
     val imageUrl: String,
-    var timestamp: Int,
+    var timestamp: Timestamp,
     var upvotes: Int,
     var isUpvoted: Boolean,
     var isBlocked: Boolean

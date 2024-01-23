@@ -9,6 +9,6 @@ class VoteList(tracks: MutableList<Track>): PlayList(tracks) {
         tracks[index].removeUpvote()
     }
     fun sortByUpvote(){
-        tracks.sortBy { track ->  track.upvote }
+        tracks.sortBy { track ->  track.upvotes }
     }
 }
