@@ -8,7 +8,7 @@ import androidx.navigation.NavController
 
 class SessionEntitiesSearchViewModel() : ViewModel() {
 
-    private var searchInput by mutableStateOf("")
+    private var entitySearchInput by mutableStateOf("")
 
     fun getSearchInput(): String {
         //TODO
