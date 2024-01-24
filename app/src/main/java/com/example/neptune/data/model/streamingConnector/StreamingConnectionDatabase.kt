@@ -1,11 +1,16 @@
 package com.example.neptune.data.model.streamingConnector
 
 
+interface StreamingConnectionDatabase {
 
-interface StreamingConnectionDatabase{
+    suspend fun hasLinkedEntry(): Boolean
 
-    fun isLinked(): Boolean
+    suspend fun isLinked(): Boolean
 
-    fun setLinked(isLinked: Boolean)
+    suspend fun setLinked(isLinked: Boolean)
+
+    suspend fun getRefreshToken(): String
+
+    suspend fun setRefreshToken(refreshToken: String)
 
 }

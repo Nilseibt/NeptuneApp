@@ -3,7 +3,10 @@ package com.example.neptune.data.model.streamingConnector
 
 interface StreamingConnectorEstablisher {
 
-    fun initiateConnect()
+
+    suspend fun restoreConnectionIfPossible()
+
+    fun initiateConnectWithAuthorize()
 
     fun finishConnectWithCode(code: String)
 

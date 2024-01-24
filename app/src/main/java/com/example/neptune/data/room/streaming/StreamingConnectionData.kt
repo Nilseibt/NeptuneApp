@@ -1,11 +1,11 @@
-package com.example.neptune.data.room.spotify
+package com.example.neptune.data.room.streaming
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "spotify_connection_data")
-data class SpotifyConnectionData(
+@Entity(tableName = "streaming_connection_data")
+data class StreamingConnectionData(
     @ColumnInfo(name = "artificial_id")
     @PrimaryKey
     val artificialId: Int,

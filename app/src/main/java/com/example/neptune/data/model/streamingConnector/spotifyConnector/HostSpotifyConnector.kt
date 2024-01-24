@@ -1,11 +1,15 @@
 package com.example.neptune.data.model.streamingConnector.spotifyConnector
 
+import com.android.volley.RequestQueue
 import com.example.neptune.data.model.streamingConnector.HostStreamingConnector
 import com.example.neptune.model.track.src.PlayList
 import com.example.neptune.model.track.src.Track
 
 
-class HostSpotifyConnector(authToken: String) : SpotifyConnector(authToken), HostStreamingConnector {
+class HostSpotifyConnector(
+    private val volleyQueue: RequestQueue,
+    private val authToken: String
+) : SpotifyConnector(volleyQueue, authToken), HostStreamingConnector {
 
     override fun addTrackToQueue(track: Track) {
         //TODO
