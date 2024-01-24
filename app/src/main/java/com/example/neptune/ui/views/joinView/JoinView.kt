@@ -3,8 +3,10 @@ package com.example.neptune.ui.views.joinView
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
@@ -43,14 +45,25 @@ fun JoinView(navController: NavController) {
         TextField(
             value = joinViewModel.getCodeInput(),
             onValueChange = { joinViewModel.onCodeInputChange(it) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 8.dp)
         )
-        Button(
-            onClick = { joinViewModel.onConfirmSessionCode(navController) },
-            enabled = joinViewModel.isCodeInputFormValid()
-        )
-        {
-            Text(text = "->")
+
+        Row (
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.End
+        ){
+            Button(
+                onClick = { joinViewModel.onConfirmSessionCode(navController) },
+                enabled = joinViewModel.isCodeInputFormValid()
+            )
+            {
+                Text(text = "->")
+            }
         }
         Spacer(modifier = Modifier.height(32.dp))
         Button(
