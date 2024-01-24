@@ -6,9 +6,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.neptune.data.model.appState.AppState
+import com.example.neptune.data.model.session.SessionType
 import com.example.neptune.ui.views.ViewsCollection
 
-class ModeSettingsViewModel() : ViewModel() {
+class ModeSettingsViewModel(
+    val appState: AppState
+) : ViewModel() {
 
     private var playlistLinkInput by mutableStateOf("")
 
@@ -16,8 +20,7 @@ class ModeSettingsViewModel() : ViewModel() {
 
 
     fun isPlaylistLinkInputAvailable(): Boolean {
-        //TODO
-        return false
+        return getSessionType() == SessionType.PLAYLIST
     }
 
     fun getCurrentPlaylistLinkInput(): String {
@@ -90,5 +93,12 @@ class ModeSettingsViewModel() : ViewModel() {
     fun onBack(navController: NavController) {
         navController.popBackStack()
     }
+
+
+    private fun getSessionType(): SessionType {
+        return appState.sessionBuilder.getSessionType()
+    }
+
+
 
 }

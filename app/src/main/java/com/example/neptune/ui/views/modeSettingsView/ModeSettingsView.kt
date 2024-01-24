@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.neptune.NeptuneApp
 import com.example.neptune.ui.views.util.viewModelFactory
 
 @Composable
@@ -18,7 +19,7 @@ fun ModeSettingsView(navController: NavController) {
     val modeSettingsViewModel = viewModel<ModeSettingsViewModel>(
         factory = viewModelFactory {
             ModeSettingsViewModel(
-                //NeptuneApp.appState
+                NeptuneApp.model.appState
             )
         }
     )

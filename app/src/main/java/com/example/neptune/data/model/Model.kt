@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.android.volley.toolbox.Volley
 import com.example.neptune.data.model.appState.AppDatabase
 import com.example.neptune.data.model.appState.AppState
+import com.example.neptune.data.model.session.SessionBuilder
 import com.example.neptune.data.model.streamingConnector.StreamingConnectionDatabase
 import com.example.neptune.data.model.streamingConnector.StreamingConnector
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.SpotifyConnectionDatabase
@@ -55,9 +56,12 @@ class Model(
     }
 
 
+    private val sessionBuilder = SessionBuilder()
+
+
     private var streamingConnector: StreamingConnector? = null
 
 
-    var appState = AppState(streamingEstablisher, appDatabase, context)
+    var appState = AppState(streamingEstablisher, sessionBuilder, appDatabase, context)
 
 }
