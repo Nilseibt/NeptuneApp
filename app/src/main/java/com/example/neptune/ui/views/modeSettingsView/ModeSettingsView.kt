@@ -30,10 +30,41 @@ fun ModeSettingsView(navController: NavController) {
 
     Column {
 
-        Text(text = "Standardplaylist", color = Color.White)
-        TextField(
-            value = modeSettingsViewModel.getCurrentPlaylistLinkInput(),
-            onValueChange = { modeSettingsViewModel.onPlaylistLinkInputChange(it) })
+        if (modeSettingsViewModel.isPlaylistLinkInputAvailable()) {
+            Text(text = "Standardplaylist", color = Color.White)
+            TextField(
+                value = modeSettingsViewModel.getCurrentPlaylistLinkInput(),
+                onValueChange = { modeSettingsViewModel.onPlaylistLinkInputChange(it) })
+        }
+
+        if (modeSettingsViewModel.isArtistSearchAvailable()) {
+            Button(
+                onClick = { modeSettingsViewModel.onArtistSearch(navController) }
+            ) {
+                Text("Artists suchen")
+            }
+
+            modeSettingsViewModel.getSelectedArtists().forEach {
+                Button(onClick = { modeSettingsViewModel.onToggleSelect(it) }) {
+                    Text(text = it)
+                }
+            }
+        }
+
+        if (modeSettingsViewModel.isGenreSearchAvailable()) {
+            Button(
+                onClick = { modeSettingsViewModel.onGenreSearch(navController) }
+            ) {
+                Text("Genres suchen")
+            }
+
+            modeSettingsViewModel.getSelectedGenres().forEach {
+                Button(onClick = { modeSettingsViewModel.onToggleSelect(it) }) {
+                    Text(text = it)
+                }
+            }
+        }
+
         Text(text = "Track Cooldown", color = Color.White)
         Slider(
             value = modeSettingsViewModel.getCooldownSliderPosition(),

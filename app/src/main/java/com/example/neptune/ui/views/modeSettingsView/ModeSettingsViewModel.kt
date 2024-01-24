@@ -9,6 +9,7 @@ import androidx.navigation.NavController
 import com.example.neptune.data.model.appState.AppState
 import com.example.neptune.data.model.session.SessionType
 import com.example.neptune.ui.views.ViewsCollection
+import kotlin.math.pow
 
 class ModeSettingsViewModel(
     val appState: AppState
@@ -45,21 +46,19 @@ class ModeSettingsViewModel(
     }
 
     fun onCooldownSliderFinish() {
-        //TODO
+
     }
 
     fun getTrackCooldownString(): String {
-        //TODO
-        return "INF"
+        return sliderPositionToCooldownMinutes(sliderPosition).toString() + " Minuten"
     }
 
     fun isArtistSearchAvailable(): Boolean {
-        //TODO
-        return false
+        return getSessionType() == SessionType.ARTIST
     }
 
     fun onArtistSearch(navController: NavController) {
-        //TODO
+        navController.navigate(ViewsCollection.SESSION_ENTITIES_SEARCH_VIEW.name)
     }
 
     fun getSelectedArtists(): List<String> {
@@ -68,12 +67,11 @@ class ModeSettingsViewModel(
     }
 
     fun isGenreSearchAvailable(): Boolean {
-        //TODO
-        return false
+        return getSessionType() == SessionType.GENRE
     }
 
     fun onGenreSearch(navController: NavController) {
-        //TODO
+        navController.navigate(ViewsCollection.SESSION_ENTITIES_SEARCH_VIEW.name)
     }
 
     fun getSelectedGenres(): List<String> {
@@ -82,11 +80,18 @@ class ModeSettingsViewModel(
     }
 
     fun onToggleSelect(entityName: String) {
-        //TODO
+        if (appState.sessionBuilder.isEntitySelected(entityName)) {
+            appState.sessionBuilder.removeEntity(entityName)
+        } else {
+            appState.sessionBuilder.addEntity(entityName)
+        }
     }
 
     fun onConfirmSettings(navController: NavController) {
-        //TODO
+        if(getSessionType() == SessionType.PLAYLIST) {
+            appState.sessionBuilder.setPlaylistLink(playlistLinkInput)
+        }
+        appState.sessionBuilder.setTrackCooldown(sliderPositionToCooldownMinutes(sliderPosition))
         navController.navigate(ViewsCollection.CONTROL_VIEW.name)
     }
 
@@ -95,10 +100,14 @@ class ModeSettingsViewModel(
     }
 
 
+
+
     private fun getSessionType(): SessionType {
         return appState.sessionBuilder.getSessionType()
     }
 
-
+    private fun sliderPositionToCooldownMinutes(sliderPosition: Float): Int {
+        return (10f * (73f).pow(sliderPosition) - 10f).toInt()
+    }
 
 }

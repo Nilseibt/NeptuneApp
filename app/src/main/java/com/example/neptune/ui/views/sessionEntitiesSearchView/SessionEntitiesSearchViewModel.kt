@@ -1,9 +1,14 @@
 package com.example.neptune.ui.views.sessionEntitiesSearchView
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 
 class SessionEntitiesSearchViewModel() : ViewModel() {
+
+    private var searchInput by mutableStateOf("")
 
     fun getSearchInput(): String {
         //TODO
