@@ -37,28 +37,28 @@ fun ModeSettingsView(navController: NavController) {
                 onValueChange = { modeSettingsViewModel.onPlaylistLinkInputChange(it) })
         }
 
-        if (modeSettingsViewModel.isArtistSearchAvailable()) {
+        if (modeSettingsViewModel.isArtistSession()) {
             Button(
                 onClick = { modeSettingsViewModel.onArtistSearch(navController) }
             ) {
                 Text("Artists suchen")
             }
 
-            modeSettingsViewModel.getSelectedArtists().forEach {
+            modeSettingsViewModel.getSelectedEntities().forEach {
                 Button(onClick = { modeSettingsViewModel.onToggleSelect(it) }) {
                     Text(text = it)
                 }
             }
         }
 
-        if (modeSettingsViewModel.isGenreSearchAvailable()) {
+        if (modeSettingsViewModel.isGenreSession()) {
             Button(
                 onClick = { modeSettingsViewModel.onGenreSearch(navController) }
             ) {
                 Text("Genres suchen")
             }
 
-            modeSettingsViewModel.getSelectedGenres().forEach {
+            modeSettingsViewModel.getSelectedEntities().forEach {
                 Button(onClick = { modeSettingsViewModel.onToggleSelect(it) }) {
                     Text(text = it)
                 }

@@ -6,7 +6,9 @@ import android.net.Uri
 import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
@@ -15,6 +17,7 @@ import com.example.neptune.data.model.streamingConnector.StreamingEstablisher
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import java.net.URLEncoder
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
@@ -28,6 +31,8 @@ class SpotifyEstablisher(
     private var refreshToken = ""
 
     private var spotifyLevel = mutableStateOf(StreamingLevel.UNDETERMINED)
+
+    private var artistsSearchList = mutableStateListOf<String>()
 
     override suspend fun restoreConnectionIfPossible() {
         if (spotifyConnectionDatabase.hasLinkedEntry()) {
@@ -91,6 +96,7 @@ class SpotifyEstablisher(
                 params["Authorization"] = encodedCredentials
                 return params
             }
+
             override fun getParams(): Map<String, String> {
                 var params: MutableMap<String, String> = HashMap()
                 params["grant_type"] = "authorization_code"
@@ -98,6 +104,7 @@ class SpotifyEstablisher(
                 params["redirect_uri"] = "oauth://neptune-streaming-callback"
                 return params
             }
+
             override fun getBodyContentType(): String {
                 return "application/x-www-form-urlencoded; charset=UTF-8"
             }
@@ -112,6 +119,36 @@ class SpotifyEstablisher(
             spotifyConnectionDatabase.setRefreshToken("")
         }
         spotifyLevel.value = StreamingLevel.UNLINKED
+    }
+
+    override fun searchMatchingArtists(searchInput: String) {
+
+        val baseUrl = "https://api.spotify.com/v1/search"
+        val urlSearchQuery = URLEncoder.encode(searchInput, "UTF-8")
+
+        val url = "$baseUrl?q=$urlSearchQuery&type=artist&limit=20"
+
+        val stringRequest: StringRequest = object : StringRequest(
+            Request.Method.GET, url,
+            { response ->
+                Log.i("RES", response.toString())
+                matchingArtistsCallback(JSONObject(response))
+            },
+            { error ->
+                Log.e("VOLLEY", "Spotify Request Error: ${String(error.networkResponse.data)}")
+            }) {
+            override fun getHeaders(): Map<String, String> {
+                var params: MutableMap<String, String> = HashMap()
+                params["Authorization"] = "Bearer $accessToken"
+                return params
+            }
+        }
+
+        volleyQueue.add(stringRequest)
+    }
+
+    override fun getArtistSearchList(): SnapshotStateList<String> {
+        return artistsSearchList
     }
 
 
@@ -152,12 +189,14 @@ class SpotifyEstablisher(
                 params["Authorization"] = encodedCredentials
                 return params
             }
+
             override fun getParams(): Map<String, String> {
                 var params: MutableMap<String, String> = HashMap()
                 params["grant_type"] = "refresh_token"
                 params["refresh_token"] = refreshToken
                 return params
             }
+
             override fun getBodyContentType(): String {
                 return "application/x-www-form-urlencoded; charset=UTF-8"
             }
@@ -175,8 +214,6 @@ class SpotifyEstablisher(
 
 
     private fun determineAndSetSpotifyLevel() {
-
-        Log.i("TEST", "works")
 
         val url = "https://api.spotify.com/v1/me"
 
@@ -208,6 +245,14 @@ class SpotifyEstablisher(
             spotifyLevel.value = StreamingLevel.FREE
         }
         Log.i("DETERMINED LEVEL", spotifyLevel.toString())
+    }
+
+    private fun matchingArtistsCallback(artistsJsonObject: JSONObject) {
+        artistsSearchList.clear()
+        val artistList = artistsJsonObject.getJSONObject("artists").getJSONArray("items")
+        for(index in 0 until artistList.length()){
+            artistsSearchList.add(artistList.getJSONObject(index).getString("name"))
+        }
     }
 
 

@@ -1,13 +1,16 @@
 package com.example.neptune.data.model.session
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
+import com.example.neptune.data.resources.GenreList
+import kotlin.math.min
 
 class SessionBuilder {
 
     private var sessionType: SessionType? = null
 
-    private var artists = mutableStateListOf<String>()
-    private var genres = mutableStateListOf<String>()
+    private var selectedEntities = mutableStateListOf<String>() // artists or genres
 
     private var playlistLink = ""
 
@@ -26,30 +29,19 @@ class SessionBuilder {
     }
 
     fun isEntitySelected(entityName: String): Boolean {
-        if(sessionType == SessionType.ARTIST) {
-            return artists.contains(entityName)
-        }
-        else {
-            return genres.contains(entityName)
-        }
+        return selectedEntities.contains(entityName)
     }
 
     fun addEntity(entityName: String) {
-        if(sessionType == SessionType.ARTIST) {
-            artists.add(entityName)
-        }
-        else {
-            genres.add(entityName)
-        }
+        selectedEntities.add(entityName)
     }
 
     fun removeEntity(entityName: String) {
-        if(sessionType == SessionType.ARTIST) {
-            artists.remove(entityName)
-        }
-        else {
-            genres.remove(entityName)
-        }
+        selectedEntities.remove(entityName)
+    }
+
+    fun getSelectedEntities(): SnapshotStateList<String> {
+        return selectedEntities
     }
 
     fun setPlaylistLink(playlistLink: String) {
@@ -58,6 +50,22 @@ class SessionBuilder {
 
     fun setTrackCooldown(trackCooldown: Int) {
         this.trackCooldown = trackCooldown
+    }
+
+
+    fun searchMatchingGenres(searchInput: String): SnapshotStateList<String> {
+        if(searchInput == ""){
+            return mutableStateListOf()
+        }
+        val matchingGenres = mutableListOf<String>()
+        GenreList().getGenreList().forEach {
+            if(it.lowercase().contains(searchInput)){
+                matchingGenres.add(it)
+            }
+        }
+        val sorter: (String) -> Int = { string -> string.length }
+        matchingGenres.sortBy(sorter)
+        return matchingGenres.subList(0, min(matchingGenres.size, 20)).toMutableStateList()
     }
 
 

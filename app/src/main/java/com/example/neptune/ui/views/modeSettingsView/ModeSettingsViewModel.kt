@@ -34,7 +34,7 @@ class ModeSettingsViewModel(
 
     fun isPlaylistLinkValid(): Boolean {
         //TODO
-        return false
+        return true
     }
 
     fun getCooldownSliderPosition(): Float {
@@ -53,7 +53,7 @@ class ModeSettingsViewModel(
         return sliderPositionToCooldownMinutes(sliderPosition).toString() + " Minuten"
     }
 
-    fun isArtistSearchAvailable(): Boolean {
+    fun isArtistSession(): Boolean {
         return getSessionType() == SessionType.ARTIST
     }
 
@@ -61,12 +61,7 @@ class ModeSettingsViewModel(
         navController.navigate(ViewsCollection.SESSION_ENTITIES_SEARCH_VIEW.name)
     }
 
-    fun getSelectedArtists(): List<String> {
-        //TODO
-        return listOf()
-    }
-
-    fun isGenreSearchAvailable(): Boolean {
+    fun isGenreSession(): Boolean {
         return getSessionType() == SessionType.GENRE
     }
 
@@ -74,9 +69,8 @@ class ModeSettingsViewModel(
         navController.navigate(ViewsCollection.SESSION_ENTITIES_SEARCH_VIEW.name)
     }
 
-    fun getSelectedGenres(): List<String> {
-        //TODO
-        return listOf()
+    fun getSelectedEntities(): List<String> {
+        return appState.sessionBuilder.getSelectedEntities()
     }
 
     fun onToggleSelect(entityName: String) {
