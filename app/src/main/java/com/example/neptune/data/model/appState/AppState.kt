@@ -2,14 +2,13 @@ package com.example.neptune.data.model.appState
 
 import android.content.Context
 import android.net.wifi.WifiManager
-import com.example.neptune.data.model.streamingConnector.StreamingConnectorEstablisher
-import com.example.neptune.data.room.app.AppDataDao
+import com.example.neptune.data.model.streamingConnector.StreamingEstablisher
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
 
 class AppState(
-    private val streamingEstablisher: StreamingConnectorEstablisher,
+    val streamingEstablisher: StreamingEstablisher,
     private val appDatabase: AppDatabase,
     val context: Context
 ) {

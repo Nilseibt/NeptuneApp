@@ -24,7 +24,7 @@ class SessionEntitiesSearchViewModel() : ViewModel() {
     }
 
     fun onBack(navController: NavController) {
-        //TODO
+        navController.popBackStack()
     }
 
 }

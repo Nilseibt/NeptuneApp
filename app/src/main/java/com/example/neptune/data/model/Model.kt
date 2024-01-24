@@ -49,7 +49,8 @@ class Model(
     private val streamingEstablisher by lazy {
         SpotifyEstablisher(
             streamingConnectionDatabase,
-            streamingConnectorVolleyQueue
+            streamingConnectorVolleyQueue,
+            context
         )
     }
 

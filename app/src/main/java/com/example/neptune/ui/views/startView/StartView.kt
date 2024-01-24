@@ -9,6 +9,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.neptune.NeptuneApp
 import com.example.neptune.ui.views.util.viewModelFactory
 
 @Composable
@@ -17,7 +18,7 @@ fun StartView(navController: NavController) {
     val startViewModel = viewModel<StartViewModel>(
         factory = viewModelFactory {
             StartViewModel(
-                //NeptuneApp.appState
+                NeptuneApp.model.appState
             )
         }
     )
