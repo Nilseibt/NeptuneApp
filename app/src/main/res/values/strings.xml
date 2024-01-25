@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Neptune</string>
+    <string name="spotify_client_id">6d6a25295934498f99dfe5dfcc83af82</string>
+    <string name="spotify_client_secret">c36285b319d24084b4b19bff4408cdff</string>
 </resources>

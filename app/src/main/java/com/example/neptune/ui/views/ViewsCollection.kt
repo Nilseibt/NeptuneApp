@@ -13,6 +13,11 @@ import com.example.neptune.ui.views.voteView.VoteView
 
 
 object ViewsCollection {
+    val NAV_VIEW =
+        View(
+            name = "NAV_VIEW",
+            Composable = { navController -> NavView(navController) }
+        )
     val START_VIEW =
         View(
             name = "START_VIEW",

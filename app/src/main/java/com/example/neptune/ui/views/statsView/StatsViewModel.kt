@@ -5,8 +5,21 @@ import androidx.navigation.NavController
 
 class StatsViewModel() : ViewModel() {
 
-    fun onBack(navController: NavController){
+    /*fun getStatisticsImage(): ImageRenderer{
         //TODO
+        //return
+    }*/
+
+    fun onShareStatisticsImage() {
+        //TODO
+    }
+
+    fun onOpenInfo(navController: NavController) {
+        //TODO
+    }
+
+    fun onBack(navController: NavController) {
+        navController.popBackStack()
     }
 
 }

@@ -15,17 +15,17 @@ class TrackTest {
     val imageUrl1 = "https:randomadress"
     val upvote1= 1
     var track1 = Track(trackId1,name1, artists1,genres1,imageUrl1,
-        timeStamp1,upvote1,false)
+        timeStamp1,upvote1,false, false)
     @Test fun addUpvote() {
         track1.addUpvote()
-        assertTrue(track1.upvote == 2)
+        assertTrue(track1.upvotes == 2)
     }
     @Test fun removeUpvote() {
         track1.removeUpvote()
         track1.removeUpvote()
         track1.removeUpvote()
 
-        assertTrue(track1.upvote == 0)
+        assertTrue(track1.upvotes == 0)
     }
 
 

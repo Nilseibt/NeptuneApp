@@ -11,7 +11,11 @@ fun NeptuneNavGraph() {
 
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = ViewsCollection.START_VIEW.name) {
+    NavHost(navController = navController, startDestination = ViewsCollection.NAV_VIEW.name) {
+
+        composable(ViewsCollection.NAV_VIEW.name) {
+            ViewsCollection.NAV_VIEW.Composable(navController)
+        }
 
         composable(ViewsCollection.START_VIEW.name) {
             ViewsCollection.START_VIEW.Composable(navController)
