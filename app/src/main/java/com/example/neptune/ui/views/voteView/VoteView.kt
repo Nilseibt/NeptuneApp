@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
@@ -23,8 +23,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -102,64 +104,39 @@ fun VoteViewPreview() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp)
+            .height(60.dp)
             .background(color = MaterialTheme.colorScheme.primary)
     ) {
         IconButton(
-            onClick = { /*TODO*/ }
+            onClick = { /*TODO*/ },
+            modifier = Modifier
+                .weight(1f)
+                .align(alignment = Alignment.CenterVertically)
         ) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = "Back"
             )
         }
+
+        Text(
+            text = "Neptune",
+            color = MaterialTheme.colorScheme.onPrimary,
+            style = MaterialTheme.typography.headlineLarge,
+            modifier = Modifier
+                .weight(4f)
+                .padding(1.dp)
+                .align(alignment = Alignment.CenterVertically),
+            textAlign = TextAlign.Center
+        )
+
+        Button(
+            onClick = { },
+            modifier = Modifier
+                .weight(1f)
+                .align(alignment = Alignment.CenterVertically)
+        ) {
+
+        }
     }
 }
-
-/*@OptIn(ExperimentalMaterial3Api::class)
-@Preview(name = "Vote View Bars")
-@Composable
-fun VoteViewPreviewBars() {
-
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(color = MaterialTheme.colorScheme.background))
-
-    CenterAlignedTopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            titleContentColor = MaterialTheme.colorScheme.primary
-        ),
-        title = {
-            Text(
-                text = "NepTune",
-                style = MaterialTheme.typography.titleLarge
-            )
-                },
-        navigationIcon = {
-            IconButton(onClick = { /* do something */ }) {
-                Icon(
-                    imageVector = Icons.Filled.ArrowBack,
-                    contentDescription = "Localized description"
-                )
-            }
-        },
-        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    )
-
-    Row(modifier = Modifier.fillMaxSize()) {
-
-    }
-
-    BottomAppBar(
-        actions = {
-            Button(
-                onClick = { },
-                modifier = Modifier.fillMaxSize()
-            ) {
-                Text(text = "Track suchen")
-            }
-        }
-    )
-
-}*/
