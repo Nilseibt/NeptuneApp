@@ -10,7 +10,7 @@ import java.security.MessageDigest
 
 class AppState(
     val streamingEstablisher: StreamingEstablisher,
-    val sessionBuilder: SessionBuilder,
+    var sessionBuilder: SessionBuilder,
     private val appDatabase: AppDatabase,
     val context: Context
 ) {

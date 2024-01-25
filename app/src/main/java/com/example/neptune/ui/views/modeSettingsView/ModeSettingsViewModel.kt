@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.neptune.data.model.appState.AppState
+import com.example.neptune.data.model.session.SessionBuilder
 import com.example.neptune.data.model.session.SessionType
 import com.example.neptune.ui.views.ViewsCollection
 import kotlin.math.pow
@@ -86,6 +87,7 @@ class ModeSettingsViewModel(
             appState.sessionBuilder.setPlaylistLink(playlistLinkInput)
         }
         appState.sessionBuilder.setTrackCooldown(sliderPositionToCooldownMinutes(sliderPosition))
+        //TODO clear the sessionbuilder
         navController.navigate(ViewsCollection.CONTROL_VIEW.name)
     }
 
