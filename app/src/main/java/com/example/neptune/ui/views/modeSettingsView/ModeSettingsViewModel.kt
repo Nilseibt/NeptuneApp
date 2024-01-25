@@ -87,7 +87,7 @@ class ModeSettingsViewModel(
             appState.sessionBuilder.setPlaylistLink(playlistLinkInput)
         }
         appState.sessionBuilder.setTrackCooldown(sliderPositionToCooldownMinutes(sliderPosition))
-        //TODO clear the sessionbuilder
+        appState.sessionBuilder.reset()
         navController.navigate(ViewsCollection.CONTROL_VIEW.name)
     }
 
