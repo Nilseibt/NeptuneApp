@@ -1,4 +1,4 @@
-package com.example.neptune.model.track.src
+package com.example.neptune.data.model.track.src
 
 class VoteList(tracks: MutableList<Track>) : PlayList(tracks) {
 

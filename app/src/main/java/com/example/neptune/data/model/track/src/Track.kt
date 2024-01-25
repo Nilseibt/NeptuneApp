@@ -1,4 +1,4 @@
-package com.example.neptune.model.track.src
+package com.example.neptune.data.model.track.src
 
 import java.sql.Timestamp
 import  java.util.Date
