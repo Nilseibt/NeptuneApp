@@ -8,7 +8,7 @@ import kotlin.math.min
 
 class SessionBuilder {
 
-    private var sessionType: SessionType? = null
+    private var sessionType = SessionType.GENERAL
 
     private var selectedEntities = mutableStateListOf<String>() // artists or genres
 
@@ -22,10 +22,7 @@ class SessionBuilder {
     }
 
     fun getSessionType(): SessionType {
-        if (sessionType == null) {
-            Exception("Session type must be set before getter is called")
-        }
-        return sessionType!!
+        return sessionType
     }
 
     fun isEntitySelected(entityName: String): Boolean {
@@ -66,6 +63,13 @@ class SessionBuilder {
         val sorter: (String) -> Int = { string -> string.length }
         matchingGenres.sortBy(sorter)
         return matchingGenres.subList(0, min(matchingGenres.size, 20)).toMutableStateList()
+    }
+
+    fun reset(){
+        sessionType = SessionType.GENERAL
+        selectedEntities = mutableStateListOf()
+        playlistLink = ""
+        trackCooldown = -1
     }
 
 
