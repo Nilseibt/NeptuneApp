@@ -1,7 +1,7 @@
 package com.example.neptune.data.model.streamingConnector
 
-import com.example.neptune.model.track.src.PlayList
-import com.example.neptune.model.track.src.Track
+import com.example.neptune.data.model.track.src.PlayList
+import com.example.neptune.data.model.track.src.Track
 
 interface HostStreamingConnector : StreamingConnector {
 

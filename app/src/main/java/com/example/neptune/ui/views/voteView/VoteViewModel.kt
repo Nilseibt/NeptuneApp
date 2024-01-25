@@ -7,7 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.example.neptune.model.track.src.Track
+import com.example.neptune.data.model.track.src.Track
 import com.example.neptune.ui.views.ViewsCollection
 
 class VoteViewModel() : ViewModel() {

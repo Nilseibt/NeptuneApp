@@ -2,8 +2,8 @@ package com.example.neptune.data.model.streamingConnector.spotifyConnector
 
 import com.android.volley.RequestQueue
 import com.example.neptune.data.model.streamingConnector.HostStreamingConnector
-import com.example.neptune.model.track.src.PlayList
-import com.example.neptune.model.track.src.Track
+import com.example.neptune.data.model.track.src.PlayList
+import com.example.neptune.data.model.track.src.Track
 
 
 class HostSpotifyConnector(
