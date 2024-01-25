@@ -1,15 +1,14 @@
 package com.example.neptune.ui.commons
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.outlined.DateRange
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -19,17 +18,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun TopBar(onBack: () -> Unit) {
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(60.dp)
             .background(color = MaterialTheme.colorScheme.primary)
+            .height(60.dp)
     ) {
+
         IconButton(
             onClick = onBack,
             modifier = Modifier
@@ -48,7 +48,7 @@ fun TopBar(onBack: () -> Unit) {
             style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier
                 .weight(4f)
-                .padding(1.dp)
+                .padding(4.dp)
                 .align(alignment = Alignment.CenterVertically),
             textAlign = TextAlign.Center
         )
@@ -61,35 +61,52 @@ fun TopBar(onBack: () -> Unit) {
         ) {
 
         }
+
     }
 }
 
 @Composable
-fun SessionInfoBar(onStatistics: () -> Unit, onSessionInfo: () -> Unit) {
-
-}
-
-@Preview(name = "SessionInfoBar Preview")
-@Composable
-fun SessionInfoBarPreview() {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(color = MaterialTheme.colorScheme.background))
+fun SessionInfoBar(onStatistics: () -> Unit, onInfo: () -> Unit, title: String) {
 
     Row(
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.secondary)
             .fillMaxWidth()
-            .height(20.dp)
+            .height(30.dp)
     ) {
 
         IconButton(
-            onClick = { /*TODO*/ },
-            modifier = Modifier.weight(1f)
+            onClick = onInfo,
+            modifier = Modifier
+                .weight(1f)
+                .align(alignment = Alignment.CenterVertically)
         ) {
             Icon(
-                imageVector = Icons.Filled.Info,
+                imageVector = Icons.Outlined.Info,
                 contentDescription = "info"
+            )
+        }
+
+        Text(
+            text = title,
+            color = MaterialTheme.colorScheme.onSecondary,
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier
+                .weight(5f)
+                .padding(2.dp)
+                .align(alignment = Alignment.CenterVertically),
+            textAlign = TextAlign.Center
+        )
+
+        IconButton(
+            onClick = onStatistics,
+            modifier = Modifier
+                .weight(1f)
+                .align(alignment = Alignment.CenterVertically)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.DateRange,
+                contentDescription = "statistics"
             )
         }
 

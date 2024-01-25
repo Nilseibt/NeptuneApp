@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.neptune.ui.commons.SessionInfoBar
 import com.example.neptune.ui.commons.TopBar
 import com.example.neptune.ui.commons.TrackListComposable
 import com.example.neptune.ui.commons.TrackListType
@@ -86,5 +87,10 @@ fun VoteViewPreview() {
         .fillMaxSize()
         .background(color = MaterialTheme.colorScheme.background))
 
-    TopBar { }
+    Column {
+        TopBar { }
+        SessionInfoBar(onStatistics = { /*TODO*/ }, onInfo = { /*TODO*/ }, title = "General Modus")
+    }
+
+
 }
