@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.neptune.NeptuneApp
 import com.example.neptune.ui.views.util.viewModelFactory
 
 @Composable
@@ -18,7 +19,7 @@ fun ModeSettingsView(navController: NavController) {
     val modeSettingsViewModel = viewModel<ModeSettingsViewModel>(
         factory = viewModelFactory {
             ModeSettingsViewModel(
-                //NeptuneApp.appState
+                NeptuneApp.model.appState
             )
         }
     )
@@ -29,10 +30,41 @@ fun ModeSettingsView(navController: NavController) {
 
     Column {
 
-        Text(text = "Standardplaylist", color = Color.White)
-        TextField(
-            value = modeSettingsViewModel.getCurrentPlaylistLinkInput(),
-            onValueChange = { modeSettingsViewModel.onPlaylistLinkInputChange(it) })
+        if (modeSettingsViewModel.isPlaylistLinkInputAvailable()) {
+            Text(text = "Standardplaylist", color = Color.White)
+            TextField(
+                value = modeSettingsViewModel.getCurrentPlaylistLinkInput(),
+                onValueChange = { modeSettingsViewModel.onPlaylistLinkInputChange(it) })
+        }
+
+        if (modeSettingsViewModel.isArtistSession()) {
+            Button(
+                onClick = { modeSettingsViewModel.onArtistSearch(navController) }
+            ) {
+                Text("Artists suchen")
+            }
+
+            modeSettingsViewModel.getSelectedEntities().forEach {
+                Button(onClick = { modeSettingsViewModel.onToggleSelect(it) }) {
+                    Text(text = it)
+                }
+            }
+        }
+
+        if (modeSettingsViewModel.isGenreSession()) {
+            Button(
+                onClick = { modeSettingsViewModel.onGenreSearch(navController) }
+            ) {
+                Text("Genres suchen")
+            }
+
+            modeSettingsViewModel.getSelectedEntities().forEach {
+                Button(onClick = { modeSettingsViewModel.onToggleSelect(it) }) {
+                    Text(text = it)
+                }
+            }
+        }
+
         Text(text = "Track Cooldown", color = Color.White)
         Slider(
             value = modeSettingsViewModel.getCooldownSliderPosition(),

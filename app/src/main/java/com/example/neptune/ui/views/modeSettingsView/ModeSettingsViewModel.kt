@@ -6,9 +6,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.neptune.data.model.appState.AppState
+import com.example.neptune.data.model.session.SessionBuilder
+import com.example.neptune.data.model.session.SessionType
 import com.example.neptune.ui.views.ViewsCollection
+import kotlin.math.pow
 
-class ModeSettingsViewModel() : ViewModel() {
+class ModeSettingsViewModel(
+    val appState: AppState
+) : ViewModel() {
 
     private var playlistLinkInput by mutableStateOf("")
 
@@ -16,8 +22,7 @@ class ModeSettingsViewModel() : ViewModel() {
 
 
     fun isPlaylistLinkInputAvailable(): Boolean {
-        //TODO
-        return false
+        return getSessionType() == SessionType.PLAYLIST
     }
 
     fun getCurrentPlaylistLinkInput(): String {
@@ -30,7 +35,7 @@ class ModeSettingsViewModel() : ViewModel() {
 
     fun isPlaylistLinkValid(): Boolean {
         //TODO
-        return false
+        return true
     }
 
     fun getCooldownSliderPosition(): Float {
@@ -42,53 +47,63 @@ class ModeSettingsViewModel() : ViewModel() {
     }
 
     fun onCooldownSliderFinish() {
-        //TODO
+
     }
 
     fun getTrackCooldownString(): String {
-        //TODO
-        return "INF"
+        return sliderPositionToCooldownMinutes(sliderPosition).toString() + " Minuten"
     }
 
-    fun isArtistSearchAvailable(): Boolean {
-        //TODO
-        return false
+    fun isArtistSession(): Boolean {
+        return getSessionType() == SessionType.ARTIST
     }
 
     fun onArtistSearch(navController: NavController) {
-        //TODO
+        navController.navigate(ViewsCollection.SESSION_ENTITIES_SEARCH_VIEW.name)
     }
 
-    fun getSelectedArtists(): List<String> {
-        //TODO
-        return listOf()
-    }
-
-    fun isGenreSearchAvailable(): Boolean {
-        //TODO
-        return false
+    fun isGenreSession(): Boolean {
+        return getSessionType() == SessionType.GENRE
     }
 
     fun onGenreSearch(navController: NavController) {
-        //TODO
+        navController.navigate(ViewsCollection.SESSION_ENTITIES_SEARCH_VIEW.name)
     }
 
-    fun getSelectedGenres(): List<String> {
-        //TODO
-        return listOf()
+    fun getSelectedEntities(): List<String> {
+        return appState.sessionBuilder.getSelectedEntities()
     }
 
     fun onToggleSelect(entityName: String) {
-        //TODO
+        if (appState.sessionBuilder.isEntitySelected(entityName)) {
+            appState.sessionBuilder.removeEntity(entityName)
+        } else {
+            appState.sessionBuilder.addEntity(entityName)
+        }
     }
 
     fun onConfirmSettings(navController: NavController) {
-        //TODO
+        if(getSessionType() == SessionType.PLAYLIST) {
+            appState.sessionBuilder.setPlaylistLink(playlistLinkInput)
+        }
+        appState.sessionBuilder.setTrackCooldown(sliderPositionToCooldownMinutes(sliderPosition))
+        appState.sessionBuilder.reset()
         navController.navigate(ViewsCollection.CONTROL_VIEW.name)
     }
 
     fun onBack(navController: NavController) {
         navController.popBackStack()
+    }
+
+
+
+
+    private fun getSessionType(): SessionType {
+        return appState.sessionBuilder.getSessionType()
+    }
+
+    private fun sliderPositionToCooldownMinutes(sliderPosition: Float): Int {
+        return (10f * (73f).pow(sliderPosition) - 10f).toInt()
     }
 
 }

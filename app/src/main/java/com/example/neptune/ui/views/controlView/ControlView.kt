@@ -66,10 +66,10 @@ fun ControlView(navController: NavController) {
 
         AlertDialog(
             title = {
-                Text(text = "Session löschen")
+                Text(text = "Session beenden")
             },
             text = {
-                Text(text = "Sicher, dass du die Session löschen willst?")
+                Text(text = "Sicher, dass du die Session für alle beenden willst?")
             },
             onDismissRequest = { },
             confirmButton = {

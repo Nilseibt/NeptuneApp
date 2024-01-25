@@ -22,11 +22,15 @@ class StartViewModel(
     }
 
     fun onToggleConnectedToSpotify() {
-        //TODO
+        when (getStreamingLevel().value) {
+            StreamingLevel.FREE, StreamingLevel.PREMIUM -> appState.streamingEstablisher.disconnect()
+            StreamingLevel.UNLINKED -> appState.streamingEstablisher.initiateConnectWithAuthorize()
+            StreamingLevel.UNDETERMINED -> {}
+        }
     }
 
     fun getSpotifyButtonText(): String {
-        return when(getStreamingLevel().value){
+        return when (getStreamingLevel().value) {
             StreamingLevel.FREE, StreamingLevel.PREMIUM -> "Von Spotify trennen"
             StreamingLevel.UNLINKED -> "Mit Spotify verknüpfen"
             StreamingLevel.UNDETERMINED -> ""
@@ -57,9 +61,6 @@ class StartViewModel(
     fun onDismissLeave(navController: NavController) {
         leaveDialogShown = false
     }
-
-
-
 
 
     private fun getStreamingLevel(): MutableState<StreamingLevel> {

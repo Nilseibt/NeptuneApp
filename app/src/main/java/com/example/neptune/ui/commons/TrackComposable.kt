@@ -32,7 +32,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.example.neptune.model.track.src.Track
+import com.example.neptune.data.model.track.src.Track
 
 @Composable
 fun TrackComposable(

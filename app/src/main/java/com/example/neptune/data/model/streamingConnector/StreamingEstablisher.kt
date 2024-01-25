@@ -1,6 +1,7 @@
 package com.example.neptune.data.model.streamingConnector
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.StreamingLevel
 
 
@@ -16,5 +17,9 @@ interface StreamingEstablisher {
     fun finishConnectWithCode(code: String)
 
     fun disconnect()
+
+    fun searchMatchingArtists(searchInput: String)
+
+    fun getArtistSearchList(): SnapshotStateList<String>
 
 }

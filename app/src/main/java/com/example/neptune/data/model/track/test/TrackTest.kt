@@ -1,5 +1,5 @@
-package com.example.neptune.model.track.test
-import com.example.neptune.model.track.src.Track
+package com.example.neptune.data.model.track.test
+import com.example.neptune.data.model.track.src.Track
 
 import org.junit.Assert.assertTrue
 import org.junit.Test

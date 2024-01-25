@@ -1,12 +1,13 @@
-package com.example.neptune.model.session.src
+package com.example.neptune.data.model.session
 
-import com.example.neptune.model.track.src.Track
+import com.example.neptune.data.model.track.src.Track
 import java.sql.Timestamp
 
 open class Session(val id:Int,
     val timestamp: Timestamp,
     val cooldown: Int,
-    val sessionType: SessionType = SessionType.GENERAL) {
+    val sessionType: SessionType = SessionType.GENERAL
+) {
 
     /**
      * default implementation

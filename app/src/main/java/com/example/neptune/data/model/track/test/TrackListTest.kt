@@ -1,8 +1,8 @@
-package com.example.neptune.model.track.test
+package com.example.neptune.data.model.track.test
 
-import com.example.neptune.model.track.src.Track
-import com.example.neptune.model.track.src.TrackList
-import com.example.neptune.model.track.src.VoteList
+import com.example.neptune.data.model.track.src.Track
+import com.example.neptune.data.model.track.src.TrackList
+import com.example.neptune.data.model.track.src.VoteList
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.sql.Timestamp
