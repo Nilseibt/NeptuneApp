@@ -2,6 +2,8 @@ package com.example.neptune.data.model.track.src
 
 class VoteList(tracks: MutableList<Track>) : PlayList(tracks) {
 
+    constructor():this(ArrayList<Track>()){}
+
     fun upvoteTrack(index: Int) {
         tracks[index].addUpvote()
     }

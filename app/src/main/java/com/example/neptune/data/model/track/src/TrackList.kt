@@ -1,6 +1,7 @@
 package com.example.neptune.data.model.track.src
 
 open class TrackList (val tracks: MutableList<Track>){
+    constructor():this(ArrayList<Track>()){}
 
     fun removeTrack(index: Int){
             tracks.removeAt(index)

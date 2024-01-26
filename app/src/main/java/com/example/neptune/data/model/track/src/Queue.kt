@@ -1,7 +1,7 @@
 package com.example.neptune.data.model.track.src
 
 class Queue( tracks : MutableList<Track>) : TrackList(tracks) {
-
+    constructor():this(ArrayList<Track>()){}
     fun moveTrackDown(index: Int){
         if (tracks.size > index -1){
             //swap with track below index position
