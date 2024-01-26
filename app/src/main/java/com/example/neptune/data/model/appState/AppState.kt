@@ -2,6 +2,7 @@ package com.example.neptune.data.model.appState
 
 import android.content.Context
 import android.net.wifi.WifiManager
+import com.example.neptune.NeptuneApp
 import com.example.neptune.data.model.session.SessionBuilder
 import com.example.neptune.data.model.streamingConnector.StreamingEstablisher
 import kotlinx.coroutines.GlobalScope
@@ -11,8 +12,7 @@ import java.security.MessageDigest
 class AppState(
     val streamingEstablisher: StreamingEstablisher,
     var sessionBuilder: SessionBuilder,
-    private val appDatabase: AppDatabase,
-    val context: Context
+    private val appDatabase: AppDatabase
 ) {
 
 
@@ -41,7 +41,7 @@ class AppState(
     }
 
     private fun generateDeviceId(): String {
-        val wifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        val wifiManager = NeptuneApp.context.getSystemService(Context.WIFI_SERVICE) as WifiManager
         val macAddress = wifiManager.connectionInfo.macAddress
         val randomAddition = (0..Int.MAX_VALUE).random().toString()
         return generateSHA256(macAddress + randomAddition)

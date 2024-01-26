@@ -3,6 +3,7 @@ package com.example.neptune.data.model
 import android.content.Context
 import androidx.room.Room
 import com.android.volley.toolbox.Volley
+import com.example.neptune.NeptuneApp
 import com.example.neptune.data.model.appState.AppDatabase
 import com.example.neptune.data.model.appState.AppState
 import com.example.neptune.data.model.session.SessionBuilder
@@ -14,13 +15,11 @@ import com.example.neptune.data.model.streamingConnector.spotifyConnector.Spotif
 import com.example.neptune.data.room.app.AppDataDatabase
 import com.example.neptune.data.room.streaming.StreamingConnectionDataDatabase
 
-class Model(
-    private val context: Context
-) {
+class Model() {
 
     private val appDataDatabase by lazy {
         Room.databaseBuilder(
-            context,
+            NeptuneApp.context,
             AppDataDatabase::class.java,
             "app_data.db"
         ).build()
@@ -31,7 +30,7 @@ class Model(
 
     private val streamingConnectionDataDatabase by lazy {
         Room.databaseBuilder(
-            context,
+            NeptuneApp.context,
             StreamingConnectionDataDatabase::class.java,
             "streaming_connection_data.db"
         ).build()
@@ -43,15 +42,14 @@ class Model(
 
 
     private val streamingConnectorVolleyQueue by lazy {
-        Volley.newRequestQueue(context)
+        Volley.newRequestQueue(NeptuneApp.context)
     }
 
 
     private val streamingEstablisher by lazy {
         SpotifyEstablisher(
             streamingConnectionDatabase,
-            streamingConnectorVolleyQueue,
-            context
+            streamingConnectorVolleyQueue
         )
     }
 
@@ -62,6 +60,6 @@ class Model(
     private var streamingConnector: StreamingConnector? = null
 
 
-    var appState = AppState(streamingEstablisher, sessionBuilder, appDatabase, context)
+    var appState = AppState(streamingEstablisher, sessionBuilder, appDatabase)
 
 }

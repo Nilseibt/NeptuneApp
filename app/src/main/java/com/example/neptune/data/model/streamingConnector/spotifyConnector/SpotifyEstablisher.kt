@@ -11,6 +11,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
+import com.example.neptune.NeptuneApp
 import com.example.neptune.R
 import com.example.neptune.data.model.streamingConnector.StreamingEstablisher
 import kotlinx.coroutines.GlobalScope
@@ -22,8 +23,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 
 class SpotifyEstablisher(
     private val spotifyConnectionDatabase: SpotifyConnectionDatabase,
-    private val volleyQueue: RequestQueue,
-    private val context: Context
+    private val volleyQueue: RequestQueue
 ) : StreamingEstablisher {
 
     private var accessToken = ""
@@ -54,7 +54,7 @@ class SpotifyEstablisher(
     }
 
     override fun initiateConnectWithAuthorize() {
-        val spotifyClientId = context.getString(R.string.spotify_client_id)
+        val spotifyClientId = NeptuneApp.context.getString(R.string.spotify_client_id)
         val url = "https://accounts.spotify.com/authorize?client_id=" +
                 spotifyClientId +
                 "&response_type=code&redirect_uri=" +
@@ -64,14 +64,14 @@ class SpotifyEstablisher(
         customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        customTabsIntent.launchUrl(context, Uri.parse(url))
+        customTabsIntent.launchUrl(NeptuneApp.context, Uri.parse(url))
     }
 
     @OptIn(ExperimentalEncodingApi::class)
     override fun finishConnectWithCode(code: String) {
 
-        val spotifyClientId = context.getString(R.string.spotify_client_id)
-        val spotifyClientSecret = context.getString(R.string.spotify_client_secret)
+        val spotifyClientId = NeptuneApp.context.getString(R.string.spotify_client_id)
+        val spotifyClientSecret = NeptuneApp.context.getString(R.string.spotify_client_secret)
         val toEncode = "$spotifyClientId:$spotifyClientSecret"
         val encodedCredentials = "Basic " + Base64.encode(toEncode.toByteArray())
         val url = "https://accounts.spotify.com/api/token"
@@ -160,8 +160,8 @@ class SpotifyEstablisher(
     @OptIn(ExperimentalEncodingApi::class)
     private fun connectWithRefreshToken() {
 
-        val spotifyClientId = context.getString(R.string.spotify_client_id)
-        val spotifyClientSecret = context.getString(R.string.spotify_client_secret)
+        val spotifyClientId = NeptuneApp.context.getString(R.string.spotify_client_id)
+        val spotifyClientSecret = NeptuneApp.context.getString(R.string.spotify_client_secret)
         val toEncode = "$spotifyClientId:$spotifyClientSecret"
         val encodedCredentials = "Basic " + Base64.encode(toEncode.toByteArray())
         val url = "https://accounts.spotify.com/api/token"
