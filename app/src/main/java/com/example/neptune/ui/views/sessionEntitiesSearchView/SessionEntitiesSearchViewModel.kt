@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.neptune.data.model.appState.AppState
@@ -15,7 +16,7 @@ class SessionEntitiesSearchViewModel(
 
     private var entitySearchInput by mutableStateOf("")
 
-    private var genresSearchList = mutableStateListOf<String>()
+    private var entitiesSearchList = mutableStateListOf<String>()
 
     fun getSearchInput(): String {
         return entitySearchInput
@@ -24,9 +25,12 @@ class SessionEntitiesSearchViewModel(
     fun onSearchInputChange(newInput: String) {
         entitySearchInput = newInput
         if (getSessionType() == SessionType.ARTIST) {
-            appState.streamingEstablisher.searchMatchingArtists(entitySearchInput)
+            appState.streamingEstablisher.searchMatchingArtists(entitySearchInput) {
+                artistSearchCallback(it)
+            }
         } else if (getSessionType() == SessionType.GENRE) {
-            genresSearchList = appState.sessionBuilder.searchMatchingGenres(entitySearchInput)
+            entitiesSearchList =
+                appState.sessionBuilder.searchMatchingGenres(entitySearchInput).toMutableStateList()
         }
     }
 
@@ -39,15 +43,16 @@ class SessionEntitiesSearchViewModel(
     }
 
     fun getEntitiesSearchList(): List<String> {
-        if (getSessionType() == SessionType.ARTIST) {
-            return appState.streamingEstablisher.getArtistSearchList()
-        } else {
-            return genresSearchList
-        }
+        return entitiesSearchList
     }
 
     fun onBack(navController: NavController) {
         navController.popBackStack()
+    }
+
+
+    private fun artistSearchCallback(artistList: List<String>) {
+        entitiesSearchList = artistList.toMutableStateList()
     }
 
 

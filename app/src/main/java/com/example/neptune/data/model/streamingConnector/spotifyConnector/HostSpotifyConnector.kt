@@ -8,8 +8,9 @@ import com.example.neptune.data.model.track.src.Track
 
 class HostSpotifyConnector(
     private val volleyQueue: RequestQueue,
-    private val authToken: String
-) : SpotifyConnector(volleyQueue, authToken), HostStreamingConnector {
+    private val authToken: String,
+    private val refreshToken: String
+) : SpotifyConnector(volleyQueue, authToken, refreshToken), HostStreamingConnector {
 
     override fun addTrackToQueue(track: Track) {
         //TODO

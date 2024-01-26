@@ -3,7 +3,9 @@ package com.example.neptune.data.model.session
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
+import com.example.neptune.data.model.track.src.PlayList
 import com.example.neptune.data.resources.GenreList
+import java.sql.Timestamp
 import kotlin.math.min
 
 class SessionBuilder {
@@ -50,22 +52,31 @@ class SessionBuilder {
     }
 
 
-    fun searchMatchingGenres(searchInput: String): SnapshotStateList<String> {
-        if(searchInput == ""){
-            return mutableStateListOf()
+    fun searchMatchingGenres(searchInput: String): List<String> {
+        if (searchInput == "") {
+            return listOf()
         }
         val matchingGenres = mutableListOf<String>()
         GenreList().getGenreList().forEach {
-            if(it.lowercase().contains(searchInput)){
+            if (it.lowercase().contains(searchInput)) {
                 matchingGenres.add(it)
             }
         }
         val sorter: (String) -> Int = { string -> string.length }
         matchingGenres.sortBy(sorter)
-        return matchingGenres.subList(0, min(matchingGenres.size, 20)).toMutableStateList()
+        return matchingGenres.subList(0, min(matchingGenres.size, 20))
     }
 
-    fun reset(){
+    fun createSession(sessionId: Int, sessionTimestamp: Int): Session {
+        return when(sessionType){
+            SessionType.GENERAL -> Session(sessionId, sessionTimestamp, trackCooldown)
+            SessionType.ARTIST, SessionType.GENRE -> ArtistSession(sessionId, sessionTimestamp, trackCooldown, selectedEntities)
+            SessionType.PLAYLIST -> PlaylistSession(sessionId, sessionTimestamp, trackCooldown, PlayList())
+            //TODO make an acutal playlist in the playlist session
+        }
+    }
+
+    fun reset() {
         sessionType = SessionType.GENERAL
         selectedEntities = mutableStateListOf()
         playlistLink = ""

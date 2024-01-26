@@ -6,7 +6,6 @@ import android.net.Uri
 import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.android.volley.Request
@@ -31,8 +30,6 @@ class SpotifyEstablisher(
     private var refreshToken = ""
 
     private var spotifyLevel = mutableStateOf(StreamingLevel.UNDETERMINED)
-
-    private var artistsSearchList = mutableStateListOf<String>()
 
     override suspend fun restoreConnectionIfPossible() {
         if (spotifyConnectionDatabase.hasLinkedEntry()) {
@@ -121,7 +118,7 @@ class SpotifyEstablisher(
         spotifyLevel.value = StreamingLevel.UNLINKED
     }
 
-    override fun searchMatchingArtists(searchInput: String) {
+    override fun searchMatchingArtists(searchInput: String, callback: (List<String>) -> Unit) {
 
         val baseUrl = "https://api.spotify.com/v1/search"
         val urlSearchQuery = URLEncoder.encode(searchInput, "UTF-8")
@@ -132,7 +129,7 @@ class SpotifyEstablisher(
             Request.Method.GET, url,
             { response ->
                 Log.i("RES", response.toString())
-                matchingArtistsCallback(JSONObject(response))
+                matchingArtistsCallback(JSONObject(response), callback)
             },
             { error ->
                 Log.e("VOLLEY", "Spotify Request Error: ${String(error.networkResponse.data)}")
@@ -145,10 +142,6 @@ class SpotifyEstablisher(
         }
 
         volleyQueue.add(stringRequest)
-    }
-
-    override fun getArtistSearchList(): SnapshotStateList<String> {
-        return artistsSearchList
     }
 
 
@@ -247,12 +240,13 @@ class SpotifyEstablisher(
         Log.i("DETERMINED LEVEL", spotifyLevel.toString())
     }
 
-    private fun matchingArtistsCallback(artistsJsonObject: JSONObject) {
-        artistsSearchList.clear()
+    private fun matchingArtistsCallback(artistsJsonObject: JSONObject, callback: (List<String>) -> Unit) {
+        val artistsSearchList = mutableListOf<String>()
         val artistList = artistsJsonObject.getJSONObject("artists").getJSONArray("items")
         for(index in 0 until artistList.length()){
             artistsSearchList.add(artistList.getJSONObject(index).getString("name"))
         }
+        callback(artistsSearchList)
     }
 
 

@@ -18,8 +18,6 @@ interface StreamingEstablisher {
 
     fun disconnect()
 
-    fun searchMatchingArtists(searchInput: String)
-
-    fun getArtistSearchList(): SnapshotStateList<String>
+    fun searchMatchingArtists(searchInput: String, callback: (List<String>) -> Unit)
 
 }

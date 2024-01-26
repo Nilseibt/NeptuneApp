@@ -26,4 +26,8 @@ open class TrackList (val tracks: MutableList<Track>){
         return tracks.isEmpty()
     }
 
+    fun clear(){
+        tracks.clear()
+    }
+
 }
