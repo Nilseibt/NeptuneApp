@@ -31,4 +31,16 @@ class Track(
         }
         return artistNames.substring(0, artistNames.length - 2)
     }
+
+    override fun toString(): String {
+        return "Id:        $id\n" +
+                "name:     $name\n" +
+                "artists   $artists\n"+
+                "genres    $genres\n"+
+                "imageUrl  $imageUrl\n"+
+                "timestamp $timestamp\n"+
+                "upvotes   $upvotes\n"+
+                "isUpvoted $isUpvoted\n"+
+                "isBlocked $isBlocked"
+    }
 }

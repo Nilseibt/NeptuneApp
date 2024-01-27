@@ -5,7 +5,7 @@ open class PlayList(tracks: MutableList<Track>): TrackList(tracks) {
     fun search(input :String): MutableList<Track> {
         val output =  ArrayList<Track>()
         for( track in tracks){
-            if(track.name.contains(input)){
+            if(track.name.contains(input,ignoreCase = true)){
                 output.add(track)
             }
         }

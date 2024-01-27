@@ -30,4 +30,16 @@ open class TrackList (val tracks: MutableList<Track>){
         tracks.clear()
     }
 
+    override fun toString(): String {
+        val output= StringBuilder()
+
+        output.append("length: ${tracks.size}\n")
+        for(track in tracks){
+            output.append(track.toString())
+            output.append("\n")
+        }
+        output.append("\n\n")
+        return output.toString()
+    }
+
 }
