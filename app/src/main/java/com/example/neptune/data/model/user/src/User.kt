@@ -6,9 +6,9 @@ import com.example.neptune.data.model.track.src.TrackList
 import com.example.neptune.data.model.track.src.VoteList
 
 open class User(val session: Session){
-    private val voteList: VoteList = VoteList()
-    private val blackList: TrackList = TrackList()
-    private val cooldownList: TrackList = TrackList()
+     var voteList: VoteList = VoteList()
+     var blockList: TrackList = TrackList()
+     var cooldownList: TrackList = TrackList()
 
 
     fun addTrackToVoteList(track : Track){
@@ -26,7 +26,7 @@ open class User(val session: Session){
     protected fun filterSearchResults(searchResult: MutableList<Track>): MutableList<Track>{
         val output: MutableList<Track> = ArrayList<Track>()
         for (track in searchResult){
-            if (!blackList.containsTrack(track)&& !cooldownList.containsTrack(track)&&
+            if (!blockList.containsTrack(track)&& !cooldownList.containsTrack(track)&&
                 session.validateTrack(track)){
                 output.add(track)
             }
