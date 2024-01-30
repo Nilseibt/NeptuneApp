@@ -12,7 +12,6 @@ class ParticipantBackendConnector(
 ) : BackendConnector(deviceId, volleyQueue) {
 
 
-
     fun participantJoinSession(sessionId: Int) {
         val url = baseUrl + "participantJoinSession"
         val postData = JSONObject()
@@ -21,10 +20,10 @@ class ParticipantBackendConnector(
 
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.POST, url, postData,
-            {response ->
+            { response ->
                 Log.i("JSON JOIN", response.toString())
             },
-            {error ->
+            { error ->
                 Log.e("VOLLEY", "Server Request Error: ${error.localizedMessage}")
             })
 
@@ -39,13 +38,14 @@ class ParticipantBackendConnector(
 
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.POST, url, postData,
-            {response ->
+            { response ->
                 Log.i("JSON LEAVE", response.toString())
             },
-            {error ->
+            { error ->
                 Log.e("VOLLEY", "Server Request Error: ${error.localizedMessage}")
             })
 
         volleyQueue.add(jsonObjectRequest)
     }
+
 }

@@ -9,6 +9,7 @@ import com.example.neptune.R
 import com.example.neptune.data.model.track.src.Track
 import org.json.JSONArray
 import org.json.JSONObject
+import java.sql.Timestamp
 
 abstract class BackendConnector(
     private val deviceId: String,
@@ -18,60 +19,66 @@ abstract class BackendConnector(
     protected val baseUrl = NeptuneApp.context.getString(R.string.backend_url)
 
 
-    fun getUserSessionState(callback: (String) -> Unit) {
-        val url = baseUrl + "getUserSessionState"
+    fun getUserSessionState(callback: (userSessionState: String) -> Unit) {
         val postData = JSONObject()
         postData.put("deviceID", deviceId)
+        sendRequest("getUserSessionState", postData) { jsonResponse ->
+            callbackUserSessionState(jsonResponse, callback)
+        }
+    }
 
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.POST, url, postData,
-            {response ->
-                Log.i("JSON STATE", response.toString())
-                val userSessionState: String = response.getString("userSessionState")
-                callback(userSessionState)
-            },
-            {error ->
-                Log.e("VOLLEY", "Server Request Error: ${error.localizedMessage}")
-            })
-
-        volleyQueue.add(jsonObjectRequest)
+    private fun callbackUserSessionState(
+        jsonResponse: JSONObject,
+        callback: (userSessionState: String) -> Unit
+    ) {
+        val userSessionState = jsonResponse.getString("userSessionState")
+        callback(userSessionState)
     }
 
 
-    fun getAllTrackData(callback: (List<Track>) -> Unit) {
-        //TODO does not work yet
-        return
-        /*val url = baseUrl + "getAllTrackData"
+
+    fun getAllTrackData(callback: (listOfTracks: List<Track>) -> Unit) {
         val postData = JSONObject()
         postData.put("deviceID", deviceId)
+        sendRequest("getAllTrackData", postData) { jsonResponse ->
+            callbackAllTrackData(jsonResponse, callback)
+        }
+    }
 
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.POST, url, postData,
-            {response ->
-                Log.i("JSON TRACKS", response.toString())
-                val tracks = mutableListOf<Track>()
-                if(response.get("tracks").toString() != "null") {
-                    val jsonTracksArray = response.getJSONArray("tracks")
-                    for (trackIndex in 0 until jsonTracksArray.length()) {
-                        val currentJsonTrack = jsonTracksArray.getJSONObject(trackIndex)
-                        val trackId = currentJsonTrack.getString("trackID")
-                        val trackName = currentJsonTrack.getString("trackName")
-                        val imageUrl = currentJsonTrack.getString("imageURL")
-                        val genres = mutableListOf("placeholder")
-                        val artists = mutableListOf("placeholder")
-                        val upvotes = currentJsonTrack.getInt("upvotes")
-                        val trackToAdd = Track(trackId, trackName, imageUrl, genres, artists)
-                        trackToAdd.upvoteCount = upvotes
-                        tracks.add(trackToAdd)
-                    }
-                }
-                callback(tracks)
-            },
-            {error ->
-                Log.e("VOLLEY", "Server Request Error: ${error.localizedMessage}")
-            })
+    private fun callbackAllTrackData(
+        jsonResponse: JSONObject,
+        callback: (listOfTracks: List<Track>) -> Unit
+    ) {
+        val listOfTracks = mutableListOf<Track>()
+        if (jsonResponse.get("tracks").toString() != "null") {
+            val jsonTracksArray = jsonResponse.getJSONArray("tracks")
+            for (trackIndex in 0 until jsonTracksArray.length()) {
+                val currentJsonTrack = jsonTracksArray.getJSONObject(trackIndex)
+                val trackId = currentJsonTrack.getString("trackID")
+                val trackName = currentJsonTrack.getString("trackName")
+                val imageUrl = currentJsonTrack.getString("imageURL")
+                val genres = mutableListOf("placeholder")
+                val artists = mutableListOf("placeholder")
+                val upvotes = currentJsonTrack.getInt("upvotes")
+                // TODO Problems: Timestamp, and parameter names of isUpvoted and hasCooldown might be different
+                val isUpvoted = currentJsonTrack.getBoolean("isUpvoted")
+                val hasCooldown = currentJsonTrack.getBoolean("hasCooldown")
 
-        volleyQueue.add(jsonObjectRequest)*/
+                val trackToAdd = Track(
+                    trackId,
+                    trackName,
+                    artists,
+                    genres,
+                    imageUrl,
+                    Timestamp(0),
+                    upvotes,
+                    isUpvoted,
+                    hasCooldown
+                )
+                listOfTracks.add(trackToAdd)
+            }
+        }
+        callback(listOfTracks)
     }
 
 
@@ -154,6 +161,25 @@ abstract class BackendConnector(
 
     suspend fun getLockedTracks() {
         //TODO needs implementation
+    }
+
+
+    protected fun sendRequest(
+        urlPath: String,
+        postData: JSONObject,
+        callback: (jsonResponse: JSONObject) -> Unit = {}
+    ) {
+        val url = baseUrl + urlPath
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.POST, url, postData,
+            { response ->
+                Log.i("BACKEND JSON", "$urlPath $response")
+                callback(response)
+            },
+            { error ->
+                Log.e("BACKEND VOLLEY", "Backend Server Request Error: ${error.localizedMessage}")
+            })
+        volleyQueue.add(jsonObjectRequest)
     }
 
 

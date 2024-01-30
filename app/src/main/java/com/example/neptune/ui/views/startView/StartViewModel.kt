@@ -1,12 +1,16 @@
 package com.example.neptune.ui.views.startView
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.android.volley.toolbox.Volley
+import com.example.neptune.NeptuneApp
 import com.example.neptune.data.model.appState.AppState
+import com.example.neptune.data.model.backendConnector.ParticipantBackendConnector
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.StreamingLevel
 import com.example.neptune.ui.views.ViewsCollection
 
