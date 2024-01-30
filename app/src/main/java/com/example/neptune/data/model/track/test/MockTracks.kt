@@ -15,17 +15,14 @@ import java.sql.Timestamp
     val name1 = "Baum"
     val artists1 = listOf("alligatoah","kiz")
     val genres1 = listOf("irgendwas", "mit Rap")
-    val timeStamp1 = Timestamp(123542453434)
     val imageUrl1 = "https:randomadress"
     val upvote1= 1
-    var track1 = Track(trackId1,name1, artists1,genres1,imageUrl1,
-        timeStamp1,upvote1,false, false)
+    var track1 = Track(trackId1,name1, artists1,genres1,imageUrl1,upvote1,false, false)
 
-    var track2 = Track("2","Bier",artists1,genres1,imageUrl1,timeStamp1,
+    var track2 = Track("2","Bier",artists1,genres1,imageUrl1,
         5,false, false)
-    var track3 = Track("3","Bär", artists1,genres1,imageUrl1,
-        timeStamp1,9,false, false)
-    var track4 = Track("4","hello",artists1,genres1,imageUrl1,timeStamp1,
+    var track3 = Track("3","Bär", artists1,genres1,imageUrl1,9,false, false)
+    var track4 = Track("4","hello",artists1,genres1,imageUrl1,
         2,false, false)
     var trackList = TrackList(mutableListOf(track1,track2, track3,track4))
     val voteList = VoteList(mutableListOf(track1,track2,track3,track4))

@@ -70,7 +70,6 @@ abstract class BackendConnector(
                     artists,
                     genres,
                     imageUrl,
-                    Timestamp(0),
                     upvotes,
                     isUpvoted,
                     hasCooldown
@@ -82,38 +81,26 @@ abstract class BackendConnector(
     }
 
 
-    suspend fun getStatistics() {
+    fun getStatistics() {
         //TODO needs implementation
     }
 
 
-    suspend fun isSessionOpen() {
+    fun isSessionOpen() {
         //TODO needs implementation
     }
 
 
     fun addTrackToSession(track: Track) {
-        //TODO does not work yet
-        return
-        /*val url = baseUrl + "addTrackToSession"
         val postData = JSONObject()
         postData.put("deviceID", deviceId)
-        postData.put("trackID", track.spotifyId)
-        postData.put("trackName", track.trackName)
+        postData.put("trackID", track.id)
+        postData.put("trackName", track.name)
         postData.put("artist", JSONArray().put("placeholder"))
         postData.put("genre", JSONArray())
         postData.put("imageURL", track.imageUrl)
 
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.POST, url, postData,
-            {response ->
-                Log.i("JSON ADD", response.toString())
-            },
-            {error ->
-                Log.e("VOLLEY", "Server Request Error: ${error.localizedMessage}")
-            })
-
-        volleyQueue.add(jsonObjectRequest)*/
+        sendRequest("addTrackToSession", postData)
     }
 
 
