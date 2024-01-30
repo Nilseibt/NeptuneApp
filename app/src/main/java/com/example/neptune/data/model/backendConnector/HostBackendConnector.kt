@@ -4,7 +4,6 @@ import android.util.Log
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
-import org.json.JSONArray
 import org.json.JSONObject
 
 class HostBackendConnector(
