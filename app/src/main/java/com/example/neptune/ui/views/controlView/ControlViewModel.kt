@@ -7,10 +7,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.neptune.data.model.backendConnector.HostBackendConnector
 import com.example.neptune.data.model.track.src.Track
+import com.example.neptune.data.model.user.src.Host
 import com.example.neptune.ui.views.ViewsCollection
 
-class ControlViewModel() : ViewModel() {
+class ControlViewModel(
+    val host: Host
+) : ViewModel() {
 
     private var deleteSessionDialogShown by mutableStateOf(false)
 
@@ -126,6 +130,7 @@ class ControlViewModel() : ViewModel() {
     fun onConfirmDeleteSession(navController: NavController) {
         //TODO
         deleteSessionDialogShown = false
+        (host.backendConnector as HostBackendConnector).deleteSession()
         navController.popBackStack(
             ViewsCollection.START_VIEW.name,
             inclusive = false,

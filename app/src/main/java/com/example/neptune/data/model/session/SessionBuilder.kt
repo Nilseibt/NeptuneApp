@@ -43,6 +43,10 @@ class SessionBuilder {
         return selectedEntities
     }
 
+    fun setSelectedEntities(selectedEntities: List<String>) {
+        this.selectedEntities = selectedEntities.toMutableStateList()
+    }
+
     fun setPlaylistLink(playlistLink: String) {
         this.playlistLink = playlistLink
     }

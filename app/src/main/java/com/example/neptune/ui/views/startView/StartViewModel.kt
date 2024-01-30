@@ -13,13 +13,30 @@ import com.example.neptune.data.model.appState.AppState
 import com.example.neptune.data.model.backendConnector.ParticipantBackendConnector
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.StreamingLevel
 import com.example.neptune.ui.views.ViewsCollection
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class StartViewModel(
-    val appState: AppState
+    val appState: AppState,
+    val navController: NavController
 ) : ViewModel() {
 
 
     private var leaveDialogShown by mutableStateOf(false)
+
+
+    init {
+        GlobalScope.launch {
+            appState.streamingEstablisher.restoreConnectionIfPossible()
+        }
+        GlobalScope.launch {
+            appState.generateOrRetrieveDeviceId()
+            NeptuneApp.model.recreateUserSessionStateInitially { userSessionState ->
+                navigateAccordingToUserSessionState(userSessionState, navController)
+            }
+        }
+    }
+
 
     fun createSessionPossible(): Boolean {
         return getStreamingLevel().value == StreamingLevel.PREMIUM
@@ -69,6 +86,18 @@ class StartViewModel(
 
     private fun getStreamingLevel(): MutableState<StreamingLevel> {
         return appState.streamingEstablisher.getStreamingLevel()
+    }
+
+    private fun navigateAccordingToUserSessionState(
+        userSessionState: String,
+        navController: NavController
+    ) {
+        if (userSessionState == "HOST") {
+            navController.navigate(ViewsCollection.CONTROL_VIEW.name)
+        }
+        if (userSessionState == "PARTICIPANT") {
+            navController.navigate(ViewsCollection.VOTE_VIEW.name)
+        }
     }
 
 }

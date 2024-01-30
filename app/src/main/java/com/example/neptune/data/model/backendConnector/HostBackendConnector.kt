@@ -27,7 +27,7 @@ class HostBackendConnector(
         postData.put("cooldownTimer", cooldownTimer)
         postData.put("artists", JSONArray(artists))
         postData.put("genres", JSONArray(genres))
-        postData.put("playlist", null)
+        postData.put("playlist", "")
 
         sendRequest("createNewSession", postData) { jsonResponse ->
             callbackCreateNewSession(jsonResponse, callback)
