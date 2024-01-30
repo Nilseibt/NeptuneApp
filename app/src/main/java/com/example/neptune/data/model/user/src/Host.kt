@@ -10,11 +10,17 @@ class Host(session: Session,hostBackendConnector: HostBackendConnector,hostSpoti
     FullParticipant(session,hostBackendConnector,hostSpotifyConnector){
         val queue = Queue()
     fun addTrackToQueue(index:Int){
-        var track = voteList.trackAt(index)
+        val track = voteList.trackAt(index)
         queue.addTrack(track)
     }
     fun removeTrackFromQueue(index:Int){
         queue.removeTrack(index)
+    }
+    fun moveTrackUpInQueue(index:Int){
+        queue.moveTrackUp(index)
+    }
+    fun removeTrackDownInQueue(index: Int){
+        queue.moveTrackDown(index)
     }
 
 
