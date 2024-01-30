@@ -16,6 +16,10 @@ class HostSpotifyConnector(
         //TODO
     }
 
+    override fun skipTrack() {
+        //TODO
+    }
+
     override fun isQueueEmpty(): Boolean {
         //TODO
         return true

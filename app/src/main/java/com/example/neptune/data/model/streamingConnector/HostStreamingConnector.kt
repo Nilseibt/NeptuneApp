@@ -11,6 +11,11 @@ interface HostStreamingConnector : StreamingConnector {
 
     fun stopPlay()
 
+    /**
+     * skips the currently playing track
+     */
+    fun skipTrack()
+
     fun resumePlay()
 
     fun setPlayProgress(percentage: Int)
