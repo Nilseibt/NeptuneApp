@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.neptune.NeptuneApp
+import com.example.neptune.ui.NeptuneNavGraph
 import com.example.neptune.ui.views.ViewsCollection
 
 class JoinViewModel() : ViewModel() {
@@ -20,14 +22,13 @@ class JoinViewModel() : ViewModel() {
     }
 
     fun onCodeInputChange(newInput: String) {
-        if (newInput.length <= 6) {
+        if (newInput.length <= 6 && newInput.toIntOrNull()?.let { true } == true) {
             sessionCodeInput = newInput
         }
     }
 
     fun onConfirmSessionCode(navController: NavController) {
-        //TODO
-        navController.navigate(ViewsCollection.VOTE_VIEW.name)
+        NeptuneApp.model.tryToJoinSession(sessionCodeInput.toInt(), navController)
     }
 
     fun onScanQrCode() {

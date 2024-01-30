@@ -32,6 +32,7 @@ class Host(
     fun removeTrackDownInQueue(index: Int) {
         queue.moveTrackDown(index)
     }
+    fun syncState(){
 
     override fun syncState() {
         super.syncState()

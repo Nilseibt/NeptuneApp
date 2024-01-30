@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.neptune.NeptuneApp
+import com.example.neptune.data.model.user.src.Host
 import com.example.neptune.ui.commons.TrackListComposable
 import com.example.neptune.ui.commons.TrackListType
 import com.example.neptune.ui.views.util.viewModelFactory
@@ -22,7 +24,7 @@ fun ControlView(navController: NavController) {
     val controlViewModel = viewModel<ControlViewModel>(
         factory = viewModelFactory {
             ControlViewModel(
-                //NeptuneApp.???
+                NeptuneApp.model.user as Host
             )
         }
     )

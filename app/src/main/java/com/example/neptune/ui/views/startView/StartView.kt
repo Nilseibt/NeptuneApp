@@ -25,7 +25,8 @@ fun StartView(navController: NavController) {
     val startViewModel = viewModel<StartViewModel>(
         factory = viewModelFactory {
             StartViewModel(
-                NeptuneApp.model.appState
+                NeptuneApp.model.appState,
+                navController
             )
         }
     )

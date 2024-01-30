@@ -18,20 +18,13 @@ class AppState(
 
     private var deviceId = ""
 
-    init {
-        GlobalScope.launch {
-            streamingEstablisher.restoreConnectionIfPossible()
-        }
-        GlobalScope.launch {
-            generateOrRetrieveDeviceId()
-        }
+
+    fun getDeviceId(): String{
+        return deviceId
     }
 
 
-
-
-
-    private suspend fun generateOrRetrieveDeviceId() {
+    suspend fun generateOrRetrieveDeviceId() {
         if (appDatabase.hasDeviceId()) {
             deviceId = appDatabase.getDeviceId()
         } else {

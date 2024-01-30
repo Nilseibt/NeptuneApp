@@ -11,7 +11,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.sql.Timestamp
 
-abstract class BackendConnector(
+open class BackendConnector(
     private val deviceId: String,
     private val volleyQueue: RequestQueue
 ) {
@@ -19,7 +19,13 @@ abstract class BackendConnector(
     protected val baseUrl = NeptuneApp.context.getString(R.string.backend_url)
 
 
-    fun getUserSessionState(callback: (userSessionState: String) -> Unit) {
+    fun getUserSessionState(
+        callback: (
+            userSessionState: String, sessionId: Int,
+            timestamp: Int, mode: String, artists: List<String>,
+            genres: List<String>
+        ) -> Unit
+    ) {
         val postData = JSONObject()
         postData.put("deviceID", deviceId)
 
@@ -30,10 +36,33 @@ abstract class BackendConnector(
 
     private fun callbackUserSessionState(
         jsonResponse: JSONObject,
-        callback: (userSessionState: String) -> Unit
+        callback: (
+            userSessionState: String, sessionId: Int, timestamp: Int, mode: String,
+            artists: List<String>, genres: List<String>
+        ) -> Unit
     ) {
         val userSessionState = jsonResponse.getString("userSessionState")
-        callback(userSessionState)
+        if (userSessionState != "NONE") {
+            val sessionId = jsonResponse.getInt("sessionID")
+            val timestamp = jsonResponse.getInt("timestamp")
+            val mode = jsonResponse.getString("modus")
+            val artists = mutableListOf<String>()
+            if (jsonResponse.get("artists").toString() != "null") {
+                val jsonArtistsArray = jsonResponse.getJSONArray("artists")
+                for (artistIndex in 0 until jsonArtistsArray.length()) {
+                    artists.add(jsonArtistsArray.getString(artistIndex))
+                }
+            }
+            val genres = mutableListOf<String>()
+            if (jsonResponse.get("genres").toString() != "null") {
+                val jsonGenresArray = jsonResponse.getJSONArray("genres")
+                for (genreIndex in 0 until jsonGenresArray.length()) {
+                    artists.add(jsonGenresArray.getString(genreIndex))
+                }
+            }
+            callback(userSessionState, sessionId, timestamp, mode, artists, genres)
+        }
+        callback(userSessionState, -1, -1, "", listOf(), listOf())
     }
 
 
@@ -184,11 +213,10 @@ abstract class BackendConnector(
                 callback(response)
             },
             { error ->
-                Log.e("BACKEND VOLLEY", "Backend Server Request Error: ${error.localizedMessage}")
+                Log.e("BACKEND VOLLEY", "$urlPath : Backend Server Request Error: ${error.localizedMessage}")
             })
         volleyQueue.add(jsonObjectRequest)
     }
-
 
 
 }

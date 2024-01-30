@@ -7,10 +7,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.neptune.data.model.backendConnector.HostBackendConnector
+import com.example.neptune.data.model.backendConnector.ParticipantBackendConnector
 import com.example.neptune.data.model.track.src.Track
+import com.example.neptune.data.model.user.src.User
 import com.example.neptune.ui.views.ViewsCollection
 
-class VoteViewModel() : ViewModel() {
+class VoteViewModel(
+    val participant: User
+) : ViewModel() {
 
     private var leaveSessionDialogShown by mutableStateOf(false)
 
@@ -61,8 +66,8 @@ class VoteViewModel() : ViewModel() {
 
 
     fun onConfirmLeaveSession(navController: NavController) {
-        //TODO
         leaveSessionDialogShown = false
+        (participant.backendConnector as ParticipantBackendConnector).participantLeaveSession()
         navController.popBackStack(
             ViewsCollection.START_VIEW.name,
             inclusive = false,
