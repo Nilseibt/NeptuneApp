@@ -1,11 +1,12 @@
 package com.example.neptune.data.model.user.src
 
+import com.example.neptune.data.model.backendConnector.BackendConnector
 import com.example.neptune.data.model.session.Session
 import com.example.neptune.data.model.track.src.Track
 import com.example.neptune.data.model.track.src.TrackList
 import com.example.neptune.data.model.track.src.VoteList
 
-open class User(val session: Session){
+open class User(val session: Session,val backendConnector: BackendConnector){
      var voteList: VoteList = VoteList()
      var blockList: TrackList = TrackList()
      var cooldownList: TrackList = TrackList()
