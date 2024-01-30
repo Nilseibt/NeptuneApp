@@ -22,6 +22,7 @@ abstract class BackendConnector(
     fun getUserSessionState(callback: (userSessionState: String) -> Unit) {
         val postData = JSONObject()
         postData.put("deviceID", deviceId)
+
         sendRequest("getUserSessionState", postData) { jsonResponse ->
             callbackUserSessionState(jsonResponse, callback)
         }
@@ -36,10 +37,10 @@ abstract class BackendConnector(
     }
 
 
-
     fun getAllTrackData(callback: (listOfTracks: List<Track>) -> Unit) {
         val postData = JSONObject()
         postData.put("deviceID", deviceId)
+
         sendRequest("getAllTrackData", postData) { jsonResponse ->
             callbackAllTrackData(jsonResponse, callback)
         }
@@ -81,13 +82,46 @@ abstract class BackendConnector(
     }
 
 
+    fun getStatistics(
+        callback: (
+            mostUpvotedSong: String,
+            mostUpvotedGenre: String,
+            mostUpvotedArtist: String,
+            totalPlayedTracks: Int,
+            sessionDuration: String,
+            totalParticipants: Int,
+            totalUpvotes: Int
+        ) -> Unit
+    ) {
+        val postData = JSONObject()
+        postData.put("deviceID", deviceId)
 
-
-    fun getStatistics() {
-        //TODO needs implementation
+        sendRequest("getStatistics", postData) { jsonResponse ->
+            callbackStatistics(jsonResponse, callback)
+        }
     }
 
-
+    private fun callbackStatistics(
+        jsonResponse: JSONObject, callback: (
+            mostUpvotedSong: String,
+            mostUpvotedGenre: String,
+            mostUpvotedArtist: String,
+            totalPlayedTracks: Int,
+            sessionDuration: String,
+            totalParticipants: Int,
+            totalUpvotes: Int
+        ) -> Unit
+    ) {
+        callback(
+            jsonResponse.getString("mostUpvotedSong"),
+            jsonResponse.getString("mostUpvotedGenre"),
+            jsonResponse.getString("mostUpvotedArtist"),
+            jsonResponse.getInt("totalPlayedTracks"),
+            jsonResponse.getString("sessionDuration"),
+            jsonResponse.getInt("totalParticipants"),
+            jsonResponse.getInt("totalUpvotes")
+        )
+    }
 
 
     fun isSessionOpen(sessionId: Int, sessionTimestamp: Int, callback: (isOpen: Boolean) -> Unit) {
@@ -95,17 +129,15 @@ abstract class BackendConnector(
         postData.put("sessionID", sessionId)
         postData.put("timestamp", sessionTimestamp)
 
-        sendRequest("isSessionOpen", postData){ jsonResponse ->
+        sendRequest("isSessionOpen", postData) { jsonResponse ->
             callbackSessionOpen(jsonResponse, callback)
         }
     }
 
-    private fun callbackSessionOpen(jsonResponse: JSONObject, callback: (isOpen: Boolean) -> Unit){
+    private fun callbackSessionOpen(jsonResponse: JSONObject, callback: (isOpen: Boolean) -> Unit) {
         val isOpen = jsonResponse.getBoolean("isOpen")
         callback(isOpen)
     }
-
-
 
 
     fun addTrackToSession(track: Track) {
@@ -121,7 +153,6 @@ abstract class BackendConnector(
     }
 
 
-
     fun addUpvoteToTrack(track: Track) {
         val postData = JSONObject()
         postData.put("deviceID", deviceId)
@@ -131,7 +162,6 @@ abstract class BackendConnector(
     }
 
 
-
     fun removeUpvoteFromTrack(track: Track) {
         val postData = JSONObject()
         postData.put("deviceID", deviceId)
@@ -139,7 +169,6 @@ abstract class BackendConnector(
 
         sendRequest("removeUpvoteFromTrack", postData)
     }
-
 
 
     protected fun sendRequest(

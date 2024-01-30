@@ -44,6 +44,8 @@ class HostBackendConnector(
     }
 
 
+
+
     fun deleteSession() {
         val postData = JSONObject()
         postData.put("hostDeviceID", deviceId)
