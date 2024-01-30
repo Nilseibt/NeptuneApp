@@ -4,6 +4,8 @@ import android.util.Log
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
+import com.example.neptune.data.model.track.src.Track
+import org.json.JSONArray
 import org.json.JSONObject
 
 class HostBackendConnector(
@@ -12,58 +14,60 @@ class HostBackendConnector(
 ) : BackendConnector(deviceId, volleyQueue) {
 
 
-    fun createNewSession(callback: (sessionId: Int, timestamp: Int) -> Unit) {
-        //TODO does not work yet
-        return
-        /*val url = baseUrl + "createNewSession"
+    fun createNewSession(
+        mode: String,
+        cooldownTimer: Int,
+        artists: List<String>,
+        genres: List<String>,
+        callback: (sessionId: Int, timestamp: Int) -> Unit
+    ) {
         val postData = JSONObject()
         postData.put("hostDeviceID", deviceId)
-        postData.put("modus", "General")
-        postData.put("cooldownTimer", 0)
-        postData.put("artists", JSONArray())
-        postData.put("genres", JSONArray())
-        postData.put("playlist", "")
+        postData.put("modus", mode)
+        postData.put("cooldownTimer", cooldownTimer)
+        postData.put("artists", JSONArray(artists))
+        postData.put("genres", JSONArray(genres))
+        postData.put("playlist", null)
 
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.POST, url, postData,
-            { response ->
-                Log.i("JSON CREATE", response.toString())
-                val sessionId = response.getInt("sessionID")
-                val timestamp = response.getInt("timestamp")
-                callback(sessionId, timestamp)
-            },
-            { error ->
-                Log.e("VOLLEY", "Server Request Error: ${error.message}")
-            })
+        sendRequest("createNewSession", postData) { jsonResponse ->
+            callbackCreateNewSession(jsonResponse, callback)
+        }
+    }
 
-        volleyQueue.add(jsonObjectRequest)*/
+    private fun callbackCreateNewSession(
+        jsonResponse: JSONObject,
+        callback: (sessionId: Int, timestamp: Int) -> Unit
+    ) {
+        val sessionId = jsonResponse.getInt("sessionID")
+        val timestamp = jsonResponse.getInt("timestamp")
+        callback(sessionId, timestamp)
     }
 
 
     fun deleteSession() {
-        val url = baseUrl + "deleteSession"
         val postData = JSONObject()
         postData.put("hostDeviceID", deviceId)
 
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.POST, url, postData,
-            { response ->
-                Log.i("JSON DEL", response.toString()) },
-            { error ->
-                Log.e("VOLLEY", "Server Request Error: ${error.localizedMessage}")
-            })
-
-        volleyQueue.add(jsonObjectRequest)
+        sendRequest("deleteSession", postData)
     }
 
 
-    suspend fun playedTrack() {
-        //TODO needs implementation
+    fun playedTrack(track: Track) {
+        val postData = JSONObject()
+        postData.put("hostDeviceID", deviceId)
+        postData.put("trackID", track.id)
+
+        sendRequest("playedTrack", postData)
     }
 
 
-    suspend fun setBlockTrack() {
-        //TODO needs implementation
+    fun setBlockTrack(track: Track, blocked: Boolean) {
+        val postData = JSONObject()
+        postData.put("hostDeviceID", deviceId)
+        postData.put("trackID", track.id)
+        postData.put("blocked", blocked)
+
+        sendRequest("setBlockTrack", postData)
     }
 
 }
