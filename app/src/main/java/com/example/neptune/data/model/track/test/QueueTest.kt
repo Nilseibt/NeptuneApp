@@ -5,6 +5,7 @@ import com.example.neptune.data.model.track.src.Track
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.sql.Array
 
 
 class QueueTest {
@@ -17,6 +18,8 @@ class QueueTest {
 
     @Test fun moveTrackUp(){
         queue.moveTrackUp(1)
-        assertArrayEquals(arrayOf( queue.tracks), arrayOf(track2,track1,track3,track4))
+        assertArrayEquals(arrayOf(track2,track1,track3,track4), queue.tracks.toTypedArray())
+        queue.moveTrackDown(0)
+        assertArrayEquals(arrayOf(track2,track1,track3,track4), queue.tracks.toTypedArray())
     }
 }

@@ -4,7 +4,7 @@ open class TrackList (val tracks: MutableList<Track>){
     constructor():this(ArrayList<Track>()){}
 
     fun removeTrack(index: Int){
-            tracks.removeAt(index)
+        tracks.removeAt(index)
     }
     fun addTrack(track: Track){
         tracks.add(track)
