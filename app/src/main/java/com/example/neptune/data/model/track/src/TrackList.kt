@@ -6,6 +6,14 @@ open class TrackList (val tracks: MutableList<Track>){
     fun removeTrack(index: Int){
         tracks.removeAt(index)
     }
+    fun removeTrack(track: Track){
+        for (index in tracks.indices){
+            if(tracks[index].id == track.id){
+                tracks.removeAt(index)
+                break
+            }
+        }
+    }
     fun addTrack(track: Track){
         tracks.add(track)
     }

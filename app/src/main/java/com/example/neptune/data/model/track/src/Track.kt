@@ -11,7 +11,8 @@ class Track(
     val imageUrl: String,
     var upvotes: Int,
     var isUpvoted: Boolean,
-    var isBlocked: Boolean
+    var isBlocked: Boolean = false,
+    var hasCooldown:Boolean = false
 ) {
     fun addUpvote() {
         upvotes += 1

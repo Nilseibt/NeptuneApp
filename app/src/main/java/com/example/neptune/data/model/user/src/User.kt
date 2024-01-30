@@ -1,6 +1,7 @@
 package com.example.neptune.data.model.user.src
 
 import com.example.neptune.data.model.backendConnector.BackendConnector
+import com.example.neptune.data.model.backendConnector.ParticipantBackendConnector
 import com.example.neptune.data.model.session.Session
 import com.example.neptune.data.model.track.src.Track
 import com.example.neptune.data.model.track.src.TrackList
@@ -14,10 +15,16 @@ open class User(val session: Session,val backendConnector: BackendConnector){
 
     fun addTrackToVoteList(track : Track){
         voteList.addTrack(track)
+        backendConnector.addTrackToSession(track)
     }
 
     fun upvoteTrack(index: Int){
         voteList.upvoteTrack(index)
+        backendConnector.addUpvoteToTrack(voteList.trackAt(index))
+    }
+    fun removeUpvoteFromTrack(index: Int){
+        voteList.removeUpvoteFromTrack(index)
+        backendConnector.removeUpvoteFromTrack(voteList.trackAt(index))
     }
     open fun search(input: String): TrackList {
         var foundTracks = voteList.search(input)
@@ -36,7 +43,29 @@ open class User(val session: Session,val backendConnector: BackendConnector){
 
     }
     open fun leaveSession(){
-
+        val particantBackendConnector = backendConnector as ParticipantBackendConnector
+        particantBackendConnector.participantLeaveSession()
+    }
+    open fun syncState(){
+        val cooldownListBuilder = mutableListOf<Track>()
+        val blockListBuilder = mutableListOf<Track>()
+        val voteListBuilder = mutableListOf<Track>()
+        backendConnector.getAllTrackData {
+            for(track in it){
+                if (track.isBlocked){
+                    blockListBuilder.add(track)
+                }
+                if(track.hasCooldown){
+                    cooldownListBuilder.add(track)
+                }
+                if(track.upvotes >0 && !track.isBlocked&& !track.isBlocked){
+                    voteListBuilder.add(track)
+                }
+            }
+            voteList = VoteList(voteListBuilder)
+            blockList= TrackList(blockListBuilder)
+            cooldownList = TrackList(cooldownListBuilder)
+        }
     }
 
 

@@ -63,7 +63,7 @@ abstract class BackendConnector(
                 val upvotes = currentJsonTrack.getInt("upvotes")
                 // TODO Problems: parameter names of isUpvoted and hasCooldown might be different
                 val isUpvoted = currentJsonTrack.getBoolean("isUpvoted")
-                val hasCooldown = currentJsonTrack.getBoolean("hasCooldown")
+                val colldownflag = currentJsonTrack.getBoolean("hasCooldown")
 
                 val trackToAdd = Track(
                     trackId,
@@ -73,7 +73,7 @@ abstract class BackendConnector(
                     imageUrl,
                     upvotes,
                     isUpvoted,
-                    hasCooldown
+                    hasCooldown = colldownflag
                 )
                 listOfTracks.add(trackToAdd)
             }
