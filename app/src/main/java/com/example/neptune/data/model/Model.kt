@@ -9,6 +9,7 @@ import com.example.neptune.data.model.appState.AppDatabase
 import com.example.neptune.data.model.appState.AppState
 import com.example.neptune.data.model.backendConnector.BackendConnector
 import com.example.neptune.data.model.backendConnector.HostBackendConnector
+import com.example.neptune.data.model.backendConnector.ParticipantBackendConnector
 import com.example.neptune.data.model.session.Session
 import com.example.neptune.data.model.session.SessionBuilder
 import com.example.neptune.data.model.session.SessionType
@@ -19,6 +20,7 @@ import com.example.neptune.data.model.streamingConnector.spotifyConnector.HostSp
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.SpotifyConnectionDatabase
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.SpotifyConnector
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.SpotifyEstablisher
+import com.example.neptune.data.model.user.src.FullParticipant
 import com.example.neptune.data.model.user.src.Host
 import com.example.neptune.data.model.user.src.User
 import com.example.neptune.data.room.app.AppDataDatabase
@@ -87,11 +89,10 @@ class Model() {
     var user: User? = null
 
 
-    fun recreateUserSessionStateInitially(callback: (userSessionState: String) -> Unit) {
+    fun recreateUserSessionStateInitially(navController: NavController) {
         backendConnector = BackendConnector(appState.getDeviceId(), backendConnectorVolleyQueue)
         backendConnector!!.getUserSessionState { userSessionState, sessionId, timestamp, mode, artists, genres ->
-            callbackRecreateUserSessionState(userSessionState, sessionId, timestamp, mode, artists, genres)
-            callback(userSessionState)
+            callbackRecreateUserSessionState(userSessionState, sessionId, timestamp, mode, artists, genres, navController)
         }
     }
 
@@ -101,26 +102,19 @@ class Model() {
         timestamp: Int,
         mode: String,
         artists: List<String>,
-        genres: List<String>
+        genres: List<String>,
+        navController: NavController
     ) {
         if(userSessionState == "HOST") {
             backendConnector = HostBackendConnector(appState.getDeviceId(), backendConnectorVolleyQueue)
             streamingConnector = HostSpotifyConnector(streamingConnectorVolleyQueue, "", "")
             //TODO pass tokens
 
-            val sessionType = when(mode){
-                "General" -> SessionType.GENERAL
-                "Artist" -> SessionType.ARTIST
-                "Genre" -> SessionType.GENRE
-                "Playlist" -> SessionType.PLAYLIST
-                else -> SessionType.GENERAL //does not happen
-            }
-            sessionBuilder.setSessionType(sessionType)
-
-            if(sessionType == SessionType.ARTIST){
+            sessionBuilder.setSessionTypeFromBackendString(mode)
+            if(mode == "Artist"){
                 sessionBuilder.setSelectedEntities(artists)
             }
-            if(sessionType == SessionType.GENRE){
+            if(mode == "Genre"){
                 sessionBuilder.setSelectedEntities(genres)
             }
 
@@ -131,8 +125,31 @@ class Model() {
                 streamingConnector!! as HostStreamingConnector
             )
             sessionBuilder.reset()
+            navController.navigate(ViewsCollection.CONTROL_VIEW.name)
+
         }
-        //TODO Participant case
+        if(userSessionState == "PARTICIPANT") {
+            backendConnector = ParticipantBackendConnector(appState.getDeviceId(), backendConnectorVolleyQueue)
+            streamingConnector = SpotifyConnector(streamingConnectorVolleyQueue, "", "")
+            //TODO pass tokens and handle when restricted
+
+            sessionBuilder.setSessionTypeFromBackendString(mode)
+            if(mode == "Artist"){
+                sessionBuilder.setSelectedEntities(artists)
+            }
+            if(mode == "Genre"){
+                sessionBuilder.setSelectedEntities(genres)
+            }
+
+            session = sessionBuilder.createSession(sessionId, timestamp)
+            user = FullParticipant(
+                session!!,
+                backendConnector!! as ParticipantBackendConnector,
+                streamingConnector!!
+            )
+            sessionBuilder.reset()
+            navController.navigate(ViewsCollection.VOTE_VIEW.name)
+        }
     }
 
     fun createNewSessionAndJoin(navController: NavController) {
@@ -140,12 +157,7 @@ class Model() {
         streamingConnector = HostSpotifyConnector(streamingConnectorVolleyQueue, "", "")
         //TODO pass tokens
 
-        val mode = when (sessionBuilder.getSessionType()) {
-            SessionType.GENERAL -> "General"
-            SessionType.ARTIST -> "Artist"
-            SessionType.GENRE -> "Genre"
-            SessionType.PLAYLIST -> "Playlist"
-        }
+        val mode = sessionBuilder.getSessionTypeAsBackendString()
         val cooldownTimer = sessionBuilder.getTrackCooldown()
         var artists = listOf<String>()
         if (mode == "Artist") {
@@ -167,6 +179,36 @@ class Model() {
             )
             sessionBuilder.reset()
             navController.navigate(ViewsCollection.CONTROL_VIEW.name)
+        }
+    }
+
+
+    fun tryToJoinSession(sessionId: Int, navController: NavController) {
+        backendConnector = ParticipantBackendConnector(appState.getDeviceId(), backendConnectorVolleyQueue)
+        streamingConnector = SpotifyConnector(streamingConnectorVolleyQueue, "", "")
+        //TODO pass tokens, and handle case of restricted participant
+
+
+        (backendConnector as ParticipantBackendConnector).participantJoinSession(
+            sessionId
+        ) { timestamp, mode, artists, genres ->
+
+            sessionBuilder.setSessionTypeFromBackendString(mode)
+            if(mode == "Artist"){
+                sessionBuilder.setSelectedEntities(artists)
+            }
+            if(mode == "Genre"){
+                sessionBuilder.setSelectedEntities(genres)
+            }
+
+            session = sessionBuilder.createSession(sessionId, timestamp)
+            user = FullParticipant(
+                session!!,
+                backendConnector!! as ParticipantBackendConnector,
+                streamingConnector!!
+            )
+            sessionBuilder.reset()
+            navController.navigate(ViewsCollection.VOTE_VIEW.name)
         }
     }
 

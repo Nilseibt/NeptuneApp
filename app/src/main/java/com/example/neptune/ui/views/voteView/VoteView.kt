@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.neptune.NeptuneApp
 import com.example.neptune.ui.commons.SessionInfoBar
 import com.example.neptune.ui.commons.TopBar
 import com.example.neptune.ui.commons.TrackListComposable
@@ -27,7 +28,7 @@ fun VoteView(navController: NavController) {
     val voteViewModel = viewModel<VoteViewModel>(
         factory = viewModelFactory {
             VoteViewModel(
-                //NeptuneApp.???
+                NeptuneApp.model.user!!
             )
         }
     )

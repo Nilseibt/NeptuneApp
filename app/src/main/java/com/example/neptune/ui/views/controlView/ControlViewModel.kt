@@ -128,7 +128,6 @@ class ControlViewModel(
     }
 
     fun onConfirmDeleteSession(navController: NavController) {
-        //TODO
         deleteSessionDialogShown = false
         (host.backendConnector as HostBackendConnector).deleteSession()
         navController.popBackStack(

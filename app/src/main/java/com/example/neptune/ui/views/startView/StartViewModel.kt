@@ -31,9 +31,7 @@ class StartViewModel(
         }
         GlobalScope.launch {
             appState.generateOrRetrieveDeviceId()
-            NeptuneApp.model.recreateUserSessionStateInitially { userSessionState ->
-                navigateAccordingToUserSessionState(userSessionState, navController)
-            }
+            NeptuneApp.model.recreateUserSessionStateInitially(navController)
         }
     }
 

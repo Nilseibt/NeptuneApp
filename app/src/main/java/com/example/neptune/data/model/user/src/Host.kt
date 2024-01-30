@@ -9,7 +9,7 @@ import com.example.neptune.data.model.track.src.Queue
 import com.example.neptune.data.model.track.src.Track
 
 
-class Host(session: Session,hostBackendConnector: HostBackendConnector,hostStreamingConnector: HostStreamingConnector) :
+class Host(session: Session,hostBackendConnector: HostBackendConnector,val hostStreamingConnector: HostStreamingConnector) :
     FullParticipant(session,hostBackendConnector,hostStreamingConnector){
         val queue = Queue()
     fun addTrackToQueue(index:Int){
@@ -29,23 +29,23 @@ class Host(session: Session,hostBackendConnector: HostBackendConnector,hostStrea
 
     }
     fun skip(){
-        streamingConnector.skipTrack()
+        hostStreamingConnector.skipTrack()
     }
     private fun refillStreamingQueue(){
         if(!queue.isEmpty()){
-            streamingConnector.addTrackToQueue(queue.popFirstTrack())
+            hostStreamingConnector.addTrackToQueue(queue.popFirstTrack())
         }else if (!voteList.isEmpty()){
-            streamingConnector.addTrackToQueue(voteList.popFirstTrack())
+            hostStreamingConnector.addTrackToQueue(voteList.popFirstTrack())
         }
     }
     fun stopPlay(){
-        streamingConnector.stopPlay()
+        hostStreamingConnector.stopPlay()
     }
     fun resumePlay(){
-        streamingConnector.resumePlay()
+        hostStreamingConnector.resumePlay()
     }
     fun setPlayProgress(percentage: Int){
-        streamingConnector.setPlayProgress(percentage)
+        hostStreamingConnector.setPlayProgress(percentage)
     }
     fun addTrackToBlockList(track: Track){
         blockList.addTrack(track)

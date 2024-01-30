@@ -23,8 +23,27 @@ class SessionBuilder {
         this.sessionType = sessionType
     }
 
+    fun setSessionTypeFromBackendString(sessionTypeBackendString: String){
+        sessionType = when(sessionTypeBackendString){
+            "General" -> SessionType.GENERAL
+            "Artist" -> SessionType.ARTIST
+            "Genre" -> SessionType.GENRE
+            "Playlist" -> SessionType.PLAYLIST
+            else -> SessionType.GENERAL //does not happen
+        }
+    }
+
     fun getSessionType(): SessionType {
         return sessionType
+    }
+
+    fun getSessionTypeAsBackendString(): String {
+        return when (sessionType) {
+            SessionType.GENERAL -> "General"
+            SessionType.ARTIST -> "Artist"
+            SessionType.GENRE -> "Genre"
+            SessionType.PLAYLIST -> "Playlist"
+        }
     }
 
     fun isEntitySelected(entityName: String): Boolean {
