@@ -29,6 +29,9 @@ open class TrackList (val tracks: MutableList<Track>){
     fun clear(){
         tracks.clear()
     }
+    fun trackAt(index: Int):Track{
+       return tracks[index]
+    }
 
     override fun toString(): String {
         val output= StringBuilder()
