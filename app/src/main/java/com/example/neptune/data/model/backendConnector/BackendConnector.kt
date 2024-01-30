@@ -81,14 +81,31 @@ abstract class BackendConnector(
     }
 
 
+
+
     fun getStatistics() {
         //TODO needs implementation
     }
 
 
-    fun isSessionOpen() {
-        //TODO needs implementation
+
+
+    fun isSessionOpen(sessionId: Int, sessionTimestamp: Int, callback: (isOpen: Boolean) -> Unit) {
+        val postData = JSONObject()
+        postData.put("sessionID", sessionId)
+        postData.put("timestamp", sessionTimestamp)
+
+        sendRequest("isSessionOpen", postData){ jsonResponse ->
+            callBackSessionOpen(jsonResponse, callback)
+        }
     }
+
+    private fun callBackSessionOpen(jsonResponse: JSONObject, callback: (isOpen: Boolean) -> Unit){
+        val isOpen = jsonResponse.getBoolean("isOpen")
+        callback(isOpen)
+    }
+
+
 
 
     fun addTrackToSession(track: Track) {
@@ -104,51 +121,25 @@ abstract class BackendConnector(
     }
 
 
+
     fun addUpvoteToTrack(track: Track) {
-        //TODO does not work yet
-        return
-        /*val url = baseUrl + "addUpvoteToTrack"
         val postData = JSONObject()
         postData.put("deviceID", deviceId)
-        postData.put("trackID", track.spotifyId)
+        postData.put("trackID", track.id)
 
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.POST, url, postData,
-            {response ->
-                Log.i("JSON ADD UPVOTE", response.toString())
-            },
-            {error ->
-                Log.e("VOLLEY", "Server Request Error: ${error.localizedMessage}")
-            })
-
-        volleyQueue.add(jsonObjectRequest)*/
+        sendRequest("addUpvoteToTrack", postData)
     }
+
 
 
     fun removeUpvoteFromTrack(track: Track) {
-        //TODO does not work yet
-        return
-        /*val url = baseUrl + "removeUpvoteFromTrack"
         val postData = JSONObject()
         postData.put("deviceID", deviceId)
-        postData.put("trackID", track.spotifyId)
+        postData.put("trackID", track.id)
 
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.POST, url, postData,
-            {response ->
-                Log.i("JSON REM UPVOTE", response.toString())
-            },
-            {error ->
-                Log.e("VOLLEY", "Server Request Error: ${error.localizedMessage}")
-            })
-
-        volleyQueue.add(jsonObjectRequest)*/
+        sendRequest("removeUpvoteFromTrack", postData)
     }
 
-
-    suspend fun getLockedTracks() {
-        //TODO needs implementation
-    }
 
 
     protected fun sendRequest(
