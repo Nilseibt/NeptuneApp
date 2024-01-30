@@ -4,12 +4,11 @@ import java.sql.Timestamp
 import  java.util.Date
 
 class Track(
-    val id: Int,
+    val id: String,
     val name: String,
     val artists: List<String>,
     val genres: List<String>,
     val imageUrl: String,
-    var timestamp: Timestamp,
     var upvotes: Int,
     var isUpvoted: Boolean,
     var isBlocked: Boolean
@@ -38,7 +37,6 @@ class Track(
                 "artists   $artists\n"+
                 "genres    $genres\n"+
                 "imageUrl  $imageUrl\n"+
-                "timestamp $timestamp\n"+
                 "upvotes   $upvotes\n"+
                 "isUpvoted $isUpvoted\n"+
                 "isBlocked $isBlocked"
