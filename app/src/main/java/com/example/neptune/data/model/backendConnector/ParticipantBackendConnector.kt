@@ -12,40 +12,50 @@ class ParticipantBackendConnector(
 ) : BackendConnector(deviceId, volleyQueue) {
 
 
-    fun participantJoinSession(sessionId: Int) {
-        val url = baseUrl + "participantJoinSession"
+    fun participantJoinSession(
+        sessionId: Int,
+        callback: (timestamp: Int, mode: String, artists: List<String>, genres: List<String>) -> Unit
+    ) {
         val postData = JSONObject()
         postData.put("participantDeviceID", deviceId)
         postData.put("sessionID", sessionId)
 
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.POST, url, postData,
-            { response ->
-                Log.i("JSON JOIN", response.toString())
-            },
-            { error ->
-                Log.e("VOLLEY", "Server Request Error: ${error.localizedMessage}")
-            })
+        sendRequest("participantJoinSession", postData) { jsonResponse ->
+            callbackParticipantJoinSession(jsonResponse, callback)
+        }
+    }
 
-        volleyQueue.add(jsonObjectRequest)
+    private fun callbackParticipantJoinSession(
+        jsonResponse: JSONObject,
+        callback: (timestamp: Int, mode: String, artists: List<String>, genres: List<String>) -> Unit
+    ) {
+        val timestamp = jsonResponse.getInt("timestamp")
+        val mode = jsonResponse.getString("modus")
+        val artists = mutableListOf<String>()
+        if (jsonResponse.get("artists").toString() != "null") {
+            val jsonArtistsArray = jsonResponse.getJSONArray("artists")
+            for (artistIndex in 0 until jsonArtistsArray.length()) {
+                artists.add(jsonArtistsArray.getString(artistIndex))
+            }
+        }
+        val genres = mutableListOf<String>()
+        if (jsonResponse.get("genres").toString() != "null") {
+            val jsonGenresArray = jsonResponse.getJSONArray("genres")
+            for (genreIndex in 0 until jsonGenresArray.length()) {
+                artists.add(jsonGenresArray.getString(genreIndex))
+            }
+        }
+        callback(timestamp, mode, artists, genres)
     }
 
 
+
+
     fun participantLeaveSession() {
-        val url = baseUrl + "participantLeaveSession"
         val postData = JSONObject()
         postData.put("participantDeviceID", deviceId)
 
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.POST, url, postData,
-            { response ->
-                Log.i("JSON LEAVE", response.toString())
-            },
-            { error ->
-                Log.e("VOLLEY", "Server Request Error: ${error.localizedMessage}")
-            })
-
-        volleyQueue.add(jsonObjectRequest)
+        sendRequest("participantLeaveSession", postData)
     }
 
 }

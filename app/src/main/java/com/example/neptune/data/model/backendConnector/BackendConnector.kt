@@ -60,7 +60,7 @@ abstract class BackendConnector(
                 val genres = mutableListOf("placeholder")
                 val artists = mutableListOf("placeholder")
                 val upvotes = currentJsonTrack.getInt("upvotes")
-                // TODO Problems: Timestamp, and parameter names of isUpvoted and hasCooldown might be different
+                // TODO Problems: parameter names of isUpvoted and hasCooldown might be different
                 val isUpvoted = currentJsonTrack.getBoolean("isUpvoted")
                 val hasCooldown = currentJsonTrack.getBoolean("hasCooldown")
 
@@ -96,11 +96,11 @@ abstract class BackendConnector(
         postData.put("timestamp", sessionTimestamp)
 
         sendRequest("isSessionOpen", postData){ jsonResponse ->
-            callBackSessionOpen(jsonResponse, callback)
+            callbackSessionOpen(jsonResponse, callback)
         }
     }
 
-    private fun callBackSessionOpen(jsonResponse: JSONObject, callback: (isOpen: Boolean) -> Unit){
+    private fun callbackSessionOpen(jsonResponse: JSONObject, callback: (isOpen: Boolean) -> Unit){
         val isOpen = jsonResponse.getBoolean("isOpen")
         callback(isOpen)
     }
