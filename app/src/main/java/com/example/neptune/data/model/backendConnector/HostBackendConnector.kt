@@ -57,12 +57,12 @@ class HostBackendConnector(
     }
 
 
-    suspend fun playedTrack() {
+     fun playedTrack() {
         //TODO needs implementation
     }
 
 
-    suspend fun setBlockTrack() {
+     fun setBlockTrack() {
         //TODO needs implementation
     }
 
