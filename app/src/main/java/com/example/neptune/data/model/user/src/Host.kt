@@ -50,7 +50,7 @@ class Host(session: Session,hostBackendConnector: HostBackendConnector,hostStrea
     fun addTrackToBlockList(track: Track){
         blockList.addTrack(track)
         val hostBackendConnector = backendConnector as HostBackendConnector
-        hostBackendConnector.setBlockTrack()
+        hostBackendConnector.setBlockTrack(track, true)
     }
 
 }

@@ -51,6 +51,10 @@ class SessionBuilder {
         this.trackCooldown = trackCooldown
     }
 
+    fun getTrackCooldown(): Int {
+        return trackCooldown
+    }
+
 
     fun searchMatchingGenres(searchInput: String): List<String> {
         if (searchInput == "") {

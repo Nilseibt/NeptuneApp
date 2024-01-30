@@ -27,7 +27,9 @@ class AppState(
         }
     }
 
-
+    fun getDeviceId(): String{
+        return deviceId
+    }
 
 
 

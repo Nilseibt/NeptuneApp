@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.neptune.NeptuneApp
 import com.example.neptune.data.model.appState.AppState
 import com.example.neptune.data.model.session.SessionBuilder
 import com.example.neptune.data.model.session.SessionType
@@ -88,6 +89,7 @@ class ModeSettingsViewModel(
         }
         appState.sessionBuilder.setTrackCooldown(sliderPositionToCooldownMinutes(sliderPosition))
         appState.sessionBuilder.reset()
+        NeptuneApp.model.createNewSessionAndJoin() //TODO check if that is the best option to do that
         navController.navigate(ViewsCollection.CONTROL_VIEW.name)
     }
 

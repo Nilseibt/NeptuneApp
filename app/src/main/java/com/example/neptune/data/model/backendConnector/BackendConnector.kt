@@ -11,7 +11,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.sql.Timestamp
 
-abstract class BackendConnector(
+open class BackendConnector(
     private val deviceId: String,
     private val volleyQueue: RequestQueue
 ) {
