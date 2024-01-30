@@ -115,6 +115,7 @@ class Model() {
                 backendConnector!! as HostBackendConnector,
                 streamingConnector!! as HostStreamingConnector
             )
+            sessionBuilder.reset()
         }
     }
 
