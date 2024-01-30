@@ -1,5 +1,6 @@
 package com.example.neptune.data.model.track.test
 
+import com.example.neptune.data.model.track.src.Queue
 import com.example.neptune.data.model.track.src.Track
 import com.example.neptune.data.model.track.src.TrackList
 import com.example.neptune.data.model.track.src.VoteList
@@ -27,9 +28,9 @@ import java.sql.Timestamp
     var track4 = Track(5675,"hello",artists1,genres1,imageUrl1,timeStamp1,
         2,false, false)
     var trackList = TrackList(mutableListOf(track1,track2, track3,track4))
-    var voteList = VoteList(mutableListOf(track1,track2,track3,track4))
-    var blockList = TrackList(mutableListOf(track1))
-    var cooldownList = TrackList(mutableListOf(track2))
-
+    val voteList = VoteList(mutableListOf(track1,track2,track3,track4))
+    val blockList = TrackList(mutableListOf(track1))
+    val cooldownList = TrackList(mutableListOf(track2))
+    val queue = Queue(mutableListOf(track1,track2,track3,track4))
 
 }
