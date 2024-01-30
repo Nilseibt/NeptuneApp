@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.android.volley.toolbox.Volley
 import com.example.neptune.NeptuneApp
@@ -14,6 +15,7 @@ import com.example.neptune.data.model.backendConnector.ParticipantBackendConnect
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.StreamingLevel
 import com.example.neptune.ui.views.ViewsCollection
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class StartViewModel(
@@ -26,12 +28,11 @@ class StartViewModel(
 
 
     init {
-        GlobalScope.launch {
-            appState.streamingEstablisher.restoreConnectionIfPossible()
-        }
-        GlobalScope.launch {
+        viewModelScope.launch {
             appState.generateOrRetrieveDeviceId()
-            NeptuneApp.model.recreateUserSessionStateInitially(navController)
+            appState.streamingEstablisher.restoreConnectionIfPossible {
+                NeptuneApp.model.recreateUserSessionStateInitially(navController)
+            }
         }
     }
 

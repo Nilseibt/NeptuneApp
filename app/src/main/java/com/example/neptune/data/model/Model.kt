@@ -92,7 +92,15 @@ class Model() {
     fun recreateUserSessionStateInitially(navController: NavController) {
         backendConnector = BackendConnector(appState.getDeviceId(), backendConnectorVolleyQueue)
         backendConnector!!.getUserSessionState { userSessionState, sessionId, timestamp, mode, artists, genres ->
-            callbackRecreateUserSessionState(userSessionState, sessionId, timestamp, mode, artists, genres, navController)
+            callbackRecreateUserSessionState(
+                userSessionState,
+                sessionId,
+                timestamp,
+                mode,
+                artists,
+                genres,
+                navController
+            )
         }
     }
 
@@ -105,16 +113,20 @@ class Model() {
         genres: List<String>,
         navController: NavController
     ) {
-        if(userSessionState == "HOST") {
-            backendConnector = HostBackendConnector(appState.getDeviceId(), backendConnectorVolleyQueue)
-            streamingConnector = HostSpotifyConnector(streamingConnectorVolleyQueue, "", "")
-            //TODO pass tokens
+        if (userSessionState == "HOST") {
+            backendConnector =
+                HostBackendConnector(appState.getDeviceId(), backendConnectorVolleyQueue)
+            streamingConnector = HostSpotifyConnector(
+                streamingConnectorVolleyQueue,
+                streamingEstablisher.getAccessToken(),
+                streamingEstablisher.getRefreshToken()
+            )
 
             sessionBuilder.setSessionTypeFromBackendString(mode)
-            if(mode == "Artist"){
+            if (mode == "Artist") {
                 sessionBuilder.setSelectedEntities(artists)
             }
-            if(mode == "Genre"){
+            if (mode == "Genre") {
                 sessionBuilder.setSelectedEntities(genres)
             }
 
@@ -128,16 +140,21 @@ class Model() {
             navController.navigate(ViewsCollection.CONTROL_VIEW.name)
 
         }
-        if(userSessionState == "PARTICIPANT") {
-            backendConnector = ParticipantBackendConnector(appState.getDeviceId(), backendConnectorVolleyQueue)
-            streamingConnector = SpotifyConnector(streamingConnectorVolleyQueue, "", "")
-            //TODO pass tokens and handle when restricted
+        if (userSessionState == "PARTICIPANT") {
+            backendConnector =
+                ParticipantBackendConnector(appState.getDeviceId(), backendConnectorVolleyQueue)
+            streamingConnector = SpotifyConnector(
+                streamingConnectorVolleyQueue,
+                streamingEstablisher.getAccessToken(),
+                streamingEstablisher.getRefreshToken()
+            )
+            //TODO handle when restricted
 
             sessionBuilder.setSessionTypeFromBackendString(mode)
-            if(mode == "Artist"){
+            if (mode == "Artist") {
                 sessionBuilder.setSelectedEntities(artists)
             }
-            if(mode == "Genre"){
+            if (mode == "Genre") {
                 sessionBuilder.setSelectedEntities(genres)
             }
 
@@ -154,8 +171,10 @@ class Model() {
 
     fun createNewSessionAndJoin(navController: NavController) {
         backendConnector = HostBackendConnector(appState.getDeviceId(), backendConnectorVolleyQueue)
-        streamingConnector = HostSpotifyConnector(streamingConnectorVolleyQueue, "", "")
-        //TODO pass tokens
+        streamingConnector = HostSpotifyConnector(
+            streamingConnectorVolleyQueue, streamingEstablisher.getAccessToken(),
+            streamingEstablisher.getRefreshToken()
+        )
 
         val mode = sessionBuilder.getSessionTypeAsBackendString()
         val cooldownTimer = sessionBuilder.getTrackCooldown()
@@ -184,9 +203,14 @@ class Model() {
 
 
     fun tryToJoinSession(sessionId: Int, navController: NavController) {
-        backendConnector = ParticipantBackendConnector(appState.getDeviceId(), backendConnectorVolleyQueue)
-        streamingConnector = SpotifyConnector(streamingConnectorVolleyQueue, "", "")
-        //TODO pass tokens, and handle case of restricted participant
+        backendConnector =
+            ParticipantBackendConnector(appState.getDeviceId(), backendConnectorVolleyQueue)
+        streamingConnector = SpotifyConnector(
+            streamingConnectorVolleyQueue,
+            streamingEstablisher.getAccessToken(),
+            streamingEstablisher.getRefreshToken()
+        )
+        //TODO handle when restricted
 
 
         (backendConnector as ParticipantBackendConnector).participantJoinSession(
@@ -194,10 +218,10 @@ class Model() {
         ) { timestamp, mode, artists, genres ->
 
             sessionBuilder.setSessionTypeFromBackendString(mode)
-            if(mode == "Artist"){
+            if (mode == "Artist") {
                 sessionBuilder.setSelectedEntities(artists)
             }
-            if(mode == "Genre"){
+            if (mode == "Genre") {
                 sessionBuilder.setSelectedEntities(genres)
             }
 

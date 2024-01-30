@@ -8,7 +8,11 @@ import com.example.neptune.data.model.streamingConnector.spotifyConnector.Stream
 interface StreamingEstablisher {
 
 
-    suspend fun restoreConnectionIfPossible()
+    fun getAccessToken(): String
+
+    fun getRefreshToken(): String
+
+    suspend fun restoreConnectionIfPossible(onRestoreFinished: () -> Unit)
 
     fun getStreamingLevel(): MutableState<StreamingLevel>
 
