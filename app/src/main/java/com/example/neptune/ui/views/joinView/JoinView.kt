@@ -10,7 +10,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -62,11 +66,11 @@ fun JoinView(navController: NavController) {
                 enabled = joinViewModel.isCodeInputFormValid()
             )
             {
-                Text(text = "->")
+                Icon(imageVector = Icons.Default.ArrowForward, contentDescription = null)
             }
         }
         Spacer(modifier = Modifier.height(32.dp))
-        Button(
+        OutlinedButton(
             onClick = { joinViewModel.onScanQrCode() },
         ) {
             Text(text = "QR-Code scannen")
