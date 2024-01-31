@@ -8,12 +8,17 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.neptune.data.model.track.src.Track
+import com.example.neptune.data.model.user.src.User
 import com.example.neptune.ui.commons.TrackListType
 import com.example.neptune.ui.views.ViewsCollection
 
-class SearchViewModel() : ViewModel() {
+class SearchViewModel(
+    val user: User
+) : ViewModel() {
 
     private var searchInput by mutableStateOf("")
+
+
 
     fun getSearchTrackListType(): TrackListType {
         /*if (user is Host) {
@@ -30,7 +35,9 @@ class SearchViewModel() : ViewModel() {
 
     fun onTrackSearchInputChange(newInput: String) {
         searchInput = newInput
-        //TODO
+        if(searchInput != ""){
+            user.search(searchInput)
+        }
     }
 
     fun isSearchButtonActive(): Boolean {
@@ -64,8 +71,7 @@ class SearchViewModel() : ViewModel() {
     }
 
     fun getSearchList(): SnapshotStateList<MutableState<Track>> {
-        //TODO
-        return SnapshotStateList()
+        return user.searchList.value.getListOfTracks()
     }
 
     fun getActiveFilter(): String {

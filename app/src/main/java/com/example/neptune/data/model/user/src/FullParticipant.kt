@@ -11,7 +11,7 @@ open class FullParticipant(session: Session, backendConnector: BackendConnector,
 ):
     User(session,backendConnector) {
 
-    override fun search(input: String): TrackList {
-        return super.search(input)
+    override fun search(input: String) {
+        streamingConnector.search(input, searchList.value)
     }
 }

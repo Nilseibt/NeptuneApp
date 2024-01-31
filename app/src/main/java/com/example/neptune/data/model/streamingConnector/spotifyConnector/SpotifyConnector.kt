@@ -24,9 +24,9 @@ open class SpotifyConnector(
         headers["Authorization"] = "Bearer $accessToken"
 
         var parameters: MutableMap<String, String> = HashMap()
-        headers["q"] = URLEncoder.encode(searchInput, "UTF-8")
-        headers["type"] = "track"
-        headers["limit"] = "20"
+        parameters["q"] = URLEncoder.encode(searchInput, "UTF-8")
+        parameters["type"] = "track"
+        parameters["limit"] = "20"
 
         newRequest("https://api.spotify.com/v1/search", headers, parameters) { jsonResponse ->
             searchTracksCallback(jsonResponse, searchList)
@@ -71,13 +71,13 @@ open class SpotifyConnector(
             urlWithParams.dropLast(1)
         }
         val stringRequest: StringRequest = object : StringRequest(
-            Request.Method.GET, url,
+            Request.Method.GET, urlWithParams,
             { response ->
-                Log.i("SPOTIFY JSON", "$url $response")
+                Log.i("SPOTIFY JSON", "$urlWithParams ${response.subSequence(0, minOf(response.length, 50))}")
                 callback(JSONObject(response))
             },
             { error ->
-                Log.e("SPOTIFY VOLLEY", "$url : Spotify Request Error: ${error.localizedMessage}")
+                Log.e("SPOTIFY VOLLEY", "$urlWithParams : Spotify Request Error: ${error}")
             }) {
             override fun getHeaders(): Map<String, String> {
                 return headers

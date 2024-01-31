@@ -1,18 +1,19 @@
 package com.example.neptune.data.model.track.src
 
-class VoteList(tracks: MutableList<Track>) : PlayList(tracks) {
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.snapshots.SnapshotStateList
 
-    constructor():this(ArrayList<Track>()){}
+class VoteList(private val tracks: SnapshotStateList<MutableState<Track>>) : PlayList(tracks) {
 
     fun upvoteTrack(index: Int) {
-        tracks[index].addUpvote()
+        tracks[index].value.addUpvote()
     }
 
     fun removeUpvoteFromTrack(index: Int) {
-        tracks[index].removeUpvote()
+        tracks[index].value.removeUpvote()
     }
 
     fun sortByUpvote() {
-        tracks.sortBy { track -> track.upvotes }
+        tracks.sortBy { track -> track.value.upvotes }
     }
 }

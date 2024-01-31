@@ -1,43 +1,55 @@
 package com.example.neptune.data.model.track.src
 
-open class TrackList (val tracks: MutableList<Track>){
-    constructor():this(ArrayList<Track>()){}
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 
-    fun removeTrack(index: Int){
+open class TrackList(private val tracks: SnapshotStateList<MutableState<Track>>) {
+
+    fun removeTrack(index: Int) {
         tracks.removeAt(index)
     }
-    fun addTrack(track: Track){
-        tracks.add(track)
+
+    fun addTrack(track: Track) {
+        tracks.add(mutableStateOf(track))
     }
-    fun containsTrack(track: Track): Boolean{
-        for (item in tracks){
-            if (item.id == track.id){
+
+    fun containsTrack(track: Track): Boolean {
+        for (item in tracks) {
+            if (item.value.id == track.id) {
                 return true
             }
         }
         return false
     }
+
     fun popFirstTrack(): Track {
-        var output  = tracks.first()
+        var output = tracks.first()
         tracks.removeAt(0);
-        return output;
+        return output.value;
     }
-    fun isEmpty(): Boolean{
+
+    fun isEmpty(): Boolean {
         return tracks.isEmpty()
     }
 
-    fun clear(){
+    fun clear() {
         tracks.clear()
     }
-    fun trackAt(index: Int):Track{
-       return tracks[index]
+
+    fun trackAt(index: Int): Track {
+        return tracks[index].value
+    }
+
+    fun getListOfTracks(): SnapshotStateList<MutableState<Track>> {
+        return tracks
     }
 
     override fun toString(): String {
-        val output= StringBuilder()
+        val output = StringBuilder()
 
         output.append("length: ${tracks.size}\n")
-        for(track in tracks){
+        for (track in tracks) {
             output.append(track.toString())
             output.append("\n")
         }

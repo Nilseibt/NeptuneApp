@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.neptune.NeptuneApp
 import com.example.neptune.ui.commons.TrackListComposable
 import com.example.neptune.ui.views.util.viewModelFactory
 
@@ -20,7 +21,7 @@ fun SearchView(navController: NavController) {
     val searchViewModel = viewModel<SearchViewModel>(
         factory = viewModelFactory {
             SearchViewModel(
-                //NeptuneApp.???
+                NeptuneApp.model.user!!
             )
         }
     )
