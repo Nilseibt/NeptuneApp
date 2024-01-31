@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.neptune.data.model.session.SessionType
 import com.example.neptune.data.model.track.src.Track
 import com.example.neptune.data.model.user.src.Host
 import com.example.neptune.data.model.user.src.User
@@ -35,8 +36,10 @@ class SearchViewModel(
 
     fun onTrackSearchInputChange(newInput: String) {
         searchInput = newInput
-        if(searchInput != ""){
-            user.search(searchInput)
+        if(user.session.sessionType != SessionType.GENRE) {
+            if (searchInput != "") {
+                user.search(searchInput)
+            }
         }
     }
 

@@ -5,5 +5,4 @@
     <string name="spotify_client_secret">c36285b319d24084b4b19bff4408cdff</string>
 
     <string name="backend_url">https://nep-tune.de:5000/</string>
-    <string name="old_backend_url">https://api.paulbuda.de:5000/</string>
 </resources>

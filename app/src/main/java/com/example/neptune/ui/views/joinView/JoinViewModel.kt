@@ -22,7 +22,8 @@ class JoinViewModel() : ViewModel() {
     }
 
     fun onCodeInputChange(newInput: String) {
-        if (newInput.length <= 6 && newInput.toIntOrNull()?.let { true } == true) {
+        if (newInput.length <= 6
+            && (newInput.toIntOrNull()?.let { true } == true || newInput == "")) {
             sessionCodeInput = newInput
         }
     }

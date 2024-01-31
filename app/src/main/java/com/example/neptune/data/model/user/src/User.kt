@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.toMutableStateList
 import com.example.neptune.data.model.backendConnector.BackendConnector
 import com.example.neptune.data.model.backendConnector.ParticipantBackendConnector
 import com.example.neptune.data.model.session.Session
@@ -99,10 +100,8 @@ open class User(
     }
 
     open fun search(input: String) {
-        //TODO write it again, mutableStates broke the method
-        //var foundTracks = voteList.value.search(input)
-        //foundTracks = filterSearchResults(foundTracks)
-        //searchList.value = TrackList(foundTracks)
+        var foundTracks = voteList.value.search(input)
+        searchList.value = TrackList(foundTracks.toMutableStateList())
     }
 
     protected fun filterSearchResults(searchResult: MutableList<Track>): MutableList<Track> {

@@ -20,6 +20,7 @@ import com.example.neptune.data.model.streamingConnector.spotifyConnector.HostSp
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.SpotifyConnectionDatabase
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.SpotifyConnector
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.SpotifyEstablisher
+import com.example.neptune.data.model.streamingConnector.spotifyConnector.StreamingLevel
 import com.example.neptune.data.model.user.src.FullParticipant
 import com.example.neptune.data.model.user.src.Host
 import com.example.neptune.data.model.user.src.UpvoteDatabase
@@ -157,12 +158,6 @@ class Model() {
         if (userSessionState == "PARTICIPANT") {
             backendConnector =
                 ParticipantBackendConnector(appState.getDeviceId(), backendConnectorVolleyQueue)
-            streamingConnector = SpotifyConnector(
-                streamingConnectorVolleyQueue,
-                streamingEstablisher.getAccessToken(),
-                streamingEstablisher.getRefreshToken()
-            )
-            //TODO handle when restricted
 
             sessionBuilder.setSessionTypeFromBackendString(mode)
             if (mode == "Artist") {
@@ -173,12 +168,27 @@ class Model() {
             }
 
             session = sessionBuilder.createSession(sessionId, timestamp)
-            user = FullParticipant(
-                session!!,
-                backendConnector!! as ParticipantBackendConnector,
-                streamingConnector!!,
-                upvoteDatabase
-            )
+
+            if(streamingEstablisher.getStreamingLevel().value != StreamingLevel.UNLINKED) {
+                streamingConnector = SpotifyConnector(
+                    streamingConnectorVolleyQueue,
+                    streamingEstablisher.getAccessToken(),
+                    streamingEstablisher.getRefreshToken()
+                )
+                user = FullParticipant(
+                    session!!,
+                    backendConnector!! as ParticipantBackendConnector,
+                    streamingConnector!!,
+                    upvoteDatabase
+                )
+            }else{
+                user = User(
+                    session!!,
+                    backendConnector!! as ParticipantBackendConnector,
+                    upvoteDatabase
+                )
+            }
+
             sessionBuilder.reset()
             navController.navigate(ViewsCollection.VOTE_VIEW.name)
         }
@@ -221,13 +231,6 @@ class Model() {
     fun tryToJoinSession(sessionId: Int, navController: NavController) {
         backendConnector =
             ParticipantBackendConnector(appState.getDeviceId(), backendConnectorVolleyQueue)
-        streamingConnector = SpotifyConnector(
-            streamingConnectorVolleyQueue,
-            streamingEstablisher.getAccessToken(),
-            streamingEstablisher.getRefreshToken()
-        )
-        //TODO handle when restricted
-
 
         (backendConnector as ParticipantBackendConnector).participantJoinSession(
             sessionId
@@ -242,12 +245,27 @@ class Model() {
             }
 
             session = sessionBuilder.createSession(sessionId, timestamp)
-            user = FullParticipant(
-                session!!,
-                backendConnector!! as ParticipantBackendConnector,
-                streamingConnector!!,
-                upvoteDatabase
-            )
+
+            if(streamingEstablisher.getStreamingLevel().value != StreamingLevel.UNLINKED) {
+                streamingConnector = SpotifyConnector(
+                    streamingConnectorVolleyQueue,
+                    streamingEstablisher.getAccessToken(),
+                    streamingEstablisher.getRefreshToken()
+                )
+                user = FullParticipant(
+                    session!!,
+                    backendConnector!! as ParticipantBackendConnector,
+                    streamingConnector!!,
+                    upvoteDatabase
+                )
+            }else{
+                user = User(
+                    session!!,
+                    backendConnector!! as ParticipantBackendConnector,
+                    upvoteDatabase
+                )
+            }
+
             sessionBuilder.reset()
             navController.navigate(ViewsCollection.VOTE_VIEW.name)
         }
