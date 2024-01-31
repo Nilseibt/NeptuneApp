@@ -2,37 +2,43 @@ package com.example.neptune.ui.views.infoView
 
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.neptune.data.model.session.ArtistSession
+import com.example.neptune.data.model.session.GenreSession
+import com.example.neptune.data.model.session.SessionType
+import com.example.neptune.data.model.user.src.User
+import com.example.neptune.ui.views.ViewsCollection
 
-class InfoViewModel() : ViewModel() {
+class InfoViewModel(
+    val user: User
+) : ViewModel() {
 
     fun getModeName(): String {
-        //TODO
-        return "THE MODE"
+        return when(user.session.sessionType){
+            SessionType.GENERAL -> "General Mode"
+            SessionType.ARTIST -> "Artist Mode"
+            SessionType.GENRE -> "Genre Mode"
+            SessionType.PLAYLIST -> "Playlist Mode"
+        }
     }
 
     fun isArtistMode(): Boolean {
-        //TODO
-        return false
+        return user.session.sessionType == SessionType.ARTIST
     }
 
-    fun getAllArtists(): String {
-        //TODO
-        return "THE ARTISTS"
+    fun getAllArtists(): List<String> {
+        return (user.session as ArtistSession).artists
     }
 
     fun isGenreMode(): Boolean {
-        //TODO
-        return false
+        return user.session.sessionType == SessionType.GENRE
     }
 
-    fun getAllGenres(): String {
-        //TODO
-        return "THE GENRES"
+    fun getAllGenres(): List<String> {
+        return (user.session as GenreSession).genres
     }
 
     fun getSessionCode(): String {
-        //TODO
-        return "123456"
+        return user.session.id.toString()
     }
 
     fun getQrCodeUrl(): String {
@@ -50,7 +56,7 @@ class InfoViewModel() : ViewModel() {
     }
 
     fun onOpenStats(navController: NavController) {
-        //TODO
+        navController.navigate(ViewsCollection.STATS_VIEW.name)
     }
 
     fun onBack(navController: NavController) {

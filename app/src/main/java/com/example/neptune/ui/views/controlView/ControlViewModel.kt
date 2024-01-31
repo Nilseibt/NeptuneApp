@@ -8,6 +8,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.neptune.data.model.backendConnector.HostBackendConnector
+import com.example.neptune.data.model.session.SessionType
 import com.example.neptune.data.model.track.src.Track
 import com.example.neptune.data.model.user.src.Host
 import com.example.neptune.ui.views.ViewsCollection
@@ -106,16 +107,20 @@ class ControlViewModel(
     }
 
     fun getTopBarDescription(): String {
-        //TODO
-        return "TOPBAR"
+        return when(host.session.sessionType){
+            SessionType.GENERAL -> "General Mode"
+            SessionType.ARTIST -> "Artist Mode"
+            SessionType.GENRE -> "Genre Mode"
+            SessionType.PLAYLIST -> "Playlist Mode"
+        }
     }
 
     fun onOpenInfo(navController: NavController) {
-        //TODO
+        navController.navigate(ViewsCollection.INFO_VIEW.name)
     }
 
     fun onOpenStats(navController: NavController) {
-        //TODO
+        navController.navigate(ViewsCollection.STATS_VIEW.name)
     }
 
     fun isDeleteSessionDialogShown(): Boolean {

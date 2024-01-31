@@ -37,6 +37,16 @@ fun ControlView(navController: NavController) {
 
     Column {
 
+        Button(onClick = { controlViewModel.onOpenInfo(navController) }) {
+            Text("Info öffnen (Icon)")
+        }
+
+        Text("TopBar Beschr.: " + controlViewModel.getTopBarDescription())
+
+        Button(onClick = { controlViewModel.onOpenStats(navController) }) {
+            Text("Statistiken öffnen (Icon)")
+        }
+
         Text(text = "Queue", color = Color.White)
         Box(modifier = Modifier.weight(7f)) {
             TrackListComposable(

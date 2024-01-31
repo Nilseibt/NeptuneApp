@@ -141,7 +141,6 @@ class SpotifyEstablisher(
         val stringRequest: StringRequest = object : StringRequest(
             Request.Method.GET, url,
             { response ->
-                Log.i("RES", response.toString())
                 matchingArtistsCallback(JSONObject(response), callback)
             },
             { error ->
