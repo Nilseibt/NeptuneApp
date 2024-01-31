@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -21,6 +22,7 @@ import com.example.neptune.ui.commons.TopBar
 import com.example.neptune.ui.commons.TrackListComposable
 import com.example.neptune.ui.commons.TrackListType
 import com.example.neptune.ui.views.util.viewModelFactory
+import kotlinx.coroutines.delay
 
 @Composable
 fun VoteView(navController: NavController) {
@@ -79,6 +81,14 @@ fun VoteView(navController: NavController) {
             }
         )
     }
+
+
+    LaunchedEffect(key1 = Unit, block = {
+        while (true) {
+            voteViewModel.syncState()
+            delay(5000)
+        }
+    })
 }
 
 @Preview(name = "Vote View Preview")
@@ -92,6 +102,5 @@ fun VoteViewPreview() {
         TopBar { }
         SessionInfoBar(onStatistics = { /*TODO*/ }, onInfo = { /*TODO*/ }, title = "General Modus")
     }
-
 
 }

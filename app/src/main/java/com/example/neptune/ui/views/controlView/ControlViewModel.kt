@@ -19,7 +19,7 @@ class ControlViewModel(
     private var deleteSessionDialogShown by mutableStateOf(false)
 
     fun onToggleUpvote(track: Track) {
-        //TODO
+        host.toggleUpvote(track)
     }
 
     fun onToggleDropdown(index: Int) {

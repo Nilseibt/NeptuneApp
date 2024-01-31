@@ -20,7 +20,7 @@ class VoteViewModel(
     private var leaveSessionDialogShown by mutableStateOf(false)
 
     fun onToggleUpvote(track: Track) {
-        //TODO
+        participant.toggleUpvote(track)
     }
 
     fun onToggleDropdown(index: Int) {
@@ -33,8 +33,7 @@ class VoteViewModel(
     }
 
     fun getVoteList(): SnapshotStateList<MutableState<Track>> {
-        //TODO
-        return SnapshotStateList()
+        return participant.voteList.value.getListOfTracks()
     }
 
     fun onSearchTracks(navController: NavController) {
@@ -78,6 +77,11 @@ class VoteViewModel(
 
     fun onDismissLeaveSession(navController: NavController) {
         leaveSessionDialogShown = false
+    }
+
+
+    fun syncState(){
+        participant.syncState()
     }
 
 }
