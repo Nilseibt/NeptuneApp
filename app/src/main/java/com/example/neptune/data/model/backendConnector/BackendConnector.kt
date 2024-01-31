@@ -65,7 +65,7 @@ open class BackendConnector(
                 }
             }
             callback(userSessionState, sessionId, timestamp, mode, artists, genres)
-        }else {
+        } else {
             callback(userSessionState, -1, -1, "", listOf(), listOf())
         }
     }
@@ -95,7 +95,6 @@ open class BackendConnector(
                 val genres = mutableListOf("placeholder")
                 val artists = mutableListOf("placeholder")
                 val upvotes = currentJsonTrack.getInt("upvotes")
-                // TODO Problems: parameter names of isUpvoted and hasCooldown might be different
                 val isUpvoted = false
                 val isBlocked = currentJsonTrack.getInt("isBlocked") != 0
                 val hasCooldown = currentJsonTrack.getInt("onCooldown") != 0
@@ -121,7 +120,7 @@ open class BackendConnector(
 
     fun getStatistics(
         callback: (
-            mostUpvotedSong: String,
+            mostUpvotedTrack: String,
             mostUpvotedGenre: String,
             mostUpvotedArtist: String,
             totalPlayedTracks: Int,
@@ -140,7 +139,7 @@ open class BackendConnector(
 
     private fun callbackStatistics(
         jsonResponse: JSONObject, callback: (
-            mostUpvotedSong: String,
+            mostUpvotedTrack: String,
             mostUpvotedGenre: String,
             mostUpvotedArtist: String,
             totalPlayedTracks: Int,
@@ -149,14 +148,42 @@ open class BackendConnector(
             totalUpvotes: Int
         ) -> Unit
     ) {
+        var mostUpvotedTrack = ""
+        if (jsonResponse.get("mostUpvotedSong").toString() != "null") {
+            mostUpvotedTrack = jsonResponse.getString("mostUpvotedSong")
+        }
+        var mostUpvotedGenre = ""
+        if (jsonResponse.get("mostUpvotedGenre").toString() != "null") {
+            mostUpvotedGenre = jsonResponse.getString("mostUpvotedGenre")
+        }
+        var mostUpvotedArtist = ""
+        if (jsonResponse.get("mostUpvotedArtist").toString() != "null") {
+            mostUpvotedArtist = jsonResponse.getString("mostUpvotedArtist")
+        }
+        var totalPlayedTracks = 0
+        if (jsonResponse.get("totalPlayedTracks").toString() != "null") {
+            totalPlayedTracks = jsonResponse.getInt("totalPlayedTracks")
+        }
+        var sessionDuration = ""
+        if (jsonResponse.get("sessionDuration").toString() != "null") {
+            sessionDuration = jsonResponse.getString("sessionDuration")
+        }
+        var totalParticipants = 0
+        if (jsonResponse.get("totalParticipants").toString() != "null") {
+            totalParticipants = jsonResponse.getInt("totalParticipants")
+        }
+        var totalUpvotes = 0
+        if (jsonResponse.get("totalUpvotes").toString() != "null") {
+            totalUpvotes = jsonResponse.getInt("totalUpvotes")
+        }
         callback(
-            jsonResponse.getString("mostUpvotedSong"),
-            jsonResponse.getString("mostUpvotedGenre"),
-            jsonResponse.getString("mostUpvotedArtist"),
-            jsonResponse.getInt("totalPlayedTracks"),
-            jsonResponse.getString("sessionDuration"),
-            jsonResponse.getInt("totalParticipants"),
-            jsonResponse.getInt("totalUpvotes")
+            mostUpvotedTrack,
+            mostUpvotedGenre,
+            mostUpvotedArtist,
+            totalPlayedTracks,
+            sessionDuration,
+            totalParticipants,
+            totalUpvotes
         )
     }
 

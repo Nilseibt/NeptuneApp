@@ -104,7 +104,22 @@ open class User(
         searchList.value = TrackList(foundTracks.toMutableStateList())
     }
 
+    fun requestStatistics(
+        callback: (
+        mostUpvotedSong: String,
+        mostUpvotedGenre: String,
+        mostUpvotedArtist: String,
+        totalPlayedTracks: Int,
+        sessionDuration: String,
+        totalParticipants: Int,
+        totalUpvotes: Int
+    ) -> Unit
+    ){
+        backendConnector.getStatistics(callback)
+    }
+
     protected fun filterSearchResults(searchResult: MutableList<Track>): MutableList<Track> {
+        //TODO right now unused
         val output: MutableList<Track> = ArrayList<Track>()
         for (track in searchResult) {
             if (!blockList.value.containsTrack(track) && !cooldownList.value.containsTrack(track) &&
@@ -118,6 +133,7 @@ open class User(
     }
 
     open fun leaveSession() {
+        //TODO right now unused
         val particantBackendConnector = backendConnector as ParticipantBackendConnector
         particantBackendConnector.participantLeaveSession()
     }
