@@ -8,6 +8,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.neptune.data.model.track.src.Track
+import com.example.neptune.data.model.user.src.Host
 import com.example.neptune.data.model.user.src.User
 import com.example.neptune.ui.commons.TrackListType
 import com.example.neptune.ui.views.ViewsCollection
@@ -21,12 +22,11 @@ class SearchViewModel(
 
 
     fun getSearchTrackListType(): TrackListType {
-        /*if (user is Host) {
+        if (user is Host) {
             return TrackListType.HOST_SEARCH
         } else {
             return TrackListType.PARTICIPANT_SEARCH
-        }*/
-        return TrackListType.PARTICIPANT_SEARCH // For now //TODO
+        }
     }
 
     fun getTrackSearchInput(): String {
@@ -50,7 +50,7 @@ class SearchViewModel(
     }
 
     fun onToggleUpvote(track: Track) {
-        //TODO
+        user.toggleUpvote(track)
     }
 
     fun onToggleDropdown(index: Int) {

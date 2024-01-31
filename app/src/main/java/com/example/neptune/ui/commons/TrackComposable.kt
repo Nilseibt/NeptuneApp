@@ -110,10 +110,10 @@ fun TrackComposable(
                 .padding(5.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxSize()) {
-                Text(track.upvotes.toString(), color = Color(0xFF12B1BE))
+                Text(track.getUpvotes().toString(), color = Color(0xFF12B1BE))
                 IconButton(onClick = { onToggleUpvote(track) }) {
                     var icon: ImageVector
-                    if (track.isUpvoted) {
+                    if (track.isUpvoted()) {
                         icon = Icons.Default.CheckCircle
                     } else {
                         icon = Icons.Default.AddCircle
@@ -135,7 +135,7 @@ fun TrackComposable(
 
                         if (trackListType == TrackListType.HOST_SEARCH || trackListType == TrackListType.HOST_VOTE) {
                             DropdownMenuItem(
-                                text = { Text(if (track.isBlocked) "Track entsperren" else "Track sperren") },
+                                text = { Text(if (track.isBlocked()) "Track entsperren" else "Track sperren") },
                                 onClick = { onToggleBlock(track) })
                             DropdownMenuItem(
                                 text = { Text("In die Queue") },
@@ -144,7 +144,7 @@ fun TrackComposable(
 
                         if (trackListType == TrackListType.HOST_QUEUE) {
                             DropdownMenuItem(
-                                text = { Text(if (track.isBlocked) "Track entsperren" else "Track sperren") },
+                                text = { Text(if (track.isBlocked()) "Track entsperren" else "Track sperren") },
                                 onClick = { onToggleBlock(track) })
                             DropdownMenuItem(
                                 text = { Text("Entfernen") },

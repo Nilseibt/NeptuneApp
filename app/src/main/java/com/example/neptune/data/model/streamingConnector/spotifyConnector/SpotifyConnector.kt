@@ -1,7 +1,9 @@
 package com.example.neptune.data.model.streamingConnector.spotifyConnector
 
 import android.util.Log
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
@@ -18,7 +20,10 @@ open class SpotifyConnector(
     private val refreshToken: String
 ) : StreamingConnector {
 
-    override fun search(searchInput: String, searchList: TrackList) {
+    override fun search(
+        searchInput: String,
+        onCallbackFinished: (resultList: MutableList<Track>) -> Unit
+    ) {
 
         var headers: MutableMap<String, String> = HashMap()
         headers["Authorization"] = "Bearer $accessToken"
@@ -29,13 +34,16 @@ open class SpotifyConnector(
         parameters["limit"] = "20"
 
         newRequest("https://api.spotify.com/v1/search", headers, parameters) { jsonResponse ->
-            searchTracksCallback(jsonResponse, searchList)
+            searchTracksCallback(jsonResponse, onCallbackFinished)
         }
     }
 
-    private fun searchTracksCallback(jsonResponse: JSONObject, searchList: TrackList) {
+    private fun searchTracksCallback(
+        jsonResponse: JSONObject,
+        onCallbackFinished: (resultList: MutableList<Track>) -> Unit
+    ) {
 
-        searchList.clear()
+        val resultList = mutableListOf<Track>()
         val tracksJsonList = jsonResponse.getJSONObject("tracks").getJSONArray("items")
         for (index in 0 until tracksJsonList.length()) {
             val trackJson = tracksJsonList.getJSONObject(index)
@@ -49,10 +57,13 @@ open class SpotifyConnector(
             val trackImageUrl = trackJson.getJSONObject("album").getJSONArray("images")
                 .getJSONObject(0).getString("url")
 
-            //TODO upvotes and block
-            val track = Track(trackId, trackName, artistNames, listOf(), trackImageUrl, 0, false, false)
-            searchList.addTrack(track)
+            val track = Track(
+                trackId, trackName, artistNames, listOf(), trackImageUrl,
+                mutableIntStateOf(0), mutableStateOf(false), mutableStateOf(false)
+            )
+            resultList.add(track)
         }
+        onCallbackFinished(resultList)
     }
 
 
@@ -73,7 +84,10 @@ open class SpotifyConnector(
         val stringRequest: StringRequest = object : StringRequest(
             Request.Method.GET, urlWithParams,
             { response ->
-                Log.i("SPOTIFY JSON", "$urlWithParams ${response.subSequence(0, minOf(response.length, 50))}")
+                Log.i(
+                    "SPOTIFY JSON",
+                    "$urlWithParams ${response.subSequence(0, minOf(response.length, 50))}"
+                )
                 callback(JSONObject(response))
             },
             { error ->

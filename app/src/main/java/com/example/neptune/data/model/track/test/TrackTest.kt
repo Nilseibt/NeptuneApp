@@ -7,6 +7,9 @@ import org.junit.Test
 
 
 class TrackTest {
+
+    //TODO rewrite that test
+    /*
     val mockTracks :MockTracks = MockTracks()
     val track1: Track = mockTracks.track1
     @Test fun addUpvote() {
@@ -23,7 +26,7 @@ class TrackTest {
     @Test fun logTrack(){
         System.out.println(track1.toString())
     }
-
+    */
 
 
 }

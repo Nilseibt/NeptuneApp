@@ -14,6 +14,10 @@ open class TrackList(private val tracks: SnapshotStateList<MutableState<Track>>)
         tracks.add(mutableStateOf(track))
     }
 
+    fun addTrack(track: MutableState<Track>) {
+        tracks.add(track)
+    }
+
     fun containsTrack(track: Track): Boolean {
         for (item in tracks) {
             if (item.value.id == track.id) {

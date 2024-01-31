@@ -1,6 +1,8 @@
 package com.example.neptune.data.model.backendConnector
 
 import android.util.Log
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
@@ -100,9 +102,9 @@ open class BackendConnector(
                     artists,
                     genres,
                     imageUrl,
-                    upvotes,
-                    isUpvoted,
-                    hasCooldown
+                    mutableIntStateOf(upvotes),
+                    mutableStateOf(isUpvoted),
+                    mutableStateOf(hasCooldown)
                 )
                 listOfTracks.add(trackToAdd)
             }
@@ -169,7 +171,7 @@ open class BackendConnector(
     }
 
 
-    fun addTrackToSession(track: Track) {
+    fun addTrackToSession(track: Track, callback: () -> Unit) {
         val postData = JSONObject()
         postData.put("deviceID", deviceId)
         postData.put("trackID", track.id)
@@ -178,7 +180,7 @@ open class BackendConnector(
         postData.put("genre", JSONArray())
         postData.put("imageURL", track.imageUrl)
 
-        sendRequest("addTrackToSession", postData)
+        sendRequest("addTrackToSession", postData) { callback() }
     }
 
 

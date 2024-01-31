@@ -10,18 +10,60 @@ import com.example.neptune.data.model.track.src.TrackList
 import com.example.neptune.data.model.track.src.VoteList
 
 open class User(val session: Session, val backendConnector: BackendConnector) {
+
     var voteList = mutableStateOf(VoteList(mutableStateListOf<MutableState<Track>>()))
     var searchList = mutableStateOf(TrackList(mutableStateListOf<MutableState<Track>>()))
     var blockList = mutableStateOf(TrackList(mutableStateListOf<MutableState<Track>>()))
     var cooldownList = mutableStateOf(TrackList(mutableStateListOf<MutableState<Track>>()))
 
 
+    private var sessionTracks = HashMap<String, MutableState<Track>>()
+
+    protected fun addOrUpdateSessionTrack(track: Track) {
+        sessionTracks[track.id] = mutableStateOf(track)
+    }
+
+    protected fun hasSessionTrack(trackId: String): Boolean {
+        return sessionTracks.containsKey(trackId)
+    }
+
+    protected fun getSessionTrack(trackId: String): MutableState<Track> {
+        if (hasSessionTrack(trackId)) {
+            return sessionTracks[trackId]!!
+        } else {
+            //TODO ist das sinnvoll?
+            throw Exception("Track is not a session track, check first with hasSessionTrack")
+        }
+    }
+
+
     fun addTrackToVoteList(track: Track) {
         voteList.value.addTrack(track)
     }
 
-    fun upvoteTrack(index: Int) {
-        voteList.value.upvoteTrack(index)
+    fun toggleUpvote(track: Track) {
+        if (hasSessionTrack(track.id)) {
+            val sessionTrack = getSessionTrack(track.id)
+            if (sessionTrack.value.isUpvoted()) {
+                backendConnector.removeUpvoteFromTrack(sessionTrack.value)
+            } else {
+                backendConnector.addUpvoteToTrack(sessionTrack.value)
+            }
+            sessionTrack.value.toggleUpvote()
+        } else {
+            if (track.isUpvoted()) {
+                track.toggleUpvote()
+                backendConnector.addTrackToSession(track) {
+                    backendConnector.removeUpvoteFromTrack(track)
+                }
+            } else {
+                track.toggleUpvote()
+                backendConnector.addTrackToSession(track) {
+                    backendConnector.addUpvoteToTrack(track)
+                }
+            }
+            addOrUpdateSessionTrack(track)
+        }
     }
 
     open fun search(input: String) {

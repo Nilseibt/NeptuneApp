@@ -5,15 +5,15 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 
 class VoteList(private val tracks: SnapshotStateList<MutableState<Track>>) : PlayList(tracks) {
 
-    fun upvoteTrack(index: Int) {
+    /*fun upvoteTrack(index: Int) {
         tracks[index].value.addUpvote()
     }
 
     fun removeUpvoteFromTrack(index: Int) {
         tracks[index].value.removeUpvote()
-    }
+    }*/
 
     fun sortByUpvote() {
-        tracks.sortBy { track -> track.value.upvotes }
+        tracks.sortBy { track -> track.value.getUpvotes() }
     }
 }
