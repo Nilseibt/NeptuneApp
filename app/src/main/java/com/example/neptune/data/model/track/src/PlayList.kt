@@ -1,15 +1,17 @@
 package com.example.neptune.data.model.track.src
 
-open class PlayList(tracks: MutableList<Track>): TrackList(tracks) {
-    constructor():this(ArrayList<Track>()){}
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.snapshots.SnapshotStateList
+
+open class PlayList(private val tracks: SnapshotStateList<MutableState<Track>>): TrackList(tracks) {
     fun search(input :String): MutableList<Track> {
         val output =  ArrayList<Track>()
         for( track in tracks){
-            if(track.name.contains(input,ignoreCase = true)){
-                output.add(track)
+            if(track.value.name.contains(input,ignoreCase = true)){
+                output.add(track.value)
             }
         }
-        tracks.sortBy { track -> track.name.length }
+        tracks.sortBy { track -> track.value.name.length }
         return output;
     }
 }

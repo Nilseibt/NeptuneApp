@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -53,7 +54,7 @@ fun StartView(navController: NavController) {
             Text(text = "Session erstellen")
         }
         Spacer(modifier = Modifier.height(32.dp))
-        Button(onClick = { startViewModel.onToggleConnectedToSpotify() }) {
+        FilledTonalButton(onClick = { startViewModel.onToggleConnectedToSpotify() }) {
             Text(text = startViewModel.getSpotifyButtonText())
         }
     }

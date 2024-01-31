@@ -1,9 +1,12 @@
 package com.example.neptune.data.model.streamingConnector.spotifyConnector
 
 import android.util.Log
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import com.android.volley.Request
 import com.android.volley.RequestQueue
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.example.neptune.data.model.streamingConnector.StreamingConnector
 import com.example.neptune.data.model.track.src.Track
@@ -17,53 +20,85 @@ open class SpotifyConnector(
     private val refreshToken: String
 ) : StreamingConnector {
 
-    override fun search(searchInput: String, searchList: TrackList) {
+    override fun search(
+        searchInput: String,
+        onCallbackFinished: (resultList: MutableList<Track>) -> Unit
+    ) {
 
-        //TODO started implementing here, but the draft got me, nothing works -Nils
-        /*val baseUrl = "https://api.spotify.com/v1/search"
-        val urlSearchQuery = URLEncoder.encode(searchInput, "UTF-8")
+        var headers: MutableMap<String, String> = HashMap()
+        headers["Authorization"] = "Bearer $accessToken"
 
-        val url = "$baseUrl?q=$urlSearchQuery&type=track&limit=20"
+        var parameters: MutableMap<String, String> = HashMap()
+        parameters["q"] = URLEncoder.encode(searchInput, "UTF-8")
+        parameters["type"] = "track"
+        parameters["limit"] = "20"
 
-        val stringRequest: StringRequest = object : StringRequest(
-            Request.Method.GET, url,
-            { response ->
-                Log.i("RES", response.toString())
-                searchTracksCallback(JSONObject(response), searchList)
-            },
-            { error ->
-                Log.e("VOLLEY", "Spotify Request Error: ${String(error.networkResponse.data)}")
-            }) {
-            override fun getHeaders(): Map<String, String> {
-                var params: MutableMap<String, String> = HashMap()
-                params["Authorization"] = "Bearer $accessToken"
-                return params
-            }
+        newRequest("https://api.spotify.com/v1/search", headers, parameters) { jsonResponse ->
+            searchTracksCallback(jsonResponse, onCallbackFinished)
         }
-
-        volleyQueue.add(stringRequest)*/
     }
 
-    private fun searchTracksCallback(artistsJsonObject: JSONObject, searchList: TrackList) {
+    private fun searchTracksCallback(
+        jsonResponse: JSONObject,
+        onCallbackFinished: (resultList: MutableList<Track>) -> Unit
+    ) {
 
-        //TODO started implementing here, but the draft got me, nothing works -Nils
-        //TODO ATTENTION: Code down here does not compile!!!
-        /*searchList.clear()
-        val trackList = mutableListOf<Track>()
-        val tracksJsonList = artistsJsonObject.getJSONObject("tracks").getJSONArray("items")
-        for(index in 0 until tracksJsonList.length()){
+        val resultList = mutableListOf<Track>()
+        val tracksJsonList = jsonResponse.getJSONObject("tracks").getJSONArray("items")
+        for (index in 0 until tracksJsonList.length()) {
             val trackJson = tracksJsonList.getJSONObject(index)
             val trackId = trackJson.getString("id")
             val trackName = trackJson.getString("name")
             val trackArtistsJsonList = trackJson.getJSONArray("artists")
             val artistNames = mutableListOf<String>()
-            for(artistIndex in 0 until trackArtistsJsonList.length()){
+            for (artistIndex in 0 until trackArtistsJsonList.length()) {
                 artistNames.add(trackArtistsJsonList.getJSONObject(artistIndex).getString("name"))
             }
+            val trackImageUrl = trackJson.getJSONObject("album").getJSONArray("images")
+                .getJSONObject(0).getString("url")
 
-            val track = Track(trackId, trackName)
-            trackList.add(artistList.getJSONObject(index).getString("name"))
-        }*/
+            val track = Track(
+                trackId, trackName, artistNames, listOf(), trackImageUrl,
+                mutableIntStateOf(0), mutableStateOf(false),
+                mutableStateOf(false), mutableStateOf(false)
+            )
+            resultList.add(track)
+        }
+        onCallbackFinished(resultList)
+    }
+
+
+    protected fun newRequest(
+        url: String,
+        headers: Map<String, String> = mapOf(),
+        parameters: Map<String, String>,
+        callback: (jsonResponse: JSONObject) -> Unit
+    ) {
+        var urlWithParams = url
+        if (parameters.isNotEmpty()) {
+            urlWithParams += "?"
+            parameters.forEach {
+                urlWithParams += it.key + "=" + it.value + "&"
+            }
+            urlWithParams.dropLast(1)
+        }
+        val stringRequest: StringRequest = object : StringRequest(
+            Request.Method.GET, urlWithParams,
+            { response ->
+                Log.i(
+                    "SPOTIFY JSON",
+                    "$urlWithParams ${response.subSequence(0, minOf(response.length, 50))}"
+                )
+                callback(JSONObject(response))
+            },
+            { error ->
+                Log.e("SPOTIFY VOLLEY", "$urlWithParams : Spotify Request Error: ${error}")
+            }) {
+            override fun getHeaders(): Map<String, String> {
+                return headers
+            }
+        }
+        volleyQueue.add(stringRequest)
     }
 
 

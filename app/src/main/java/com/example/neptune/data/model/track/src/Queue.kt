@@ -1,7 +1,9 @@
 package com.example.neptune.data.model.track.src
 
-class Queue( tracks : MutableList<Track>) : TrackList(tracks) {
-    constructor():this(ArrayList<Track>()){}
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.snapshots.SnapshotStateList
+
+class Queue(private val tracks : SnapshotStateList<MutableState<Track>>) : TrackList(tracks) {
     fun moveTrackDown(index: Int){
         if (tracks.size > index -1){
             //swap with track below index position

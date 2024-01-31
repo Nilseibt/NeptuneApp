@@ -1,6 +1,8 @@
 package com.example.neptune.data.model.backendConnector
 
 import android.util.Log
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
@@ -91,8 +93,10 @@ open class BackendConnector(
                 val artists = mutableListOf("placeholder")
                 val upvotes = currentJsonTrack.getInt("upvotes")
                 // TODO Problems: parameter names of isUpvoted and hasCooldown might be different
-                val isUpvoted = currentJsonTrack.getBoolean("isUpvoted")
-                val colldownflag = currentJsonTrack.getBoolean("hasCooldown")
+                val isUpvoted = false
+                val isBlocked = currentJsonTrack.getInt("isBlocked") != 0
+                val hasCooldown = currentJsonTrack.getInt("onCooldown") != 0
+
 
                 val trackToAdd = Track(
                     trackId,
@@ -100,9 +104,10 @@ open class BackendConnector(
                     artists,
                     genres,
                     imageUrl,
-                    upvotes,
-                    isUpvoted,
-                    hasCooldown = colldownflag
+                    mutableIntStateOf(upvotes),
+                    mutableStateOf(isUpvoted),
+                    mutableStateOf(isBlocked),
+                    mutableStateOf(hasCooldown)
                 )
                 listOfTracks.add(trackToAdd)
             }
@@ -169,7 +174,7 @@ open class BackendConnector(
     }
 
 
-    fun addTrackToSession(track: Track) {
+    fun addTrackToSession(track: Track, callback: () -> Unit) {
         val postData = JSONObject()
         postData.put("deviceID", deviceId)
         postData.put("trackID", track.id)
@@ -178,7 +183,7 @@ open class BackendConnector(
         postData.put("genre", JSONArray())
         postData.put("imageURL", track.imageUrl)
 
-        sendRequest("addTrackToSession", postData)
+        sendRequest("addTrackToSession", postData) { callback() }
     }
 
 

@@ -31,7 +31,18 @@ class SpotifyEstablisher(
 
     private var spotifyLevel = mutableStateOf(StreamingLevel.UNDETERMINED)
 
-    override suspend fun restoreConnectionIfPossible() {
+    private var onRestoreFinished: () -> Unit = {}
+
+    override fun getAccessToken(): String {
+        return accessToken
+    }
+
+    override fun getRefreshToken(): String {
+        return refreshToken
+    }
+
+    override suspend fun restoreConnectionIfPossible(onRestoreFinished: () -> Unit) {
+        this.onRestoreFinished = onRestoreFinished
         if (spotifyConnectionDatabase.hasLinkedEntry()) {
             if (spotifyConnectionDatabase.isLinked()) {
                 refreshToken = spotifyConnectionDatabase.getRefreshToken()
@@ -42,10 +53,12 @@ class SpotifyEstablisher(
                 }
             } else {
                 spotifyLevel.value = StreamingLevel.UNLINKED
+                onRestoreFinished()
             }
         } else {
             spotifyConnectionDatabase.setLinked(false)
             spotifyLevel.value = StreamingLevel.UNLINKED
+            onRestoreFinished()
         }
     }
 
@@ -238,12 +251,16 @@ class SpotifyEstablisher(
             spotifyLevel.value = StreamingLevel.FREE
         }
         Log.i("DETERMINED LEVEL", spotifyLevel.toString())
+        onRestoreFinished()
     }
 
-    private fun matchingArtistsCallback(artistsJsonObject: JSONObject, callback: (List<String>) -> Unit) {
+    private fun matchingArtistsCallback(
+        artistsJsonObject: JSONObject,
+        callback: (List<String>) -> Unit
+    ) {
         val artistsSearchList = mutableListOf<String>()
         val artistList = artistsJsonObject.getJSONObject("artists").getJSONArray("items")
-        for(index in 0 until artistList.length()){
+        for (index in 0 until artistList.length()) {
             artistsSearchList.add(artistList.getJSONObject(index).getString("name"))
         }
         callback(artistsSearchList)

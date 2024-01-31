@@ -23,8 +23,8 @@ class SessionBuilder {
         this.sessionType = sessionType
     }
 
-    fun setSessionTypeFromBackendString(sessionTypeBackendString: String){
-        sessionType = when(sessionTypeBackendString){
+    fun setSessionTypeFromBackendString(sessionTypeBackendString: String) {
+        sessionType = when (sessionTypeBackendString) {
             "General" -> SessionType.GENERAL
             "Artist" -> SessionType.ARTIST
             "Genre" -> SessionType.GENRE
@@ -98,10 +98,19 @@ class SessionBuilder {
     // make the backend call and then retrieve the full session provided the id and timestamp
     // from the backend
     fun createSession(sessionId: Int, sessionTimestamp: Int): Session {
-        return when(sessionType){
+        return when (sessionType) {
             SessionType.GENERAL -> Session(sessionId, sessionTimestamp, trackCooldown)
-            SessionType.ARTIST, SessionType.GENRE -> ArtistSession(sessionId, sessionTimestamp, trackCooldown, selectedEntities)
-            SessionType.PLAYLIST -> PlaylistSession(sessionId, sessionTimestamp, trackCooldown, PlayList())
+            SessionType.ARTIST, SessionType.GENRE -> ArtistSession(
+                sessionId,
+                sessionTimestamp,
+                trackCooldown,
+                selectedEntities
+            )
+            SessionType.PLAYLIST -> PlaylistSession(
+                sessionId, sessionTimestamp, trackCooldown, PlayList(
+                    mutableStateListOf()
+                )
+            )
             //TODO make an actual playlist in the playlist session
         }
     }

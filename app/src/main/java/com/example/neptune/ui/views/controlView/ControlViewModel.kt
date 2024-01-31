@@ -93,8 +93,7 @@ class ControlViewModel(
     }
 
     fun getVoteList(): SnapshotStateList<MutableState<Track>> {
-        //TODO
-        return SnapshotStateList()
+        return host.voteList.value.getListOfTracks()
     }
 
     fun getQueueList(): SnapshotStateList<MutableState<Track>> {
@@ -139,6 +138,10 @@ class ControlViewModel(
 
     fun onDismissDeleteSession(navController: NavController) {
         deleteSessionDialogShown = false
+    }
+
+    fun syncTracksFromBackend(){
+        host.syncTracksFromBackend()
     }
 
 }

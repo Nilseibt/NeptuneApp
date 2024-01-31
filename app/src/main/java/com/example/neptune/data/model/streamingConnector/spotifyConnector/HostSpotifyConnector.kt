@@ -1,5 +1,6 @@
 package com.example.neptune.data.model.streamingConnector.spotifyConnector
 
+import androidx.compose.runtime.mutableStateListOf
 import com.android.volley.RequestQueue
 import com.example.neptune.data.model.streamingConnector.HostStreamingConnector
 import com.example.neptune.data.model.track.src.PlayList
@@ -44,7 +45,7 @@ class HostSpotifyConnector(
 
     override fun getPlaylist(link: String): PlayList {
         //TODO
-        return PlayList(mutableListOf())
+        return PlayList(mutableStateListOf())
     }
 
 

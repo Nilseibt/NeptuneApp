@@ -1,5 +1,6 @@
 package com.example.neptune.data.model.track.src
 
+import androidx.compose.runtime.MutableState
 import java.sql.Timestamp
 import  java.util.Date
 
@@ -9,22 +10,42 @@ class Track(
     val artists: List<String>,
     val genres: List<String>,
     val imageUrl: String,
-    var upvotes: Int,
-    var isUpvoted: Boolean,
-    var isBlocked: Boolean = false,
-    var hasCooldown:Boolean = false
+    private var upvotes: MutableState<Int>,
+    private var isUpvoted: MutableState<Boolean>,
+    private var isBlocked: MutableState<Boolean>,
+    private var hasCooldown: MutableState<Boolean>
 ) {
-    fun addUpvote() {
-        upvotes += 1
+
+    fun getUpvotes(): Int {
+        return upvotes.value
     }
 
-    fun removeUpvote() {
-        if (upvotes > 0) {
-            upvotes -= 1
+    fun isUpvoted(): Boolean {
+        return isUpvoted.value
+    }
+
+    fun isLocked(): Boolean {
+        return isBlocked.value || hasCooldown.value
+    }
+
+    fun isBlocked(): Boolean {
+        return isBlocked.value
+    }
+
+    fun hasCooldown(): Boolean {
+        return hasCooldown.value
+    }
+
+    fun toggleUpvote() {
+        if (isUpvoted()) {
+            upvotes.value--
+        } else {
+            upvotes.value++
         }
+        isUpvoted.value = !isUpvoted.value
     }
 
-    fun getArtistNames(): String{
+    fun getArtistNames(): String {
         var artistNames = ""
         artists.forEach {
             artistNames += "$it, "
@@ -35,11 +56,11 @@ class Track(
     override fun toString(): String {
         return "Id:        $id\n" +
                 "name:     $name\n" +
-                "artists   $artists\n"+
-                "genres    $genres\n"+
-                "imageUrl  $imageUrl\n"+
-                "upvotes   $upvotes\n"+
-                "isUpvoted $isUpvoted\n"+
+                "artists   $artists\n" +
+                "genres    $genres\n" +
+                "imageUrl  $imageUrl\n" +
+                "upvotes   $upvotes\n" +
+                "isUpvoted $isUpvoted\n" +
                 "isBlocked $isBlocked"
     }
 }

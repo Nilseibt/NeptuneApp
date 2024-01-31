@@ -1,4 +1,5 @@
 package com.example.neptune.data.model.user.test
+import androidx.compose.runtime.mutableStateOf
 import com.android.volley.toolbox.Volley
 import com.example.neptune.NeptuneApp
 import com.example.neptune.data.model.backendConnector.ParticipantBackendConnector
@@ -13,7 +14,7 @@ class UserTest {
     @Test fun searchTest(){
 
         val user = User(Session(12,23,3),backendConnector)
-        user.voteList = mockTracks.voteList
+        user.voteList = mutableStateOf(mockTracks.voteList)
 
         var result = user.search("B")
         //println(result)

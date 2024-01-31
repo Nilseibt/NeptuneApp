@@ -18,7 +18,7 @@ class AppDatabase(
             appDataDao.upsert(AppData(0, deviceId))
         } else {
             //TODO ist das sinnvoll???
-            Exception("Device Id is already set, cannot be reset")
+            throw Exception("Device Id is already set, cannot be reset")
         }
     }
 
@@ -27,8 +27,7 @@ class AppDatabase(
             return appDataDao.getDeviceId()
         } else {
             //TODO ist das sinnvoll???
-            Exception("Device Id is not set, but must be already set")
-            return ""
+            throw Exception("Device Id is not set, but must be already set")
         }
     }
 
