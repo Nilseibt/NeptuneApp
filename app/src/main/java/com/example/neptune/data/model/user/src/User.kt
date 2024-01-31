@@ -20,7 +20,11 @@ open class User(val session: Session, val backendConnector: BackendConnector) {
     private var sessionTracks = HashMap<String, MutableState<Track>>()
 
     protected fun addOrUpdateSessionTrack(track: Track) {
-        sessionTracks[track.id] = mutableStateOf(track)
+        if (hasSessionTrack(track.id)) {
+            getSessionTrack(track.id).value = track
+        } else {
+            sessionTracks[track.id] = mutableStateOf(track)
+        }
     }
 
     protected fun hasSessionTrack(trackId: String): Boolean {
@@ -88,6 +92,27 @@ open class User(val session: Session, val backendConnector: BackendConnector) {
 
     open fun leaveSession() {
 
+    }
+
+
+    fun syncTracksFromBackend() {
+        backendConnector.getAllTrackData { listOfTracks ->
+            listOfTracks.forEach { track ->
+                addOrUpdateSessionTrack(track)
+            }
+            updateVoteList()
+        }
+    }
+
+    fun updateVoteList() {
+        val updatedVoteList = VoteList(mutableStateListOf())
+        sessionTracks.forEach { (trackId, track) ->
+            if(track.value.getUpvotes() > 0){
+                updatedVoteList.addTrack(track)
+            }
+        }
+        updatedVoteList.sortByUpvote()
+        voteList.value = updatedVoteList
     }
 
 

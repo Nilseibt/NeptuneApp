@@ -12,7 +12,8 @@ class Track(
     val imageUrl: String,
     private var upvotes: MutableState<Int>,
     private var isUpvoted: MutableState<Boolean>,
-    private var isBlocked: MutableState<Boolean>
+    private var isBlocked: MutableState<Boolean>,
+    private var hasCooldown: MutableState<Boolean>
 ) {
 
     fun getUpvotes(): Int {
@@ -23,8 +24,16 @@ class Track(
         return isUpvoted.value
     }
 
+    fun isLocked(): Boolean {
+        return isBlocked.value || hasCooldown.value
+    }
+
     fun isBlocked(): Boolean {
         return isBlocked.value
+    }
+
+    fun hasCooldown(): Boolean {
+        return hasCooldown.value
     }
 
     fun toggleUpvote() {

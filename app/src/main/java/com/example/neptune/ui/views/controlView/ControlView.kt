@@ -8,6 +8,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -17,6 +18,7 @@ import com.example.neptune.data.model.user.src.Host
 import com.example.neptune.ui.commons.TrackListComposable
 import com.example.neptune.ui.commons.TrackListType
 import com.example.neptune.ui.views.util.viewModelFactory
+import kotlinx.coroutines.delay
 
 @Composable
 fun ControlView(navController: NavController) {
@@ -94,4 +96,11 @@ fun ControlView(navController: NavController) {
             }
         )
     }
+
+    LaunchedEffect(key1 = Unit, block = {
+        while (true) {
+            controlViewModel.syncTracksFromBackend()
+            delay(3000)
+        }
+    })
 }

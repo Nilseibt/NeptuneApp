@@ -93,8 +93,10 @@ open class BackendConnector(
                 val artists = mutableListOf("placeholder")
                 val upvotes = currentJsonTrack.getInt("upvotes")
                 // TODO Problems: parameter names of isUpvoted and hasCooldown might be different
-                val isUpvoted = currentJsonTrack.getBoolean("isUpvoted")
-                val hasCooldown = currentJsonTrack.getBoolean("hasCooldown")
+                val isUpvoted = false
+                val isBlocked = currentJsonTrack.getInt("isBlocked") != 0
+                val hasCooldown = currentJsonTrack.getInt("onCooldown") != 0
+
 
                 val trackToAdd = Track(
                     trackId,
@@ -104,6 +106,7 @@ open class BackendConnector(
                     imageUrl,
                     mutableIntStateOf(upvotes),
                     mutableStateOf(isUpvoted),
+                    mutableStateOf(isBlocked),
                     mutableStateOf(hasCooldown)
                 )
                 listOfTracks.add(trackToAdd)

@@ -59,7 +59,8 @@ open class SpotifyConnector(
 
             val track = Track(
                 trackId, trackName, artistNames, listOf(), trackImageUrl,
-                mutableIntStateOf(0), mutableStateOf(false), mutableStateOf(false)
+                mutableIntStateOf(0), mutableStateOf(false),
+                mutableStateOf(false), mutableStateOf(false)
             )
             resultList.add(track)
         }
