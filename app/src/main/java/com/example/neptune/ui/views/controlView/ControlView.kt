@@ -100,7 +100,7 @@ fun ControlView(navController: NavController) {
     LaunchedEffect(key1 = Unit, block = {
         while (true) {
             controlViewModel.syncState()
-            delay(3000)
+            delay(5000)
         }
     })
 }

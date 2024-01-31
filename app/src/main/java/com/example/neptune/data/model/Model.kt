@@ -22,9 +22,11 @@ import com.example.neptune.data.model.streamingConnector.spotifyConnector.Spotif
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.SpotifyEstablisher
 import com.example.neptune.data.model.user.src.FullParticipant
 import com.example.neptune.data.model.user.src.Host
+import com.example.neptune.data.model.user.src.UpvoteDatabase
 import com.example.neptune.data.model.user.src.User
 import com.example.neptune.data.room.app.AppDataDatabase
 import com.example.neptune.data.room.streaming.StreamingConnectionDataDatabase
+import com.example.neptune.data.room.upvotes.UpvoteDataDatabase
 import com.example.neptune.ui.views.ViewsCollection
 
 class Model() {
@@ -51,6 +53,17 @@ class Model() {
 
     private val streamingConnectionDatabase =
         SpotifyConnectionDatabase(streamingConnectionDataDatabase.streamingConnectionDataDao)
+
+
+    private val upvoteDataDatabase by lazy {
+        Room.databaseBuilder(
+            NeptuneApp.context,
+            UpvoteDataDatabase::class.java,
+            "upvote_data.db"
+        ).build()
+    }
+
+    private val upvoteDatabase = UpvoteDatabase(upvoteDataDatabase.upvoteDataDao)
 
 
     private val streamingConnectorVolleyQueue by lazy {
@@ -134,7 +147,8 @@ class Model() {
             user = Host(
                 session!!,
                 backendConnector!! as HostBackendConnector,
-                streamingConnector!! as HostStreamingConnector
+                streamingConnector!! as HostStreamingConnector,
+                upvoteDatabase
             )
             sessionBuilder.reset()
             navController.navigate(ViewsCollection.CONTROL_VIEW.name)
@@ -162,7 +176,8 @@ class Model() {
             user = FullParticipant(
                 session!!,
                 backendConnector!! as ParticipantBackendConnector,
-                streamingConnector!!
+                streamingConnector!!,
+                upvoteDatabase
             )
             sessionBuilder.reset()
             navController.navigate(ViewsCollection.VOTE_VIEW.name)
@@ -194,7 +209,8 @@ class Model() {
             user = Host(
                 session!!,
                 backendConnector!! as HostBackendConnector,
-                streamingConnector!! as HostStreamingConnector
+                streamingConnector!! as HostStreamingConnector,
+                upvoteDatabase
             )
             sessionBuilder.reset()
             navController.navigate(ViewsCollection.CONTROL_VIEW.name)
@@ -229,7 +245,8 @@ class Model() {
             user = FullParticipant(
                 session!!,
                 backendConnector!! as ParticipantBackendConnector,
-                streamingConnector!!
+                streamingConnector!!,
+                upvoteDatabase
             )
             sessionBuilder.reset()
             navController.navigate(ViewsCollection.VOTE_VIEW.name)

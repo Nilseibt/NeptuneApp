@@ -3,7 +3,7 @@ package com.example.neptune.data.room.upvotes
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 
-@Entity(tableName = "upvote_data")
+@Entity(tableName = "upvote_data", primaryKeys = ["session_id", "timestamp", "track_id"])
 data class UpvoteData(
     @ColumnInfo(name = "session_id")
     val sessionId: Int,

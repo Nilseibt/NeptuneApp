@@ -24,6 +24,10 @@ class Track(
         return isUpvoted.value
     }
 
+    fun setUpvoted(upvoted: Boolean){
+        isUpvoted.value = upvoted
+    }
+
     fun isLocked(): Boolean {
         return isBlocked.value || hasCooldown.value
     }

@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 
 open class TrackList (private val tracks: SnapshotStateList<MutableState<Track>>){
-    constructor():this(SnapshotStateList<MutableState<Track>>()){}
 
     fun removeTrack(index: Int){
         tracks.removeAt(index)

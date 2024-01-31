@@ -17,7 +17,12 @@ class UpvoteDatabase(
     }
 
     suspend fun getStoredSessions(): List<Pair<Int, Int>> {
-        return upvoteDataDao.getStoredSessions()
+        val storedSessionsAsLists = upvoteDataDao.getStoredSessions()
+        val storedSessionsAsPairs = mutableListOf<Pair<Int, Int>>()
+        storedSessionsAsLists.forEach {
+            storedSessionsAsPairs.add(Pair(it.session_id, it.timestamp))
+        }
+        return storedSessionsAsPairs
     }
 
     suspend fun getUpvotedTrackIds(session: Session): List<String> {

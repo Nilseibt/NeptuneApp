@@ -13,9 +13,10 @@ import com.example.neptune.data.model.track.src.Track
 class Host(
     session: Session,
     hostBackendConnector: HostBackendConnector,
-    hostStreamingConnector: HostStreamingConnector
+    hostStreamingConnector: HostStreamingConnector,
+    upvoteDatabase: UpvoteDatabase
 ) :
-    FullParticipant(session, hostBackendConnector, hostStreamingConnector) {
+    FullParticipant(session, hostBackendConnector, hostStreamingConnector, upvoteDatabase) {
     val queue = Queue()
     fun addTrackToQueue(index: Int) {
         val track = voteList.value.trackAt(index)
@@ -36,7 +37,7 @@ class Host(
 
     override fun syncState() {
         syncTracksFromBackend()
-        refillStreamingQueue()
+        //refillStreamingQueue()
     }
 
     fun skip() {

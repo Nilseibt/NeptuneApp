@@ -10,8 +10,9 @@ import com.example.neptune.data.model.track.src.TrackList
 
 open class FullParticipant(
     session: Session, backendConnector: BackendConnector,
-    val streamingConnector: StreamingConnector
-) : User(session, backendConnector) {
+    val streamingConnector: StreamingConnector,
+    upvoteDatabase: UpvoteDatabase
+) : User(session, backendConnector, upvoteDatabase) {
 
     override fun search(input: String) {
         searchList.value.clear()

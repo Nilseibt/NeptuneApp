@@ -1,5 +1,6 @@
 package com.example.neptune.data.model.user.src
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -9,8 +10,14 @@ import com.example.neptune.data.model.session.Session
 import com.example.neptune.data.model.track.src.Track
 import com.example.neptune.data.model.track.src.TrackList
 import com.example.neptune.data.model.track.src.VoteList
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-open class User(val session: Session, val backendConnector: BackendConnector) {
+open class User(
+    val session: Session,
+    val backendConnector: BackendConnector,
+    private val upvoteDatabase: UpvoteDatabase
+) {
 
     var voteList = mutableStateOf(VoteList(mutableStateListOf<MutableState<Track>>()))
     var searchList = mutableStateOf(TrackList(mutableStateListOf<MutableState<Track>>()))
@@ -19,6 +26,15 @@ open class User(val session: Session, val backendConnector: BackendConnector) {
 
 
     private var sessionTracks = HashMap<String, MutableState<Track>>()
+
+    private var upvotedTrackIdsInSession = mutableListOf<String>()
+
+    init {
+        GlobalScope.launch {
+            upvotedTrackIdsInSession = upvoteDatabase.getUpvotedTrackIds(session).toMutableList()
+            addUpvotesToSessionTracks()
+        }
+    }
 
     protected fun addOrUpdateSessionTrack(track: Track) {
         if (hasSessionTrack(track.id)) {
@@ -41,19 +57,21 @@ open class User(val session: Session, val backendConnector: BackendConnector) {
         }
     }
 
-
-
-    fun addTrackToVoteList(track: Track) {
-        voteList.value.addTrack(mutableStateOf( track))
-    }
-
     fun toggleUpvote(track: Track) {
         if (hasSessionTrack(track.id)) {
             val sessionTrack = getSessionTrack(track.id)
             if (sessionTrack.value.isUpvoted()) {
                 backendConnector.removeUpvoteFromTrack(sessionTrack.value)
+                upvotedTrackIdsInSession.remove(track.id)
+                GlobalScope.launch {
+                    upvoteDatabase.removeUpvote(session, track.id)
+                }
             } else {
                 backendConnector.addUpvoteToTrack(sessionTrack.value)
+                upvotedTrackIdsInSession.add(track.id)
+                GlobalScope.launch {
+                    upvoteDatabase.addUpvote(session, track.id)
+                }
             }
             sessionTrack.value.toggleUpvote()
         } else {
@@ -61,11 +79,19 @@ open class User(val session: Session, val backendConnector: BackendConnector) {
                 track.toggleUpvote()
                 backendConnector.addTrackToSession(track) {
                     backendConnector.removeUpvoteFromTrack(track)
+                    upvotedTrackIdsInSession.remove(track.id)
+                    GlobalScope.launch {
+                        upvoteDatabase.removeUpvote(session, track.id)
+                    }
                 }
             } else {
                 track.toggleUpvote()
                 backendConnector.addTrackToSession(track) {
                     backendConnector.addUpvoteToTrack(track)
+                    upvotedTrackIdsInSession.add(track.id)
+                    GlobalScope.launch {
+                        upvoteDatabase.addUpvote(session, track.id)
+                    }
                 }
             }
             addOrUpdateSessionTrack(track)
@@ -74,8 +100,8 @@ open class User(val session: Session, val backendConnector: BackendConnector) {
 
     open fun search(input: String) {
         //TODO write it again, mutableStates broke the method
-        var foundTracks = voteList.value.search(input)
-        foundTracks = filterSearchResults(foundTracks)
+        //var foundTracks = voteList.value.search(input)
+        //foundTracks = filterSearchResults(foundTracks)
         //searchList.value = TrackList(foundTracks)
     }
 
@@ -97,13 +123,16 @@ open class User(val session: Session, val backendConnector: BackendConnector) {
         particantBackendConnector.participantLeaveSession()
     }
 
-    open fun syncState(){
+    open fun syncState() {
         syncTracksFromBackend()
     }
 
     protected fun syncTracksFromBackend() {
-        backendConnector.getAllTrackData { listOfTracks ->
+        backendConnector.getAllTrackData() { listOfTracks ->
             listOfTracks.forEach { track ->
+                if (upvotedTrackIdsInSession.contains(track.id)) {
+                    track.setUpvoted(true)
+                }
                 addOrUpdateSessionTrack(track)
             }
             updateVoteList()
@@ -113,12 +142,21 @@ open class User(val session: Session, val backendConnector: BackendConnector) {
     private fun updateVoteList() {
         val updatedVoteList = VoteList(mutableStateListOf())
         sessionTracks.forEach { (trackId, track) ->
-            if(track.value.getUpvotes() > 0){
+            if (track.value.getUpvotes() > 0) {
                 updatedVoteList.addTrack(track)
             }
         }
         updatedVoteList.sortByUpvote()
         voteList.value = updatedVoteList
+    }
+
+
+    private fun addUpvotesToSessionTracks() {
+        sessionTracks.forEach { (trackId, track) ->
+            if (upvotedTrackIdsInSession.contains(trackId)) {
+                track.value.setUpvoted(true)
+            }
+        }
     }
 
 

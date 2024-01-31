@@ -18,8 +18,13 @@ interface UpvoteDataDao{
     suspend fun isUpvotedInSession(sessionId: Int, timestamp: Int, trackId: String): Int
 
     @Query("SELECT DISTINCT session_id, timestamp FROM UPVOTE_DATA")
-    suspend fun getStoredSessions(): List<Pair<Int, Int>>
+    suspend fun getStoredSessions(): List<SessionTimestampPair>
 
     @Query("SELECT track_id FROM UPVOTE_DATA WHERE session_id = :sessionId AND timestamp = :timestamp")
     suspend fun getUpvotedTrackIds(sessionId: Int, timestamp: Int): List<String>
+
+    data class SessionTimestampPair(
+        val session_id: Int,
+        val timestamp: Int
+    )
 }

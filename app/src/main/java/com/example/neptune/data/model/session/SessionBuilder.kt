@@ -94,9 +94,7 @@ class SessionBuilder {
         return matchingGenres.subList(0, min(matchingGenres.size, 20))
     }
 
-    // let some other method (maybe in the model) create the host backend connector and
-    // make the backend call and then retrieve the full session provided the id and timestamp
-    // from the backend
+
     fun createSession(sessionId: Int, sessionTimestamp: Int): Session {
         return when (sessionType) {
             SessionType.GENERAL -> Session(sessionId, sessionTimestamp, trackCooldown)
