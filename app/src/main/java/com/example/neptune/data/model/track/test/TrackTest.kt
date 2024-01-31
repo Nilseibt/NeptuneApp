@@ -5,29 +5,39 @@ import com.example.neptune.data.model.track.src.Track
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-
+/**
+ * Test class for Track functionality.
+ */
 class TrackTest {
 
-    //TODO rewrite that test
-    /*
-    val mockTracks :MockTracks = MockTracks()
-    val track1: Track = mockTracks.track1
-    @Test fun addUpvote() {
-        track1.addUpvote()
-        assertTrue(track1.upvotes == 2)
-    }
-    @Test fun removeUpvote() {
-        track1.removeUpvote()
-        track1.removeUpvote()
-        track1.removeUpvote()
+    // Using mock data for testing.
+    val mockTracks: MockTracks = MockTracks()
 
-        assertTrue(track1.upvotes == 0)
+    // Retrieving a track for testing.
+    val track1: Track = mockTracks.track1
+
+    /**
+     * Test 'toggleUpvote' method.
+     */
+    @Test
+    fun toggleUpvote() {
+        track1.toggleUpvote()
+        assertTrue(track1.getUpvotes() == 2)
     }
-    @Test fun logTrack(){
+
+    /**
+     * Test 'logTrack' method.
+     */
+    @Test
+    fun logTrack() {
         System.out.println(track1.toString())
     }
-    */
 
-
+    /**
+     * Test 'getArtistNames' method.
+     */
+    @Test
+    fun getArtistNames() {
+        assertTrue(track1.getArtistNames() == "alligatoah, kiz")
+    }
 }
-

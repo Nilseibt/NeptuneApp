@@ -1,14 +1,26 @@
 package com.example.neptune.data.model.track.src
 
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
+
 import androidx.compose.runtime.snapshots.SnapshotStateList
 
+/**
+ * A collection of tracks, with base functionality
+ * Acts as a parent class for specialised lists of tracks
+ */
 open class TrackList (private val tracks: SnapshotStateList<MutableState<Track>>){
 
+    /**
+     * removes track from TrackList at index
+     */
     fun removeTrack(index: Int){
         tracks.removeAt(index)
     }
+
+    /**
+     * removes track from TrackList with matching id to the track given
+     * as an input, if no track with this id is in the input nothing happens
+     */
     fun removeTrack(track: Track){
         for (index in tracks.indices){
             if(tracks[index].value.id == track.id){
@@ -16,6 +28,9 @@ open class TrackList (private val tracks: SnapshotStateList<MutableState<Track>>
                 break
             }
         }
+    }
+    fun getListOfTracks():SnapshotStateList<MutableState<Track>>{
+        return tracks
     }
 
     fun addTrack(track: MutableState<Track>){
@@ -65,5 +80,6 @@ open class TrackList (private val tracks: SnapshotStateList<MutableState<Track>>
         output.append("\n\n")
         return output.toString()
     }
+
 
 }
