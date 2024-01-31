@@ -4,6 +4,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.snapshots.SnapshotStateList
 
 class Queue(private val tracks : SnapshotStateList<MutableState<Track>>) : TrackList(tracks) {
+    constructor():this(SnapshotStateList<MutableState<Track>>()){}
+
     fun moveTrackDown(index: Int){
         if (tracks.size > index -1){
             //swap with track below index position

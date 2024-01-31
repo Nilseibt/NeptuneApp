@@ -1,10 +1,11 @@
 package com.example.neptune.data.model.user.src
 
-import android.health.connect.datatypes.units.Percentage
+
+import androidx.compose.runtime.mutableStateOf
 import com.example.neptune.data.model.backendConnector.HostBackendConnector
 import com.example.neptune.data.model.session.Session
 import com.example.neptune.data.model.streamingConnector.HostStreamingConnector
-import com.example.neptune.data.model.streamingConnector.spotifyConnector.HostSpotifyConnector
+
 import com.example.neptune.data.model.track.src.Queue
 import com.example.neptune.data.model.track.src.Track
 
@@ -17,8 +18,8 @@ class Host(
     FullParticipant(session, hostBackendConnector, hostStreamingConnector) {
     val queue = Queue()
     fun addTrackToQueue(index: Int) {
-        val track = voteList.trackAt(index)
-        queue.addTrack(track)
+        val track = voteList.value.trackAt(index)
+        queue.addTrack(mutableStateOf( track))
     }
 
     fun removeTrackFromQueue(index: Int) {
@@ -32,48 +33,52 @@ class Host(
     fun removeTrackDownInQueue(index: Int) {
         queue.moveTrackDown(index)
     }
-    fun syncState(){
 
-    override fun syncState() {
-        super.syncState()
+    fun syncState() {
+
         refillStreamingQueue()
     }
 
     fun skip() {
-        streamingConnector.skipTrack()
+        val hostStreamingConnector = streamingConnector as HostStreamingConnector
+        hostStreamingConnector.skipTrack()
         refillStreamingQueue()
     }
 
     private fun refillStreamingQueue() {
-        if (streamingConnector.isQueueEmpty()) {
+        val hostStreamingConnector = streamingConnector as HostStreamingConnector
+        if (hostStreamingConnector.isQueueEmpty()) {
             if (!queue.isEmpty()) {
-                streamingConnector.addTrackToQueue(queue.popFirstTrack())
-            } else if (!voteList.isEmpty()) {
-                streamingConnector.addTrackToQueue(voteList.popFirstTrack())
+                hostStreamingConnector.addTrackToQueue(queue.popFirstTrack())
+            } else if (!voteList.value.isEmpty()) {
+                hostStreamingConnector.addTrackToQueue(voteList.value.popFirstTrack())
             }
         }
     }
 
     fun stopPlay() {
-        streamingConnector.stopPlay()
+        val hostStreamingConnector = streamingConnector as HostStreamingConnector
+        hostStreamingConnector.stopPlay()
     }
 
     fun resumePlay() {
-        streamingConnector.resumePlay()
+        val hostStreamingConnector = streamingConnector as HostStreamingConnector
+        hostStreamingConnector.resumePlay()
     }
 
     fun setPlayProgress(percentage: Int) {
-        streamingConnector.setPlayProgress(percentage)
+        val hostStreamingConnector = streamingConnector as HostStreamingConnector
+        hostStreamingConnector.setPlayProgress(percentage)
     }
 
     fun addTrackToBlockList(track: Track) {
-        blockList.addTrack(track)
+        blockList.value.addTrack(mutableStateOf( track))
         val hostBackendConnector = backendConnector as HostBackendConnector
         hostBackendConnector.setBlockTrack(track, blocked = true)
     }
 
     fun removeTrackFromBlockList(track: Track) {
-        blockList.removeTrack(track)
+        blockList.value.removeTrack(track)
         val hostBackendConnector = backendConnector as HostBackendConnector
         hostBackendConnector.setBlockTrack(track, blocked = false)
 

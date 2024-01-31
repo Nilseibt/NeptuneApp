@@ -4,6 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import com.example.neptune.data.model.backendConnector.BackendConnector
+import com.example.neptune.data.model.backendConnector.ParticipantBackendConnector
 import com.example.neptune.data.model.session.Session
 import com.example.neptune.data.model.track.src.Track
 import com.example.neptune.data.model.track.src.TrackList
@@ -42,7 +43,7 @@ open class User(val session: Session, val backendConnector: BackendConnector) {
 
 
     fun addTrackToVoteList(track: Track) {
-        voteList.value.addTrack(track)
+        voteList.value.addTrack(mutableStateOf( track))
     }
 
     fun toggleUpvote(track: Track) {
@@ -91,7 +92,8 @@ open class User(val session: Session, val backendConnector: BackendConnector) {
     }
 
     open fun leaveSession() {
-
+        val particantBackendConnector = backendConnector as ParticipantBackendConnector
+        particantBackendConnector.participantLeaveSession()
     }
 
 
@@ -104,7 +106,7 @@ open class User(val session: Session, val backendConnector: BackendConnector) {
         }
     }
 
-    fun updateVoteList() {
+    private fun updateVoteList() {
         val updatedVoteList = VoteList(mutableStateListOf())
         sessionTracks.forEach { (trackId, track) ->
             if(track.value.getUpvotes() > 0){

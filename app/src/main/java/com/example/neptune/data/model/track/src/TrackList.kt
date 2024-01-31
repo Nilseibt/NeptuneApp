@@ -1,25 +1,30 @@
 package com.example.neptune.data.model.track.src
 
-open class TrackList (val tracks: MutableList<Track>){
-    constructor():this(ArrayList<Track>()){}
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
+
+open class TrackList (private val tracks: SnapshotStateList<MutableState<Track>>){
+    constructor():this(SnapshotStateList<MutableState<Track>>()){}
 
     fun removeTrack(index: Int){
         tracks.removeAt(index)
     }
     fun removeTrack(track: Track){
         for (index in tracks.indices){
-            if(tracks[index].id == track.id){
+            if(tracks[index].value.id == track.id){
                 tracks.removeAt(index)
                 break
             }
         }
     }
-    fun addTrack(track: Track){
+
+    fun addTrack(track: MutableState<Track>){
         tracks.add(track)
     }
     fun containsTrack(track: Track): Boolean{
         for (item in tracks){
-            if (item.id == track.id){
+            if (item.value.id == track.id){
                 return true
             }
         }
@@ -28,7 +33,7 @@ open class TrackList (val tracks: MutableList<Track>){
     fun popFirstTrack(): Track {
         var output  = tracks.first()
         tracks.removeAt(0);
-        return output;
+        return output.value;
     }
     fun isEmpty(): Boolean{
         return tracks.isEmpty()
@@ -38,7 +43,7 @@ open class TrackList (val tracks: MutableList<Track>){
         tracks.clear()
     }
     fun trackAt(index: Int):Track{
-       return tracks[index]
+       return tracks[index].value
     }
 
     override fun toString(): String {
