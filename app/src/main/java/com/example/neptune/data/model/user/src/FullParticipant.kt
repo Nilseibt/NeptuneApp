@@ -1,5 +1,6 @@
 package com.example.neptune.data.model.user.src
 
+import androidx.compose.runtime.mutableStateOf
 import com.example.neptune.data.model.backendConnector.BackendConnector
 import com.example.neptune.data.model.session.Session
 import com.example.neptune.data.model.streamingConnector.HostStreamingConnector
@@ -20,7 +21,7 @@ open class FullParticipant(
                 if (hasSessionTrack(track.id)) {
                     searchList.value.addTrack(getSessionTrack(track.id))
                 } else {
-                    searchList.value.addTrack(track)
+                    searchList.value.addTrack(mutableStateOf( track))
                 }
             }
         }

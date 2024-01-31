@@ -141,7 +141,7 @@ class ControlViewModel(
     }
 
     fun syncTracksFromBackend(){
-        host.syncTracksFromBackend()
+        host.syncState()
     }
 
 }

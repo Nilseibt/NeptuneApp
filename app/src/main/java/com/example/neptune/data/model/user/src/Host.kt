@@ -34,8 +34,8 @@ class Host(
         queue.moveTrackDown(index)
     }
 
-    fun syncState() {
-
+    override fun syncState() {
+        super.syncState()
         refillStreamingQueue()
     }
 

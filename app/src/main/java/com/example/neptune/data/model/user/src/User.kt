@@ -16,8 +16,6 @@ open class User(val session: Session, val backendConnector: BackendConnector) {
     var searchList = mutableStateOf(TrackList(mutableStateListOf<MutableState<Track>>()))
     var blockList = mutableStateOf(TrackList(mutableStateListOf<MutableState<Track>>()))
     var cooldownList = mutableStateOf(TrackList(mutableStateListOf<MutableState<Track>>()))
-
-
     private var sessionTracks = HashMap<String, MutableState<Track>>()
 
     protected fun addOrUpdateSessionTrack(track: Track) {
@@ -81,7 +79,7 @@ open class User(val session: Session, val backendConnector: BackendConnector) {
     protected fun filterSearchResults(searchResult: MutableList<Track>): MutableList<Track> {
         val output: MutableList<Track> = ArrayList<Track>()
         for (track in searchResult) {
-            if (!blockList.value.containsTrack(track) && !cooldownList.value.containsTrack(track) &&
+            if ( !cooldownList.value.containsTrack(track) &&
                 session.validateTrack(track)
             ) {
                 output.add(track)
@@ -95,9 +93,11 @@ open class User(val session: Session, val backendConnector: BackendConnector) {
         val particantBackendConnector = backendConnector as ParticipantBackendConnector
         particantBackendConnector.participantLeaveSession()
     }
+    open fun syncState(){
+        syncTracksFromBackend();
+    }
 
-
-    fun syncTracksFromBackend() {
+    private fun syncTracksFromBackend() {
         backendConnector.getAllTrackData { listOfTracks ->
             listOfTracks.forEach { track ->
                 addOrUpdateSessionTrack(track)

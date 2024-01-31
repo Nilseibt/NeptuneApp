@@ -18,6 +18,9 @@ open class TrackList (private val tracks: SnapshotStateList<MutableState<Track>>
             }
         }
     }
+    fun getListOfTracks():SnapshotStateList<MutableState<Track>>{
+        return tracks
+    }
 
     fun addTrack(track: MutableState<Track>){
         tracks.add(track)
@@ -57,5 +60,6 @@ open class TrackList (private val tracks: SnapshotStateList<MutableState<Track>>
         output.append("\n\n")
         return output.toString()
     }
+
 
 }
