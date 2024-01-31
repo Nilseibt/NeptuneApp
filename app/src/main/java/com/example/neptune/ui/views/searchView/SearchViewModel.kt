@@ -71,7 +71,7 @@ class SearchViewModel(
     }
 
     fun getSearchList(): SnapshotStateList<MutableState<Track>> {
-        return user.searchList.value.getListOfTracks()
+        return user.searchList.value.getTracks()
     }
 
     fun getActiveFilter(): String {

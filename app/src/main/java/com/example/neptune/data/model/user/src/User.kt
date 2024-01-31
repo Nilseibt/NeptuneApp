@@ -42,6 +42,7 @@ open class User(val session: Session, val backendConnector: BackendConnector) {
     }
 
 
+
     fun addTrackToVoteList(track: Track) {
         voteList.value.addTrack(mutableStateOf( track))
     }
@@ -96,8 +97,11 @@ open class User(val session: Session, val backendConnector: BackendConnector) {
         particantBackendConnector.participantLeaveSession()
     }
 
+    open fun syncState(){
+        syncTracksFromBackend()
+    }
 
-    fun syncTracksFromBackend() {
+    protected fun syncTracksFromBackend() {
         backendConnector.getAllTrackData { listOfTracks ->
             listOfTracks.forEach { track ->
                 addOrUpdateSessionTrack(track)
