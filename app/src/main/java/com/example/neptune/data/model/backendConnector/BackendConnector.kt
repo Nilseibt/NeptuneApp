@@ -218,7 +218,7 @@ open class BackendConnector(
                 callback(response)
             },
             { error ->
-                Log.e("BACKEND VOLLEY", "$urlPath : Backend Server Request Error: ${error.localizedMessage}")
+                Log.e("BACKEND VOLLEY", "$urlPath : Backend Server Request Error: $error")
             })
         volleyQueue.add(jsonObjectRequest)
     }

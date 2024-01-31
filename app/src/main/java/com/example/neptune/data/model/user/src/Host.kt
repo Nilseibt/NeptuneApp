@@ -35,7 +35,7 @@ class Host(
     }
 
     override fun syncState() {
-        super.syncState()
+        syncTracksFromBackend()
         refillStreamingQueue()
     }
 

@@ -37,6 +37,11 @@ open class TrackList (private val tracks: SnapshotStateList<MutableState<Track>>
     fun addTrack(track: MutableState<Track>){
         tracks.add(track)
     }
+
+    fun addTrack(track: Track){
+        tracks.add(mutableStateOf(track))
+    }
+
     fun containsTrack(track: Track): Boolean{
         for (item in tracks){
             if (item.value.id == track.id){
@@ -59,6 +64,10 @@ open class TrackList (private val tracks: SnapshotStateList<MutableState<Track>>
     }
     fun trackAt(index: Int):Track{
        return tracks[index].value
+    }
+
+    fun getTracks(): SnapshotStateList<MutableState<Track>>{
+        return tracks
     }
 
     override fun toString(): String {
