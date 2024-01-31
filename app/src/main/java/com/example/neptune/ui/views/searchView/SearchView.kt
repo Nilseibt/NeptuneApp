@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -31,6 +33,17 @@ fun SearchView(navController: NavController) {
     }
 
     Column(Modifier.padding(10.dp)) {
+
+        Button(onClick = { searchViewModel.onOpenInfo(navController) }) {
+            Text("Info öffnen (Icon)")
+        }
+
+        Text("TopBar Beschr.: " + searchViewModel.getTopBarDescription())
+
+        Button(onClick = { searchViewModel.onOpenStats(navController) }) {
+            Text("Statistiken öffnen (Icon)")
+        }
+
         TextField(
             modifier = Modifier.fillMaxWidth(),
             value = searchViewModel.getTrackSearchInput(),

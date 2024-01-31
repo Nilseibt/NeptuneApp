@@ -97,8 +97,12 @@ class SearchViewModel(
     }
 
     fun getTopBarDescription(): String {
-        //TODO
-        return "Topbar"
+        return when(user.session.sessionType){
+            SessionType.GENERAL -> "General Mode"
+            SessionType.ARTIST -> "Artist Mode"
+            SessionType.GENRE -> "Genre Mode"
+            SessionType.PLAYLIST -> "Playlist Mode"
+        }
     }
 
     fun onOpenInfo(navController: NavController) {

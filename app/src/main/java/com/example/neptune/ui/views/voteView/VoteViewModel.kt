@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.neptune.data.model.backendConnector.HostBackendConnector
 import com.example.neptune.data.model.backendConnector.ParticipantBackendConnector
+import com.example.neptune.data.model.session.SessionType
 import com.example.neptune.data.model.track.src.Track
 import com.example.neptune.data.model.user.src.User
 import com.example.neptune.ui.views.ViewsCollection
@@ -23,15 +24,6 @@ class VoteViewModel(
         participant.toggleUpvote(track)
     }
 
-    fun onToggleDropdown(index: Int) {
-        //TODO
-    }
-
-    fun isDropdownExpanded(index: Int): Boolean {
-        //TODO
-        return false
-    }
-
     fun getVoteList(): SnapshotStateList<MutableState<Track>> {
         return participant.voteList.value.getListOfTracks()
     }
@@ -41,8 +33,12 @@ class VoteViewModel(
     }
 
     fun getTopBarDescription(): String {
-        //TODO
-        return "Topbar"
+        return when(participant.session.sessionType){
+            SessionType.GENERAL -> "General Mode"
+            SessionType.ARTIST -> "Artist Mode"
+            SessionType.GENRE -> "Genre Mode"
+            SessionType.PLAYLIST -> "Playlist Mode"
+        }
     }
 
     fun onOpenInfo(navController: NavController) {

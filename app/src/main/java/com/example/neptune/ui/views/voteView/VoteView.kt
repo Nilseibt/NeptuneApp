@@ -40,6 +40,18 @@ fun VoteView(navController: NavController) {
     }
 
     Column {
+
+        Button(onClick = { voteViewModel.onOpenInfo(navController) }) {
+            Text("Info öffnen (Icon)")
+        }
+
+        Text("TopBar Beschr.: " + voteViewModel.getTopBarDescription())
+
+        Button(onClick = { voteViewModel.onOpenStats(navController) }) {
+            Text("Statistiken öffnen (Icon)")
+        }
+
+
         Box(modifier = Modifier.weight(7f)) {
             TrackListComposable(
                 tracks = voteViewModel.getVoteList(),
