@@ -23,6 +23,9 @@ class SearchViewModel(
 
     private var expandedDropdownIndex by mutableIntStateOf(-1)
 
+    private var activeFilter = mutableStateOf(Filter.NONE)
+    private var isFilterDropdownExpanded = mutableStateOf(false)
+
     fun getSearchTrackListType(): TrackListType {
         if (user is Host) {
             return TrackListType.HOST_SEARCH
@@ -37,7 +40,7 @@ class SearchViewModel(
 
     fun onTrackSearchInputChange(newInput: String) {
         searchInput = newInput
-        if(user.session.sessionType != SessionType.GENRE) {
+        if (user.session.sessionType != SessionType.GENRE) {
             if (searchInput != "") {
                 user.search(searchInput)
             }
@@ -81,27 +84,45 @@ class SearchViewModel(
         return user.searchList.value.getTracks()
     }
 
-    fun getActiveFilter(): String {
-        //TODO
-        return "NONE"
+    fun isHost(): Boolean {
+        return user is Host
     }
 
-    fun onSetActiveFilter(filter: String) {
-        //TODO
+    fun onClickFilterIcon() {
+        if (activeFilter.value == Filter.NONE) {
+            isFilterDropdownExpanded.value = true
+        } else {
+            activeFilter.value = Filter.NONE
+        }
+    }
+
+    fun collapseFilterDropwdown() {
+        isFilterDropdownExpanded.value = false
+    }
+
+    fun isFilterDropdownExpanded(): Boolean{
+        return isFilterDropdownExpanded.value
+    }
+
+    fun getActiveFilter(): Filter {
+        return activeFilter.value
+    }
+
+    fun onSetActiveFilter(filter: Filter) {
+        activeFilter.value = filter
+        collapseFilterDropwdown()
     }
 
     fun getCooldownTracks(): SnapshotStateList<MutableState<Track>> {
-        //TODO
-        return SnapshotStateList()
+        return user.cooldownList.value.getTracks()
     }
 
     fun getBlockedTracks(): SnapshotStateList<MutableState<Track>> {
-        //TODO
-        return SnapshotStateList()
+        return user.blockList.value.getTracks()
     }
 
     fun getTopBarDescription(): String {
-        return when(user.session.sessionType){
+        return when (user.session.sessionType) {
             SessionType.GENERAL -> "General Mode"
             SessionType.ARTIST -> "Artist Mode"
             SessionType.GENRE -> "Genre Mode"
@@ -123,4 +144,9 @@ class SearchViewModel(
         navController.popBackStack()
     }
 
+}
+
+
+enum class Filter {
+    NONE, BLOCKED, COOLDOWN
 }

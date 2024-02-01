@@ -156,19 +156,29 @@ open class User(
                 }
                 addOrUpdateSessionTrack(track)
             }
-            updateVoteList()
+            updateTrackLists()
         }
     }
 
-    private fun updateVoteList() {
+    private fun updateTrackLists() {
         val updatedVoteList = VoteList(mutableStateListOf())
+        val updatedBlockList = TrackList(mutableStateListOf())
+        val updatedCooldownList = TrackList(mutableStateListOf())
         sessionTracks.forEach { (trackId, track) ->
             if (track.value.getUpvotes() > 0) {
                 updatedVoteList.addTrack(track)
             }
+            if(track.value.isBlocked()){
+                updatedBlockList.addTrack(track)
+            }
+            if(track.value.hasCooldown()){
+                updatedCooldownList.addTrack(track)
+            }
         }
         updatedVoteList.sortByUpvote()
         voteList.value = updatedVoteList
+        blockList.value = updatedBlockList
+        cooldownList.value = updatedCooldownList
     }
 
 
