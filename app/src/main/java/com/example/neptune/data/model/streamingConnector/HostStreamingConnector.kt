@@ -7,7 +7,9 @@ import com.example.neptune.data.model.track.src.Track
 
 interface HostStreamingConnector : StreamingConnector {
 
-    fun addTrackToStreamingQueue(track: Track)
+    fun playTrack(track: Track)
+
+    fun addTrackToStreamingQueue(track: Track, onCallback: () -> Unit = {})
 
     fun refillQueueIfNeeded(onRefillQueue: () -> Unit)
 
@@ -27,5 +29,7 @@ interface HostStreamingConnector : StreamingConnector {
     fun getPlaylist(link: String): PlayList
 
     fun getPlaybackState(): MutableState<PlaybackState>
+
+    fun setPlaybackState(playbackState: PlaybackState)
 
 }

@@ -72,7 +72,7 @@ class SpotifyEstablisher(
                 spotifyClientId +
                 "&response_type=code&redirect_uri=" +
                 "oauth://neptune-streaming-callback" +
-                "&scope=user-modify-playback-state user-read-private user-read-currently-playing user-read-playback-state"
+                "&scope=user-modify-playback-state user-read-private user-read-playback-state"
         val customTabsIntent = CustomTabsIntent.Builder().build()
         customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
