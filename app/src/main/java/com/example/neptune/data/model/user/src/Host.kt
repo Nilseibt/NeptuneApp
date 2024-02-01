@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.example.neptune.data.model.backendConnector.HostBackendConnector
 import com.example.neptune.data.model.session.Session
 import com.example.neptune.data.model.streamingConnector.HostStreamingConnector
+import com.example.neptune.data.model.streamingConnector.spotifyConnector.PlaybackState
 
 import com.example.neptune.data.model.track.src.Queue
 import com.example.neptune.data.model.track.src.Track
@@ -48,39 +49,45 @@ class Host(
 
     override fun syncState() {
         syncTracksFromBackend()
-        //refillStreamingQueue() //TODO
+        refillStreamingQueueIfNeeded()
     }
 
     fun skip() {
-        val hostStreamingConnector = streamingConnector as HostStreamingConnector
-        hostStreamingConnector.skipTrack()
-        refillStreamingQueue()
+        (streamingConnector as HostStreamingConnector).skipTrack()
     }
 
-    private fun refillStreamingQueue() {
-        val hostStreamingConnector = streamingConnector as HostStreamingConnector
-        if (hostStreamingConnector.isQueueEmpty()) {
+    private fun refillStreamingQueueIfNeeded() {
+        (streamingConnector as HostStreamingConnector).refillQueueIfNeeded {
+            val playedTrack = queue.value.popFirstTrack()
+            (backendConnector as HostBackendConnector).playedTrack(playedTrack)
             if (!queue.value.isEmpty()) {
-                hostStreamingConnector.addTrackToQueue(queue.value.popFirstTrack())
+                (streamingConnector as HostStreamingConnector).addTrackToStreamingQueue(
+                    queue.value.trackAt(0)
+                )
             } else if (!voteList.value.isEmpty()) {
-                hostStreamingConnector.addTrackToQueue(voteList.value.popFirstTrack())
+                addTrackToQueue(voteList.value.trackAt(0))
+                (streamingConnector as HostStreamingConnector).addTrackToStreamingQueue(
+                    voteList.value.trackAt(0)
+                )
             }
         }
     }
 
-    fun stopPlay() {
-        val hostStreamingConnector = streamingConnector as HostStreamingConnector
-        hostStreamingConnector.stopPlay()
+    fun pausePlay() {
+        (streamingConnector as HostStreamingConnector).pausePlay()
     }
 
     fun resumePlay() {
-        val hostStreamingConnector = streamingConnector as HostStreamingConnector
-        hostStreamingConnector.resumePlay()
+        (streamingConnector as HostStreamingConnector).resumePlay()
     }
 
     fun setPlayProgress(percentage: Int) {
         val hostStreamingConnector = streamingConnector as HostStreamingConnector
         hostStreamingConnector.setPlayProgress(percentage)
+    }
+
+    fun getPlaybackState(): MutableState<PlaybackState> {
+        return (streamingConnector as HostStreamingConnector).getPlaybackState()
     }
 
     fun toggleBlockTrack(track: Track) {

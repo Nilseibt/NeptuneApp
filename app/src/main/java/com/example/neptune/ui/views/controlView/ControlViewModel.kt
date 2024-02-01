@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.neptune.data.model.backendConnector.HostBackendConnector
 import com.example.neptune.data.model.session.SessionType
+import com.example.neptune.data.model.streamingConnector.spotifyConnector.PlaybackState
 import com.example.neptune.data.model.track.src.Track
 import com.example.neptune.data.model.user.src.Host
 import com.example.neptune.ui.views.ViewsCollection
@@ -72,17 +73,23 @@ class ControlViewModel(
     }
 
     fun getPausedDescription(): String {
-        //TODO
-        return "KP"
+        return when(host.getPlaybackState().value){
+            PlaybackState.INITIAL -> ""
+            PlaybackState.PAUSED -> "Weiter"
+            PlaybackState.PLAYING -> "Pause"
+        }
     }
 
     fun isTogglePauseAvailable(): Boolean {
-        //TODO
-        return false
+        return host.getPlaybackState().value != PlaybackState.INITIAL
     }
 
     fun onTogglePause() {
-        //TODO
+        if(host.getPlaybackState().value == PlaybackState.PLAYING) {
+            host.pausePlay()
+        } else if(host.getPlaybackState().value == PlaybackState.PAUSED) {
+            host.resumePlay()
+        }
     }
 
     fun getSkipDescription(): String {
@@ -96,7 +103,7 @@ class ControlViewModel(
     }
 
     fun onSkip() {
-        //TODO
+        host.skip()
     }
 
     fun getTrackSliderPosition(): Float {

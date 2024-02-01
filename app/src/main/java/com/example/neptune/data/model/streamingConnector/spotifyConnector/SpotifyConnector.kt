@@ -33,7 +33,11 @@ open class SpotifyConnector(
         parameters["type"] = "track"
         parameters["limit"] = "20"
 
-        newRequest("https://api.spotify.com/v1/search", headers, parameters) { jsonResponse ->
+        newGetRequest(
+            "https://api.spotify.com/v1/search",
+            headers,
+            parameters
+        ) { jsonResponse ->
             searchTracksCallback(jsonResponse, onCallbackFinished)
         }
     }
@@ -68,7 +72,7 @@ open class SpotifyConnector(
     }
 
 
-    protected fun newRequest(
+    protected fun newGetRequest(
         url: String,
         headers: Map<String, String> = mapOf(),
         parameters: Map<String, String>,
@@ -89,7 +93,41 @@ open class SpotifyConnector(
                     "SPOTIFY JSON",
                     "$urlWithParams ${response.subSequence(0, minOf(response.length, 50))}"
                 )
-                callback(JSONObject(response))
+                if(response != "") {
+                    callback(JSONObject(response))
+                }
+            },
+            { error ->
+                Log.e("SPOTIFY VOLLEY", "$urlWithParams : Spotify Request Error: ${error}")
+            }) {
+            override fun getHeaders(): Map<String, String> {
+                return headers
+            }
+        }
+        volleyQueue.add(stringRequest)
+    }
+
+    protected fun newRequest(
+        url: String,
+        method: Int,
+        headers: Map<String, String> = mapOf(),
+        parameters: Map<String, String>
+    ) {
+        var urlWithParams = url
+        if (parameters.isNotEmpty()) {
+            urlWithParams += "?"
+            parameters.forEach {
+                urlWithParams += it.key + "=" + it.value + "&"
+            }
+            urlWithParams.dropLast(1)
+        }
+        val stringRequest: StringRequest = object : StringRequest(
+            method, urlWithParams,
+            { response ->
+                Log.i(
+                    "SPOTIFY JSON",
+                    "$urlWithParams $response"
+                )
             },
             { error ->
                 Log.e("SPOTIFY VOLLEY", "$urlWithParams : Spotify Request Error: ${error}")

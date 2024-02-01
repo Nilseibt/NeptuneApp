@@ -73,7 +73,7 @@ fun ControlView(navController: NavController) {
 
                 onToggleBlock = { controlViewModel.onToggleBlock(it) })
         }
-        Button(onClick = { controlViewModel.onTogglePause() }){
+        Button(onClick = { controlViewModel.onTogglePause() }, enabled = controlViewModel.isTogglePauseAvailable()){
             Text(text = controlViewModel.getPausedDescription())
         }
         Button(onClick = { controlViewModel.onSkip() }){
@@ -119,7 +119,7 @@ fun ControlView(navController: NavController) {
     LaunchedEffect(key1 = Unit, block = {
         while (true) {
             controlViewModel.syncState()
-            delay(5000)
+            delay(3000)
         }
     })
 }
