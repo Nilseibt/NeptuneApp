@@ -55,7 +55,7 @@ fun SearchView(navController: NavController) {
                 onToggleUpvote = { searchViewModel.onToggleUpvote(it) },
                 onToggleDropdown = { searchViewModel.onToggleDropdown(it) },
                 isDropdownExpanded = { searchViewModel.isDropdownExpanded(it) },
-
+                onAddToQueue = { searchViewModel.onAddToQueue(it) },
                 onToggleBlock = { searchViewModel.onToggleBlock(it) })
         }
     }

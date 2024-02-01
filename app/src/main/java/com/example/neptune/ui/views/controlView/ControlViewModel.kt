@@ -52,11 +52,11 @@ class ControlViewModel(
     }
 
     fun onAddToQueue(track: Track) {
-        //TODO
+        host.addTrackToQueue(track)
     }
 
     fun onRemoveFromQueue(index: Int) {
-        //TODO
+        host.removeTrackFromQueue(index)
     }
 
     fun onToggleBlock(track: Track) {
@@ -64,11 +64,11 @@ class ControlViewModel(
     }
 
     fun onMoveUp(index: Int) {
-        //TODO
+        host.moveTrackUpInQueue(index)
     }
 
     fun onMoveDown(index: Int) {
-        //TODO
+        host.moveTrackDownInQueue(index)
     }
 
     fun getPausedDescription(): String {
@@ -117,8 +117,7 @@ class ControlViewModel(
     }
 
     fun getQueueList(): SnapshotStateList<MutableState<Track>> {
-        //TODO
-        return SnapshotStateList()
+        return host.queue.value.getTracks()
     }
 
     fun onSearchTracks(navController: NavController) {

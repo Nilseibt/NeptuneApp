@@ -70,7 +70,7 @@ class SearchViewModel(
     }
 
     fun onAddToQueue(track: Track) {
-        //TODO
+        (user as Host).addTrackToQueue(track)
     }
 
     fun onToggleBlock(track: Track) {

@@ -4,22 +4,26 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.snapshots.SnapshotStateList
 
 class Queue(private val tracks : SnapshotStateList<MutableState<Track>>) : TrackList(tracks) {
-    constructor():this(SnapshotStateList<MutableState<Track>>()){}
 
     fun moveTrackDown(index: Int){
-        if (tracks.size > index -1){
-            //swap with track below index position
-            val tmp = tracks[index]
-            tracks[index] = tracks[index+1]
-            tracks[index+1] = tmp
+        if(index < tracks.size - 1){
+            val temporary = tracks[index]
+            tracks[index] = tracks[index + 1]
+            tracks[index + 1] = temporary
         }
     }
+
     fun moveTrackUp(index: Int){
-        if (index > 0){
-            //swap with track above index position
-            val tmp = tracks[index]
-            tracks[index] = tracks[index-1]
-            tracks[index-1] = tmp
+        if(index > 0){
+            val temporary = tracks[index]
+            tracks[index] = tracks[index - 1]
+            tracks[index - 1] = temporary
+        }
+    }
+
+    fun removeTrack(index: Int){
+        if(index >= 0 && index < tracks.size){
+            tracks.removeAt(index)
         }
     }
 }

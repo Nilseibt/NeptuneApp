@@ -25,7 +25,7 @@ class VoteViewModel(
     }
 
     fun getVoteList(): SnapshotStateList<MutableState<Track>> {
-        return participant.voteList.value.getListOfTracks()
+        return participant.voteList.value.getTracks()
     }
 
     fun onSearchTracks(navController: NavController) {

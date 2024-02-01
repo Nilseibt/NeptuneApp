@@ -14,25 +14,22 @@ open class TrackList (private val tracks: SnapshotStateList<MutableState<Track>>
     /**
      * removes track from TrackList at index
      */
-    fun removeTrack(index: Int){
+    /*fun removeTrack(index: Int){
         tracks.removeAt(index)
-    }
+    }*/ //TODO probably not needed here, put in the queue
 
     /**
      * removes track from TrackList with matching id to the track given
      * as an input, if no track with this id is in the input nothing happens
      */
-    fun removeTrack(track: Track){
+    /*fun removeTrack(track: Track){
         for (index in tracks.indices){
             if(tracks[index].value.id == track.id){
                 tracks.removeAt(index)
                 break
             }
         }
-    }
-    fun getListOfTracks():SnapshotStateList<MutableState<Track>>{
-        return tracks
-    }
+    }*/ //TODO probably not needed
 
     fun addTrack(track: MutableState<Track>){
         tracks.add(track)

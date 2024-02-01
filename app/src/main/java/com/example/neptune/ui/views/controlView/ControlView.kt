@@ -56,8 +56,9 @@ fun ControlView(navController: NavController) {
                 onToggleDropdown = { controlViewModel.onToggleDropdownQueue(it) },
                 isDropdownExpanded = { controlViewModel.isDropdownExpandedQueue(it) },
                 onRemoveFromQueue = {controlViewModel.onRemoveFromQueue(it) },
-
-                onToggleBlock = { controlViewModel.onToggleBlock(it) })
+                onToggleBlock = { controlViewModel.onToggleBlock(it) },
+                onMoveUp = { controlViewModel.onMoveUp(it) },
+                onMoveDown = { controlViewModel.onMoveDown(it) })
         }
 
         Text(text = "Upvote Liste", color = Color.White)

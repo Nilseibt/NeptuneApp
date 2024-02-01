@@ -1,6 +1,8 @@
 package com.example.neptune.data.model.user.src
 
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import com.example.neptune.data.model.backendConnector.HostBackendConnector
 import com.example.neptune.data.model.session.Session
@@ -17,25 +19,31 @@ class Host(
     hostBackendConnector: HostBackendConnector,
     hostStreamingConnector: HostStreamingConnector,
     upvoteDatabase: UpvoteDatabase
-) :
-    FullParticipant(session, hostBackendConnector, hostStreamingConnector, upvoteDatabase) {
-    val queue = Queue()
+) : FullParticipant(session, hostBackendConnector, hostStreamingConnector, upvoteDatabase) {
 
-    fun addTrackToQueue(index: Int) {
-        val track = voteList.value.trackAt(index)
-        queue.addTrack(mutableStateOf(track))
+    val queue = mutableStateOf(Queue(mutableStateListOf()))
+
+    fun addTrackToQueue(track: Track) {
+        if (hasSessionTrack(track.id)) {
+            val sessionTrack = getSessionTrack(track.id)
+            queue.value.addTrack(sessionTrack)
+        } else {
+            addOrUpdateSessionTrack(track)
+            queue.value.addTrack(getSessionTrack(track.id))
+            backendConnector.addTrackToSession(track) {}
+        }
     }
 
     fun removeTrackFromQueue(index: Int) {
-        queue.removeTrack(index)
+        queue.value.removeTrack(index)
     }
 
     fun moveTrackUpInQueue(index: Int) {
-        queue.moveTrackUp(index)
+        queue.value.moveTrackUp(index)
     }
 
-    fun removeTrackDownInQueue(index: Int) {
-        queue.moveTrackDown(index)
+    fun moveTrackDownInQueue(index: Int) {
+        queue.value.moveTrackDown(index)
     }
 
     override fun syncState() {
@@ -52,8 +60,8 @@ class Host(
     private fun refillStreamingQueue() {
         val hostStreamingConnector = streamingConnector as HostStreamingConnector
         if (hostStreamingConnector.isQueueEmpty()) {
-            if (!queue.isEmpty()) {
-                hostStreamingConnector.addTrackToQueue(queue.popFirstTrack())
+            if (!queue.value.isEmpty()) {
+                hostStreamingConnector.addTrackToQueue(queue.value.popFirstTrack())
             } else if (!voteList.value.isEmpty()) {
                 hostStreamingConnector.addTrackToQueue(voteList.value.popFirstTrack())
             }
@@ -95,12 +103,12 @@ class Host(
         }
     }
 
-    fun removeTrackFromBlockList(track: Track) {
+    /*fun removeTrackFromBlockList(track: Track) {
         blockList.value.removeTrack(track)
         val hostBackendConnector = backendConnector as HostBackendConnector
         hostBackendConnector.setBlockTrack(track, blocked = false)
 
-    }
+    }*/ //TODO probably not needed
 
     override fun leaveSession() {
         val hostBackendConnector = backendConnector as HostBackendConnector
