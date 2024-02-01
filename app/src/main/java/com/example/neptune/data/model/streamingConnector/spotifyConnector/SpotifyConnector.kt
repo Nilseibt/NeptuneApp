@@ -111,7 +111,8 @@ open class SpotifyConnector(
         url: String,
         method: Int,
         headers: Map<String, String> = mapOf(),
-        parameters: Map<String, String>
+        parameters: Map<String, String>,
+        onCallback: () -> Unit = {}
     ) {
         var urlWithParams = url
         if (parameters.isNotEmpty()) {
@@ -128,6 +129,7 @@ open class SpotifyConnector(
                     "SPOTIFY JSON",
                     "$urlWithParams $response"
                 )
+                onCallback()
             },
             { error ->
                 Log.e("SPOTIFY VOLLEY", "$urlWithParams : Spotify Request Error: ${error}")

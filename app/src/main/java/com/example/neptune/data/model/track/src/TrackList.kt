@@ -16,20 +16,20 @@ open class TrackList (private val tracks: SnapshotStateList<MutableState<Track>>
      */
     /*fun removeTrack(index: Int){
         tracks.removeAt(index)
-    }*/ //TODO probably not needed here, put in the queue
+    }*/ //TODO probably not needed here, put in the queue or nowhere
 
     /**
      * removes track from TrackList with matching id to the track given
      * as an input, if no track with this id is in the input nothing happens
      */
-    /*fun removeTrack(track: Track){
+    fun removeTrack(track: Track){
         for (index in tracks.indices){
             if(tracks[index].value.id == track.id){
                 tracks.removeAt(index)
                 break
             }
         }
-    }*/ //TODO probably not needed
+    }
 
     fun addTrack(track: MutableState<Track>){
         tracks.add(track)
@@ -47,11 +47,17 @@ open class TrackList (private val tracks: SnapshotStateList<MutableState<Track>>
         }
         return false
     }
+
     fun popFirstTrack(): Track {
-        var output  = tracks.first()
-        tracks.removeAt(0);
-        return output.value;
+        if(tracks.size > 0) {
+            var output = tracks.first()
+            tracks.removeAt(0)
+            return output.value
+        } else{
+            throw Exception("No track in Queue, cannot pop first track")
+        }
     }
+
     fun isEmpty(): Boolean{
         return tracks.isEmpty()
     }

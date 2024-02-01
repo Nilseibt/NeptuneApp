@@ -148,6 +148,12 @@ open class User(
                 if (upvotedTrackIdsInSession.contains(track.id)) {
                     track.setUpvoted(true)
                 }
+                if(track.getUpvotes() == 0 && upvotedTrackIdsInSession.contains(track.id)){
+                    GlobalScope.launch {
+                        upvoteDatabase.removeUpvote(session, track.id)
+                    }
+                    upvotedTrackIdsInSession.remove(track.id)
+                }
                 addOrUpdateSessionTrack(track)
             }
             updateVoteList()

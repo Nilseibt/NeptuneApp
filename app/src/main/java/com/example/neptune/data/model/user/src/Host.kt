@@ -1,7 +1,9 @@
 package com.example.neptune.data.model.user.src
 
 
+import androidx.compose.runtime.MutableFloatState
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import com.example.neptune.data.model.backendConnector.HostBackendConnector
@@ -23,6 +25,8 @@ class Host(
 ) : FullParticipant(session, hostBackendConnector, hostStreamingConnector, upvoteDatabase) {
 
     val queue = mutableStateOf(Queue(mutableStateListOf()))
+
+    private val trackPlayProgress = mutableFloatStateOf(0f)
 
     fun addTrackToQueue(track: Track) {
         if (hasSessionTrack(track.id)) {
@@ -53,23 +57,62 @@ class Host(
     }
 
     fun skip() {
-        (streamingConnector as HostStreamingConnector).skipTrack()
+        val playedTrack = queue.value.popFirstTrack()
+        (backendConnector as HostBackendConnector).playedTrack(playedTrack)
+        voteList.value.removeTrack(playedTrack)
+        if (!queue.value.isEmpty()) {
+            (streamingConnector as HostStreamingConnector).addTrackToStreamingQueue(
+                queue.value.trackAt(0)
+            ) {
+                (streamingConnector as HostStreamingConnector).skipTrack()
+            }
+        } else if (!voteList.value.isEmpty()) {
+            addTrackToQueue(voteList.value.trackAt(0))
+            (streamingConnector as HostStreamingConnector).addTrackToStreamingQueue(
+                queue.value.trackAt(0)
+            ) {
+                (streamingConnector as HostStreamingConnector).skipTrack()
+            }
+        }
     }
 
     private fun refillStreamingQueueIfNeeded() {
-        (streamingConnector as HostStreamingConnector).refillQueueIfNeeded {
-            val playedTrack = queue.value.popFirstTrack()
-            (backendConnector as HostBackendConnector).playedTrack(playedTrack)
+        if ((streamingConnector as HostStreamingConnector).getPlaybackState().value == PlaybackState.INITIAL) {
             if (!queue.value.isEmpty()) {
-                (streamingConnector as HostStreamingConnector).addTrackToStreamingQueue(
+                (streamingConnector as HostStreamingConnector).playTrack(
                     queue.value.trackAt(0)
                 )
             } else if (!voteList.value.isEmpty()) {
                 addTrackToQueue(voteList.value.trackAt(0))
-                (streamingConnector as HostStreamingConnector).addTrackToStreamingQueue(
-                    voteList.value.trackAt(0)
+                (streamingConnector as HostStreamingConnector).playTrack(
+                    queue.value.trackAt(0)
                 )
             }
+        } else {
+            (streamingConnector as HostStreamingConnector).refillQueueIfNeeded({
+                if (!queue.value.isEmpty()) {
+                    val playedTrack = queue.value.popFirstTrack()
+                    (backendConnector as HostBackendConnector).playedTrack(playedTrack)
+                    voteList.value.removeTrack(playedTrack)
+                }
+                if (!queue.value.isEmpty()) {
+                    (streamingConnector as HostStreamingConnector).addTrackToStreamingQueue(
+                        queue.value.trackAt(0)
+                    )
+                } else if (!voteList.value.isEmpty()) {
+                    addTrackToQueue(voteList.value.trackAt(0))
+                    (streamingConnector as HostStreamingConnector).addTrackToStreamingQueue(
+                        queue.value.trackAt(0)
+                    )
+                } else {
+                    (streamingConnector as HostStreamingConnector).setPlaybackState(
+                        PlaybackState.INITIAL
+                    )
+                }
+            },
+                { progress ->
+                    changePlayProgressWithoutSpotify(progress)
+                })
         }
     }
 
@@ -81,9 +124,16 @@ class Host(
         (streamingConnector as HostStreamingConnector).resumePlay()
     }
 
-    fun setPlayProgress(percentage: Int) {
-        val hostStreamingConnector = streamingConnector as HostStreamingConnector
-        hostStreamingConnector.setPlayProgress(percentage)
+    fun changePlayProgressWithoutSpotify(progress: Float) {
+        trackPlayProgress.value = progress
+    }
+
+    fun setPlayProgressToSpotify() {
+        (streamingConnector as HostStreamingConnector).setPlayProgress(trackPlayProgress.value)
+    }
+
+    fun getPlayProgress(): MutableFloatState {
+        return trackPlayProgress
     }
 
     fun getPlaybackState(): MutableState<PlaybackState> {
