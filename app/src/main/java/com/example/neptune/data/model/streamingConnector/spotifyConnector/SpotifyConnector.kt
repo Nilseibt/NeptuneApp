@@ -73,6 +73,17 @@ open class SpotifyConnector(
     }
 
 
+    override fun searchWithGenre(
+        searchInput: String,
+        onCallbackFinished: (resultList: MutableList<Track>) -> Unit
+    ) {
+        search(searchInput, 10){
+            //TODO actually search for the genre
+            onCallbackFinished(it)
+        }
+    }
+
+
     protected fun newGetRequest(
         url: String,
         headers: Map<String, String> = mapOf(),

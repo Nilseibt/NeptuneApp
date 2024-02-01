@@ -48,12 +48,13 @@ class SearchViewModel(
     }
 
     fun isSearchButtonActive(): Boolean {
-        //TODO
-        return false
+        return user.session.sessionType == SessionType.GENRE
     }
 
     fun onSearchButtonClick() {
-        //TODO
+        if (searchInput != "") {
+            user.search(searchInput)
+        }
     }
 
     fun onToggleUpvote(track: Track) {

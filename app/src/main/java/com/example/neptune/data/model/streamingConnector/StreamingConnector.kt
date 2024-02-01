@@ -8,5 +8,7 @@ interface StreamingConnector {
 
     fun search(searchInput: String, resultLimit: Int, onCallbackFinished: (resultList: MutableList<Track>) -> Unit)
 
+    fun searchWithGenre(searchInput: String, onCallbackFinished: (resultList: MutableList<Track>) -> Unit)
+
 
 }

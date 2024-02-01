@@ -84,6 +84,11 @@ fun SearchView(navController: NavController) {
                 value = searchViewModel.getTrackSearchInput(),
                 onValueChange = { searchViewModel.onTrackSearchInputChange(it) })
         }
+        if(searchViewModel.isSearchButtonActive()){
+            Button(onClick = { searchViewModel.onSearchButtonClick() }) {
+                Text(text = "Suchen")
+            }
+        }
         Box {
             val tracks = when(searchViewModel.getActiveFilter()){
                 Filter.NONE -> searchViewModel.getSearchList()

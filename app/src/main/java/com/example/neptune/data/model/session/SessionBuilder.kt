@@ -98,7 +98,13 @@ class SessionBuilder {
     fun createSession(sessionId: Int, sessionTimestamp: Int): Session {
         return when (sessionType) {
             SessionType.GENERAL -> Session(sessionId, sessionTimestamp, trackCooldown)
-            SessionType.ARTIST, SessionType.GENRE -> ArtistSession(
+            SessionType.ARTIST -> ArtistSession(
+                sessionId,
+                sessionTimestamp,
+                trackCooldown,
+                selectedEntities
+            )
+            SessionType.GENRE -> GenreSession(
                 sessionId,
                 sessionTimestamp,
                 trackCooldown,
