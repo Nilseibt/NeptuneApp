@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -79,6 +80,10 @@ fun ControlView(navController: NavController) {
         Button(onClick = { controlViewModel.onSkip() }){
             Text(text = "Überspringen")
         }
+        Slider(
+            value = controlViewModel.getTrackSliderPosition(),
+            onValueChange = { controlViewModel.onTrackSliderPositionChange(it) },
+            onValueChangeFinished = { controlViewModel.onTrackSliderFinish() })
         Button(onClick = { controlViewModel.onSearchTracks(navController) }){
             Text(text = "Tracks suchen")
         }

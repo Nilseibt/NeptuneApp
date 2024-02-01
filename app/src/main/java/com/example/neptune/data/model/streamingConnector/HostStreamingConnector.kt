@@ -7,11 +7,11 @@ import com.example.neptune.data.model.track.src.Track
 
 interface HostStreamingConnector : StreamingConnector {
 
-    fun playTrack(track: Track)
+    fun playTrack(track: Track, positionMs: Int = 0)
 
     fun addTrackToStreamingQueue(track: Track, onCallback: () -> Unit = {})
 
-    fun refillQueueIfNeeded(onRefillQueue: () -> Unit)
+    fun refillQueueIfNeeded(onRefillQueue: () -> Unit, updatePlayProgress: (Float) -> Unit)
 
     fun pausePlay()
 
@@ -22,7 +22,7 @@ interface HostStreamingConnector : StreamingConnector {
 
     fun resumePlay()
 
-    fun setPlayProgress(percentage: Int)
+    fun setPlayProgress(progress: Float)
 
     fun isPlaylistLinkValid(): Boolean
 

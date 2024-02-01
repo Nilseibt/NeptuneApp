@@ -18,6 +18,7 @@ import com.example.neptune.data.model.track.src.Track
 import org.json.JSONArray
 import org.json.JSONObject
 import java.net.URLEncoder
+import kotlin.math.min
 
 
 class HostSpotifyConnector(
@@ -32,11 +33,15 @@ class HostSpotifyConnector(
     private var trackIdWhichShouldBePlayed = ""
 
 
-    override fun playTrack(track: Track) {
+    override fun playTrack(track: Track, positionMs: Int) {
+        playTrackById(track.id, positionMs)
+    }
+
+    private fun playTrackById(trackId: String, positionMs: Int){
         val url = "https://api.spotify.com/v1/me/player/play"
         val jsonData = JSONObject()
-        jsonData.put("uris", JSONArray().put("spotify:track:${track.id}"))
-        jsonData.put("position_ms", 0)
+        jsonData.put("uris", JSONArray().put("spotify:track:${trackId}"))
+        jsonData.put("position_ms", positionMs)
 
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
             Request.Method.PUT, url, jsonData,
@@ -64,7 +69,24 @@ class HostSpotifyConnector(
         }
         volleyQueue.add(jsonObjectRequest)
         playbackState.value = PlaybackState.PLAYING
-        trackIdWhichShouldBePlayed = track.id
+        trackIdWhichShouldBePlayed = trackId
+    }
+
+    override fun setPlayProgress(progress: Float){
+        var headers: MutableMap<String, String> = HashMap()
+        headers["Authorization"] = "Bearer $accessToken"
+
+        var parameters: MutableMap<String, String> = HashMap()
+
+        newGetRequest("https://api.spotify.com/v1/me/player", headers, parameters){jsonResponse ->
+            callbackPlayProgress(jsonResponse, progress)
+        }
+    }
+
+    private fun callbackPlayProgress(jsonResponse: JSONObject, progress: Float){
+        val durationMs = jsonResponse.getJSONObject("item").getInt("duration_ms")
+        val currentlyPlayingTrackId = jsonResponse.getJSONObject("item").getString("id")
+        playTrackById(currentlyPlayingTrackId, ((durationMs.toFloat() - 5000f)*progress).toInt())
     }
 
     override fun addTrackToStreamingQueue(track: Track, onCallback: () -> Unit) {
@@ -89,23 +111,24 @@ class HostSpotifyConnector(
         playbackState.value = PlaybackState.PLAYING
     }
 
-    override fun refillQueueIfNeeded(onRefillQueue: () -> Unit) {
+    override fun refillQueueIfNeeded(onRefillQueue: () -> Unit, updatePlayProgress: (Float) -> Unit) {
         var headers: MutableMap<String, String> = HashMap()
         headers["Authorization"] = "Bearer $accessToken"
 
         var parameters: MutableMap<String, String> = HashMap()
 
         newGetRequest("https://api.spotify.com/v1/me/player", headers, parameters){jsonResponse ->
-            callbackRefillQueueIfNeeded(jsonResponse, onRefillQueue)
+            callbackRefillQueueIfNeeded(jsonResponse, onRefillQueue, updatePlayProgress)
         }
     }
 
-    private fun callbackRefillQueueIfNeeded(jsonResponse: JSONObject, onRefillQueueNeeded: () -> Unit){
+    private fun callbackRefillQueueIfNeeded(jsonResponse: JSONObject, onRefillQueueNeeded: () -> Unit, updatePlayProgress: (Float) -> Unit){
         val isPlaying = jsonResponse.getBoolean("is_playing")
         if(isPlaying) {
             val progressMs = jsonResponse.getInt("progress_ms")
             val durationMs = jsonResponse.getJSONObject("item").getInt("duration_ms")
             val currentlyPlayingTrackId = jsonResponse.getJSONObject("item").getString("id")
+            updatePlayProgress(min(1f, progressMs.toFloat() / (durationMs.toFloat() - 5000f)))
             if(durationMs - progressMs < 5000 && currentlyPlayingTrackId == trackIdWhichShouldBePlayed){ //TODO make correct timing here
                 onRefillQueueNeeded()
             }
@@ -130,10 +153,6 @@ class HostSpotifyConnector(
 
         newRequest("https://api.spotify.com/v1/me/player/play", Request.Method.PUT, headers, parameters)
         playbackState.value = PlaybackState.PLAYING
-    }
-
-    override fun setPlayProgress(percentage: Int) {
-        //TODO
     }
 
     override fun isPlaylistLinkValid(): Boolean {

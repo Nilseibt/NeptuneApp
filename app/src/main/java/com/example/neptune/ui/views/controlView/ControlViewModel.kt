@@ -107,16 +107,15 @@ class ControlViewModel(
     }
 
     fun getTrackSliderPosition(): Float {
-        //TODO
-        return 1f
+        return host.getPlayProgress().value
     }
 
     fun onTrackSliderPositionChange(newPosition: Float) {
-        //TODO
+        host.changePlayProgressWithoutSpotify(newPosition)
     }
 
-    fun onTrackSliderFinish(position: Float) {
-        //TODO
+    fun onTrackSliderFinish() {
+        host.setPlayProgressToSpotify()
     }
 
     fun getVoteList(): SnapshotStateList<MutableState<Track>> {
