@@ -22,6 +22,7 @@ open class SpotifyConnector(
 
     override fun search(
         searchInput: String,
+        resultLimit: Int,
         onCallbackFinished: (resultList: MutableList<Track>) -> Unit
     ) {
 
@@ -31,7 +32,7 @@ open class SpotifyConnector(
         var parameters: MutableMap<String, String> = HashMap()
         parameters["q"] = URLEncoder.encode(searchInput, "UTF-8")
         parameters["type"] = "track"
-        parameters["limit"] = "20"
+        parameters["limit"] = resultLimit.toString()
 
         newGetRequest(
             "https://api.spotify.com/v1/search",
