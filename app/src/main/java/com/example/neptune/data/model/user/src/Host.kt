@@ -26,7 +26,9 @@ class Host(
 
     val queue = mutableStateOf(Queue(mutableStateListOf()))
 
-    private val trackPlayProgress = mutableFloatStateOf(0f)
+    private val actualTrackPlayProgress = mutableFloatStateOf(0f)
+    private val userDragPlayProgress = mutableFloatStateOf(0f)
+    private val isUserDraggingProgress = mutableStateOf(false)
 
     fun addTrackToQueue(track: Track) {
         if (hasSessionTrack(track.id)) {
@@ -111,7 +113,7 @@ class Host(
                 }
             },
                 { progress ->
-                    changePlayProgressWithoutSpotify(progress)
+                    actualTrackPlayProgress.value = progress
                 })
         }
     }
@@ -124,16 +126,24 @@ class Host(
         (streamingConnector as HostStreamingConnector).resumePlay()
     }
 
-    fun changePlayProgressWithoutSpotify(progress: Float) {
-        trackPlayProgress.value = progress
+    fun dragPlayProgress(progress: Float) {
+        userDragPlayProgress.value = progress
+        isUserDraggingProgress.value = true
     }
 
-    fun setPlayProgressToSpotify() {
-        (streamingConnector as HostStreamingConnector).setPlayProgress(trackPlayProgress.value)
+    fun finishDragPlayProgress() {
+        (streamingConnector as HostStreamingConnector).setPlayProgress(userDragPlayProgress.value){
+            actualTrackPlayProgress.value = userDragPlayProgress.value
+            isUserDraggingProgress.value = false
+        }
     }
 
-    fun getPlayProgress(): MutableFloatState {
-        return trackPlayProgress
+    fun getPlayProgress(): Float {
+        if (isUserDraggingProgress.value) {
+            return userDragPlayProgress.value
+        } else {
+            return actualTrackPlayProgress.value
+        }
     }
 
     fun getPlaybackState(): MutableState<PlaybackState> {
@@ -170,6 +180,19 @@ class Host(
     override fun leaveSession() {
         val hostBackendConnector = backendConnector as HostBackendConnector
         hostBackendConnector.deleteSession()
+    }
+
+    fun isSkipAvailable(): Boolean {
+        val isNextTrackInQueue = queue.value.getTracks().size > 1
+        val isNextTrackInVoteList = voteList.value.getTracks().size > 1
+        if (isNextTrackInQueue || isNextTrackInVoteList) {
+            return true
+        }
+        var isVoteListTrackInQueue = false
+        if (!queue.value.isEmpty() && !voteList.value.isEmpty()) {
+            isVoteListTrackInQueue = (queue.value.trackAt(0).id == voteList.value.trackAt(0).id)
+        }
+        return !queue.value.isEmpty() && !isVoteListTrackInQueue
     }
 
 }

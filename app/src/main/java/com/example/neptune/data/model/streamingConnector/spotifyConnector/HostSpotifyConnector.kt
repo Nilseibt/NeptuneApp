@@ -37,7 +37,7 @@ class HostSpotifyConnector(
         playTrackById(track.id, positionMs)
     }
 
-    private fun playTrackById(trackId: String, positionMs: Int){
+    private fun playTrackById(trackId: String, positionMs: Int, onCallback: () -> Unit = {}){
         val url = "https://api.spotify.com/v1/me/player/play"
         val jsonData = JSONObject()
         jsonData.put("uris", JSONArray().put("spotify:track:${trackId}"))
@@ -50,6 +50,7 @@ class HostSpotifyConnector(
                     "SPOTIFY JSON",
                     "$url $response"
                 )
+                onCallback()
             },
             { error ->
                 Log.e("SPOTIFY VOLLEY", "$url : Spotify Request Error: ${error}")
@@ -72,21 +73,23 @@ class HostSpotifyConnector(
         trackIdWhichShouldBePlayed = trackId
     }
 
-    override fun setPlayProgress(progress: Float){
+    override fun setPlayProgress(progress: Float, onCallback: () -> Unit){
         var headers: MutableMap<String, String> = HashMap()
         headers["Authorization"] = "Bearer $accessToken"
 
         var parameters: MutableMap<String, String> = HashMap()
 
         newGetRequest("https://api.spotify.com/v1/me/player", headers, parameters){jsonResponse ->
-            callbackPlayProgress(jsonResponse, progress)
+            callbackPlayProgress(jsonResponse, progress, onCallback)
         }
     }
 
-    private fun callbackPlayProgress(jsonResponse: JSONObject, progress: Float){
+    private fun callbackPlayProgress(jsonResponse: JSONObject, progress: Float, onCallback: () -> Unit){
         val durationMs = jsonResponse.getJSONObject("item").getInt("duration_ms")
         val currentlyPlayingTrackId = jsonResponse.getJSONObject("item").getString("id")
-        playTrackById(currentlyPlayingTrackId, ((durationMs.toFloat() - 5000f)*progress).toInt())
+        playTrackById(currentlyPlayingTrackId, ((durationMs.toFloat() - 5000f)*progress).toInt()){
+            onCallback()
+        }
     }
 
     override fun addTrackToStreamingQueue(track: Track, onCallback: () -> Unit) {

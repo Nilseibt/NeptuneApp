@@ -92,14 +92,8 @@ class ControlViewModel(
         }
     }
 
-    fun getSkipDescription(): String {
-        //TODO
-        return "NOONEE"
-    }
-
     fun isSkipAvailable(): Boolean {
-        //TODO
-        return false
+        return host.isSkipAvailable()
     }
 
     fun onSkip() {
@@ -107,15 +101,15 @@ class ControlViewModel(
     }
 
     fun getTrackSliderPosition(): Float {
-        return host.getPlayProgress().value
+        return host.getPlayProgress()
     }
 
     fun onTrackSliderPositionChange(newPosition: Float) {
-        host.changePlayProgressWithoutSpotify(newPosition)
+        host.dragPlayProgress(newPosition)
     }
 
     fun onTrackSliderFinish() {
-        host.setPlayProgressToSpotify()
+        host.finishDragPlayProgress()
     }
 
     fun getVoteList(): SnapshotStateList<MutableState<Track>> {

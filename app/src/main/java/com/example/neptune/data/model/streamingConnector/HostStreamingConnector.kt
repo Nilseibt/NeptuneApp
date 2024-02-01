@@ -22,7 +22,7 @@ interface HostStreamingConnector : StreamingConnector {
 
     fun resumePlay()
 
-    fun setPlayProgress(progress: Float)
+    fun setPlayProgress(progress: Float, onCallback: () -> Unit)
 
     fun isPlaylistLinkValid(): Boolean
 

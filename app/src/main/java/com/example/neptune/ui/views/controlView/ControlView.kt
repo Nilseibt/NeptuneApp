@@ -77,7 +77,7 @@ fun ControlView(navController: NavController) {
         Button(onClick = { controlViewModel.onTogglePause() }, enabled = controlViewModel.isTogglePauseAvailable()){
             Text(text = controlViewModel.getPausedDescription())
         }
-        Button(onClick = { controlViewModel.onSkip() }){
+        Button(onClick = { controlViewModel.onSkip() }, enabled = controlViewModel.isSkipAvailable()) {
             Text(text = "Überspringen")
         }
         Slider(
