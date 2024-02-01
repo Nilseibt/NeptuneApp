@@ -2,6 +2,7 @@ package com.example.neptune.ui.views.controlView
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -19,17 +20,35 @@ class ControlViewModel(
 
     private var deleteSessionDialogShown by mutableStateOf(false)
 
+    private var expandedDropdownIndexQueue by mutableIntStateOf(-1)
+    private var expandedDropdownIndexVote by mutableIntStateOf(-1)
+
     fun onToggleUpvote(track: Track) {
         host.toggleUpvote(track)
     }
 
-    fun onToggleDropdown(index: Int) {
-        //TODO
+    fun onToggleDropdownQueue(index: Int) {
+        if (expandedDropdownIndexQueue == -1) {
+            expandedDropdownIndexQueue = index
+        } else {
+            expandedDropdownIndexQueue = -1
+        }
     }
 
-    fun isDropdownExpanded(index: Int): Boolean {
-        //TODO
-        return false
+    fun isDropdownExpandedQueue(index: Int): Boolean {
+        return expandedDropdownIndexQueue == index
+    }
+
+    fun onToggleDropdownVote(index: Int) {
+        if (expandedDropdownIndexVote == -1) {
+            expandedDropdownIndexVote = index
+        } else {
+            expandedDropdownIndexVote = -1
+        }
+    }
+
+    fun isDropdownExpandedVote(index: Int): Boolean {
+        return expandedDropdownIndexVote == index
     }
 
     fun onAddToQueue(track: Track) {
@@ -41,7 +60,7 @@ class ControlViewModel(
     }
 
     fun onToggleBlock(track: Track) {
-        //TODO
+        host.toggleBlockTrack(track)
     }
 
     fun onMoveUp(index: Int) {

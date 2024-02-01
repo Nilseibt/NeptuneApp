@@ -54,7 +54,9 @@ fun SearchView(navController: NavController) {
                 trackListType = searchViewModel.getSearchTrackListType(),
                 onToggleUpvote = { searchViewModel.onToggleUpvote(it) },
                 onToggleDropdown = { searchViewModel.onToggleDropdown(it) },
-                isDropdownExpanded = {  searchViewModel.isDropdownExpanded(it) })
+                isDropdownExpanded = { searchViewModel.isDropdownExpanded(it) },
+
+                onToggleBlock = { searchViewModel.onToggleBlock(it) })
         }
     }
 }

@@ -53,7 +53,11 @@ fun ControlView(navController: NavController) {
                 tracks = controlViewModel.getQueueList(),
                 trackListType = TrackListType.HOST_QUEUE,
                 onToggleUpvote = { controlViewModel.onToggleUpvote(it) },
-                onRemoveFromQueue = {controlViewModel.onRemoveFromQueue(it) })
+                onToggleDropdown = { controlViewModel.onToggleDropdownQueue(it) },
+                isDropdownExpanded = { controlViewModel.isDropdownExpandedQueue(it) },
+                onRemoveFromQueue = {controlViewModel.onRemoveFromQueue(it) },
+
+                onToggleBlock = { controlViewModel.onToggleBlock(it) })
         }
 
         Text(text = "Upvote Liste", color = Color.White)
@@ -62,7 +66,11 @@ fun ControlView(navController: NavController) {
                 tracks = controlViewModel.getVoteList(),
                 trackListType = TrackListType.HOST_VOTE,
                 onToggleUpvote = { controlViewModel.onToggleUpvote(it) },
-                onAddToQueue = { controlViewModel.onAddToQueue(it) } )
+                onToggleDropdown = { controlViewModel.onToggleDropdownVote(it) },
+                isDropdownExpanded = { controlViewModel.isDropdownExpandedVote(it) },
+                onAddToQueue = { controlViewModel.onAddToQueue(it) },
+
+                onToggleBlock = { controlViewModel.onToggleBlock(it) })
         }
         Button(onClick = { controlViewModel.onTogglePause() }){
             Text(text = controlViewModel.getPausedDescription())

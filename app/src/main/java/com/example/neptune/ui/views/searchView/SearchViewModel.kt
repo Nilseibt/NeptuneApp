@@ -2,6 +2,7 @@ package com.example.neptune.ui.views.searchView
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -20,7 +21,7 @@ class SearchViewModel(
 
     private var searchInput by mutableStateOf("")
 
-
+    private var expandedDropdownIndex by mutableIntStateOf(-1)
 
     fun getSearchTrackListType(): TrackListType {
         if (user is Host) {
@@ -57,12 +58,15 @@ class SearchViewModel(
     }
 
     fun onToggleDropdown(index: Int) {
-        //TODO
+        if (expandedDropdownIndex == -1) {
+            expandedDropdownIndex = index
+        } else {
+            expandedDropdownIndex = -1
+        }
     }
 
     fun isDropdownExpanded(index: Int): Boolean {
-        //TODO
-        return false
+        return expandedDropdownIndex == index
     }
 
     fun onAddToQueue(track: Track) {
@@ -70,7 +74,7 @@ class SearchViewModel(
     }
 
     fun onToggleBlock(track: Track) {
-        //TODO
+        (user as Host).toggleBlockTrack(track)
     }
 
     fun getSearchList(): SnapshotStateList<MutableState<Track>> {

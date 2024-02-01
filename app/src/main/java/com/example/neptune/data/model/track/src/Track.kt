@@ -36,6 +36,10 @@ class Track(
         return isBlocked.value
     }
 
+    fun setBlocked(blocked: Boolean){
+        isBlocked.value = blocked
+    }
+
     fun hasCooldown(): Boolean {
         return hasCooldown.value
     }

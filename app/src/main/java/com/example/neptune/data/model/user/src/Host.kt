@@ -8,6 +8,8 @@ import com.example.neptune.data.model.streamingConnector.HostStreamingConnector
 
 import com.example.neptune.data.model.track.src.Queue
 import com.example.neptune.data.model.track.src.Track
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class Host(
@@ -18,9 +20,10 @@ class Host(
 ) :
     FullParticipant(session, hostBackendConnector, hostStreamingConnector, upvoteDatabase) {
     val queue = Queue()
+
     fun addTrackToQueue(index: Int) {
         val track = voteList.value.trackAt(index)
-        queue.addTrack(mutableStateOf( track))
+        queue.addTrack(mutableStateOf(track))
     }
 
     fun removeTrackFromQueue(index: Int) {
@@ -72,10 +75,24 @@ class Host(
         hostStreamingConnector.setPlayProgress(percentage)
     }
 
-    fun addTrackToBlockList(track: Track) {
-        blockList.value.addTrack(mutableStateOf( track))
-        val hostBackendConnector = backendConnector as HostBackendConnector
-        hostBackendConnector.setBlockTrack(track, blocked = true)
+    fun toggleBlockTrack(track: Track) {
+        if (hasSessionTrack(track.id)) {
+            val sessionTrack = getSessionTrack(track.id)
+            sessionTrack.value.setBlocked(!sessionTrack.value.isBlocked())
+            (backendConnector as HostBackendConnector).setBlockTrack(
+                track,
+                blocked = sessionTrack.value.isBlocked()
+            )
+        } else {
+            track.setBlocked(!track.isBlocked())
+            backendConnector.addTrackToSession(track) {
+                (backendConnector as HostBackendConnector).setBlockTrack(
+                    track,
+                    blocked = track.isBlocked()
+                )
+            }
+            addOrUpdateSessionTrack(track)
+        }
     }
 
     fun removeTrackFromBlockList(track: Track) {

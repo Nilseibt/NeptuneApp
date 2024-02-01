@@ -93,7 +93,11 @@ open class BackendConnector(
                 val trackName = currentJsonTrack.getString("trackName")
                 val imageUrl = currentJsonTrack.getString("imageURL")
                 val genres = mutableListOf("placeholder")
-                val artists = mutableListOf("placeholder")
+                val jsonArtistsArray = currentJsonTrack.getJSONArray("artists")
+                val artists = mutableListOf <String>()
+                for (artistIndex in 0 until jsonArtistsArray.length()) {
+                    artists.add(jsonArtistsArray.getString(artistIndex))
+                }
                 val upvotes = currentJsonTrack.getInt("upvotes")
                 val isUpvoted = false
                 val isBlocked = currentJsonTrack.getInt("isBlocked") != 0
@@ -205,11 +209,17 @@ open class BackendConnector(
 
 
     fun addTrackToSession(track: Track, callback: () -> Unit) {
+
+        val artistsJSONArray = JSONArray()
+        track.artists.forEach {
+            artistsJSONArray.put(it)
+        }
+
         val postData = JSONObject()
         postData.put("deviceID", deviceId)
         postData.put("trackID", track.id)
         postData.put("trackName", track.name)
-        postData.put("artist", JSONArray().put("placeholder"))
+        postData.put("artist", artistsJSONArray)
         postData.put("genre", JSONArray())
         postData.put("imageURL", track.imageUrl)
 
