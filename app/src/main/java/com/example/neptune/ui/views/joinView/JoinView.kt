@@ -16,6 +16,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -56,13 +57,14 @@ fun JoinView(navController: NavController) {
                 .padding(16.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally){
-                TextField(
+                OutlinedTextField(
                     value = joinViewModel.getCodeInput(),
                     onValueChange = { joinViewModel.onCodeInputChange(it) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(end = 8.dp)
+                        .padding(end = 8.dp),
+                    label = { Text(text = stringResource(id = R.string.enter_six_digit_code)) }
                 )
 
                 Row (

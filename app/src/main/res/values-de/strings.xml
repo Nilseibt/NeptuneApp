@@ -8,7 +8,7 @@
     <string name="backend_url">https://nep-tune.de:5000/</string>
 
 
-    <!--Strings used in multiple Views, e.g. for confirmation buttons-->
+    <!--German Strings used in multiple Views, e.g. for confirmation buttons-->
     <string name="confirmation_button_text">Bestätigen</string>
 
     <!--The German strings for the StartView-->
@@ -21,11 +21,12 @@
     <string name="genre_mode_name">Genre Modus</string>
     <string name="playlist_mode_name">Playlist Modus</string>
 
-    <!--The default strings for the ModeSettingsView-->
+    <!--The German strings for the joinView-->
     <string name="default_playlist">Standardplaylist</string>
     <string name="artist_search">Artists suchen</string>
     <string name="genre_search">Genres suchen</string>
     <string name="track_cooldown_text">Track Cooldown</string>
     <string name="scan_qr_code">QR-Code scannen</string>
+    <string name="enter_six_digit_code">6-stelliger Beitrittscode</string>
 
 </resources>
