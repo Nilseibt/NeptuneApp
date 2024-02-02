@@ -1,15 +1,17 @@
 package com.example.neptune.ui.views.startView
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -25,6 +27,7 @@ import com.example.neptune.NeptuneApp
 import com.example.neptune.R
 import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
+import com.example.neptune.ui.theme.SpotifyBrandGreen
 @Composable
 fun StartView(navController: NavController) {
     NeptuneTheme {
@@ -65,7 +68,11 @@ fun StartView(navController: NavController) {
                     Text(text = stringResource(id = R.string.create_session))
                 }
                 Spacer(modifier = Modifier.height(32.dp))
-                FilledTonalButton(onClick = { startViewModel.onToggleConnectedToSpotify() }) {
+                Button(onClick = { startViewModel.onToggleConnectedToSpotify() },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = SpotifyBrandGreen
+                    )
+                ) {
                     Text(text = startViewModel.getSpotifyButtonText())
                 }
             }
@@ -104,10 +111,3 @@ fun StartView(navController: NavController) {
         }
     }
 }
-
-
-
-
-
-
-
