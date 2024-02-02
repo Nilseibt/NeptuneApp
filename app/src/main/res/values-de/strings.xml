@@ -7,7 +7,24 @@
 
     <string name="backend_url">https://nep-tune.de:5000/</string>
 
-    <!--The default strings for the start view-->
+
+    <!--Strings used in multiple Views, e.g. for confirmation buttons-->
+    <string name="confirmation_button_text">Bestätigen</string>
+
+    <!--The German strings for the StartView-->
     <string name="join_session">Session beitreten</string>
     <string name="create_session">Session erstellen</string>
+
+    <!--The German strings for the ModeSelectView-->
+    <string name="general_mode_name">General Modus</string>
+    <string name="artist_mode_name">Artist Modus</string>
+    <string name="genre_mode_name">Genre Modus</string>
+    <string name="playlist_mode_name">Playlist Modus</string>
+
+    <!--The default strings for the ModeSettingsView-->
+    <string name="default_playlist">Standardplaylist</string>
+    <string name="artist_search">Artists suchen</string>
+    <string name="genre_search">Genres suchen</string>
+    <string name="track_cooldown_text">Track Cooldown</string>
+
 </resources>

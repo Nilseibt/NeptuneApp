@@ -20,11 +20,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.neptune.NeptuneApp
+import com.example.neptune.R
 import com.example.neptune.data.model.session.SessionType
 import com.example.neptune.ui.views.util.viewModelFactory
 
@@ -70,7 +72,8 @@ fun ModeSelectView(navController: NavController) {
                     onClick = { modeSelectViewModel.onSelectMode(SessionType.GENERAL) },
                     modifier = generalModifier
                 ) {
-                    Text(text = "General Mode")
+                    //Text(text = "General Mode")
+                    Text(text = stringResource(id = R.string.general_mode_name))
                 }
 
                 Spacer(modifier = Modifier.width(16.dp))
@@ -84,7 +87,8 @@ fun ModeSelectView(navController: NavController) {
                     onClick = { modeSelectViewModel.onSelectMode(SessionType.ARTIST) },
                     modifier = artistModifier
                 ) {
-                    Text(text = "Artist Mode")
+                    //Text(text = "Artist Mode")
+                    Text(text = stringResource(id = R.string.artist_mode_name))
                 }
             }
 
@@ -101,7 +105,8 @@ fun ModeSelectView(navController: NavController) {
                     onClick = { modeSelectViewModel.onSelectMode(SessionType.GENRE) },
                     modifier = genreModifier
                 ) {
-                    Text(text = "Genre Mode")
+                    //Text(text = "Genre Mode")
+                    Text(text = stringResource(id = R.string.genre_mode_name))
                 }
 
                 Spacer(modifier = Modifier.width(16.dp))
@@ -115,7 +120,8 @@ fun ModeSelectView(navController: NavController) {
                     onClick = { modeSelectViewModel.onSelectMode(SessionType.PLAYLIST) },
                     modifier = playlistModifier
                 ) {
-                    Text(text = "Playlist Mode")
+                    //Text(text = "Playlist Mode")
+                    Text(text = stringResource(id = R.string.playlist_mode_name))
                 }
             }
 
@@ -143,7 +149,8 @@ fun ModeSelectView(navController: NavController) {
 
         Button(onClick = { modeSelectViewModel.onConfirmMode(navController) }
         ) {
-            Text(text = "Modus Bestätigen")
+            //Text(text = "Modus Bestätigen")
+            Text(text = stringResource(id = R.string.confirmation_button_text))
         }
     }
 }
