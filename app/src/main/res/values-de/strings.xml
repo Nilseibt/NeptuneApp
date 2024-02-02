@@ -26,5 +26,6 @@
     <string name="artist_search">Artists suchen</string>
     <string name="genre_search">Genres suchen</string>
     <string name="track_cooldown_text">Track Cooldown</string>
+    <string name="scan_qr_code">QR-Code scannen</string>
 
 </resources>

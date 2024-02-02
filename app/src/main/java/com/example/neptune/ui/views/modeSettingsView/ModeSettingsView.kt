@@ -43,7 +43,7 @@ fun ModeSettingsView(navController: NavController) {
 
         if (modeSettingsViewModel.isPlaylistLinkInputAvailable()) {
             //Text(text = "Standardplaylist", color = Color.White)
-            Text(text = stringResource(id = R.string.default_playlist))
+            Text(text = stringResource(id = R.string.default_playlist), color = Color.White)
             TextField(
                 value = modeSettingsViewModel.getCurrentPlaylistLinkInput(),
                 onValueChange = { modeSettingsViewModel.onPlaylistLinkInputChange(it) })

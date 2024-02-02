@@ -29,7 +29,9 @@ private val DarkColorScheme = darkColorScheme(
 
 
     background = DarkBlue10,
-    onBackground = DarkBlue90
+    onBackground = DarkBlue90,
+    surface = DarkBlue10,
+    onSurface = DarkBlue90
     /* primary = Purple80,
     secondary = PurpleGrey80,
     tertiary = Pink80
