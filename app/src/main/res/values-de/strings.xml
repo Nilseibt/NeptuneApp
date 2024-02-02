@@ -28,5 +28,4 @@
     <string name="track_cooldown_text">Track Cooldown</string>
     <string name="scan_qr_code">QR-Code scannen</string>
     <string name="enter_six_digit_code">6-stelliger Beitrittscode</string>
-
 </resources>
