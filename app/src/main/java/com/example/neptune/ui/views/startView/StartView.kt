@@ -15,10 +15,12 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.neptune.NeptuneApp
+import com.example.neptune.R
 import com.example.neptune.ui.views.util.viewModelFactory
 @Composable
 fun StartView(navController: NavController) {
@@ -44,7 +46,8 @@ fun StartView(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(onClick = { startViewModel.onJoinSession(navController) }) {
-            Text(text = "Session beitreten")
+            //Text(text = "Session beitreten")
+            Text(text = stringResource(id = R.string.join_session))
         }
         Spacer(modifier = Modifier.height(32.dp))
         Button(

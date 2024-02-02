@@ -5,4 +5,7 @@
     <string name="spotify_client_secret">c36285b319d24084b4b19bff4408cdff</string>
 
     <string name="backend_url">https://nep-tune.de:5000/</string>
+
+    <!--The default strings for the start view-->
+    <string name="join_session">Join Session</string>
 </resources>
