@@ -10,16 +10,26 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = BlueMain,
-    secondary = WhiteSecondary,
-    tertiary = DarkBlueAccent
+    primary = Blue80,
+    onPrimary = Blue20,
+    primaryContainer = Blue30,
+    onPrimaryContainer = Blue90,
+    inversePrimary = Blue40,
+
+    secondary = DarkBlue80,
+    onSecondary = DarkBlue20,
+    secondaryContainer = DarkBlue30,
+    onSecondaryContainer = DarkBlue90,
+
+
+    background = DarkBlue10,
+    onBackground = DarkBlue90
     /* primary = Purple80,
     secondary = PurpleGrey80,
     tertiary = Pink80
@@ -48,7 +58,6 @@ private val LightColorScheme = lightColorScheme(
     onSurface = Color(0xFF1C1B1F),
     */
 )
-
 @Composable
 fun NeptuneTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

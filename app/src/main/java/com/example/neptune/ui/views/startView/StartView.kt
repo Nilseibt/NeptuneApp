@@ -21,79 +21,83 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.neptune.NeptuneApp
 import com.example.neptune.R
+import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
 @Composable
 fun StartView(navController: NavController) {
-
-    val startViewModel = viewModel<StartViewModel>(
-        factory = viewModelFactory {
-            StartViewModel(
-                NeptuneApp.model.appState,
-                navController
-            )
-        }
-    )
-
-    BackHandler {
-        startViewModel.onBack(navController)
-    }
-
-    Column (
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Button(onClick = { startViewModel.onJoinSession(navController) }) {
-            //Text(text = "Session beitreten")
-            Text(text = stringResource(id = R.string.join_session))
-        }
-        Spacer(modifier = Modifier.height(32.dp))
-        Button(
-            onClick = { startViewModel.onCreateSession(navController) },
-            enabled = startViewModel.createSessionPossible()
-        ) {
-            //Text(text = "Session erstellen")
-            Text(text = stringResource(id = R.string.create_session))
-        }
-        Spacer(modifier = Modifier.height(32.dp))
-        FilledTonalButton(onClick = { startViewModel.onToggleConnectedToSpotify() }) {
-            Text(text = startViewModel.getSpotifyButtonText())
-        }
-    }
-
-
-    if(startViewModel.isLeaveDialogShown()) {
-
-        AlertDialog(
-            title = {
-                Text(text = "App verlassen")
-            },
-            text = {
-                Text(text = "Sicher, dass du die App verlassen willst?")
-            },
-            onDismissRequest = { },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        startViewModel.onConfirmLeave(navController)
-                    }
-                ) {
-                    Text("Ja")
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = {
-                        startViewModel.onDismissLeave(navController)
-                    }
-                ) {
-                    Text("Nein")
-                }
+    NeptuneTheme {
+        val startViewModel = viewModel<StartViewModel>(
+            factory = viewModelFactory {
+                StartViewModel(
+                    NeptuneApp.model.appState,
+                    navController
+                )
             }
         )
+
+        BackHandler {
+            startViewModel.onBack(navController)
+        }
+
+        Column (
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(onClick = { startViewModel.onJoinSession(navController) }) {
+                //Text(text = "Session beitreten")
+                Text(text = stringResource(id = R.string.join_session))
+            }
+            Spacer(modifier = Modifier.height(32.dp))
+            Button(
+                onClick = { startViewModel.onCreateSession(navController) },
+                enabled = startViewModel.createSessionPossible()
+            ) {
+                //Text(text = "Session erstellen")
+                Text(text = stringResource(id = R.string.create_session))
+            }
+            Spacer(modifier = Modifier.height(32.dp))
+            FilledTonalButton(onClick = { startViewModel.onToggleConnectedToSpotify() }) {
+                Text(text = startViewModel.getSpotifyButtonText())
+            }
+        }
+
+
+        if(startViewModel.isLeaveDialogShown()) {
+
+            AlertDialog(
+                title = {
+                    Text(text = "App verlassen")
+                },
+                text = {
+                    Text(text = "Sicher, dass du die App verlassen willst?")
+                },
+                onDismissRequest = { },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            startViewModel.onConfirmLeave(navController)
+                        }
+                    ) {
+                        Text("Ja")
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            startViewModel.onDismissLeave(navController)
+                        }
+                    ) {
+                        Text("Nein")
+                    }
+                }
+            )
+        }
     }
+
+
 }
 
 
