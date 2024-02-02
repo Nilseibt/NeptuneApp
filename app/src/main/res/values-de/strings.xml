@@ -9,4 +9,5 @@
 
     <!--The default strings for the start view-->
     <string name="join_session">Session beitreten</string>
+    <string name="create_session">Session erstellen</string>
 </resources>

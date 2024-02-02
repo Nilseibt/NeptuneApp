@@ -6,6 +6,7 @@
 
     <string name="backend_url">https://nep-tune.de:5000/</string>
 
-    <!--The default strings for the start view-->
+    <!--The default strings for the StartView-->
     <string name="join_session">Join Session</string>
+    <string name="create_session">Create Session</string>
 </resources>

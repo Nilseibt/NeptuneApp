@@ -54,7 +54,8 @@ fun StartView(navController: NavController) {
             onClick = { startViewModel.onCreateSession(navController) },
             enabled = startViewModel.createSessionPossible()
         ) {
-            Text(text = "Session erstellen")
+            //Text(text = "Session erstellen")
+            Text(text = stringResource(id = R.string.create_session))
         }
         Spacer(modifier = Modifier.height(32.dp))
         FilledTonalButton(onClick = { startViewModel.onToggleConnectedToSpotify() }) {
