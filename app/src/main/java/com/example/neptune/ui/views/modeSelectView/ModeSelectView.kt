@@ -15,6 +15,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -23,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -143,15 +147,19 @@ fun ModeSelectView(navController: NavController) {
                         //.border(1.dp, Color.Black, RoundedCornerShape(1))
                         .padding(8.dp)
                         .size(200.dp, 50.dp)
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = modeSelectViewModel.getSelectedModeDescription(),
-                        modifier = Modifier
-                            .fillMaxSize(),
-                    )
+                    Card {
+                        Text(
+                            text = modeSelectViewModel.getSelectedModeDescription(),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(2.dp),
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
-
                 Spacer(modifier = Modifier.height(40.dp))
 
                 Button(onClick = { modeSelectViewModel.onConfirmMode(navController) }
