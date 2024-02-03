@@ -77,6 +77,7 @@ fun ModeSettingsView(navController: NavController) {
                     modeSettingsViewModel.getSelectedEntities().forEach {
                         Button(onClick = { modeSettingsViewModel.onToggleSelect(it) }) {
                             Text(text = it)
+                            Icon(imageVector = Icons.Default.Clear, contentDescription = null)
                         }
                     }
                 }
