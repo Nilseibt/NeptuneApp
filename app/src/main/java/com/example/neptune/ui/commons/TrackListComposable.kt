@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.neptune.data.model.track.src.Track
 
@@ -27,13 +27,15 @@ fun TrackListComposable(
     onMoveUp: (index: Int) -> Unit = {},
     onMoveDown: (index: Int) -> Unit = {}
 ) {
+
     Column(
         modifier = Modifier
-            .background(color = Color(0xFF161A23))
+            .background(color = MaterialTheme.colorScheme.background)
             .padding(3.dp)
             .fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(3.dp)
     ) {
+
         Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
@@ -41,6 +43,7 @@ fun TrackListComposable(
         ) {
 
             for (trackIndex in tracks.indices) {
+
                 TrackComposable(
                     tracks[trackIndex].value,
                     trackIndex,
@@ -54,7 +57,11 @@ fun TrackListComposable(
                     onMoveUp,
                     onMoveDown
                 )
+
             }
+
         }
+
     }
+
 }

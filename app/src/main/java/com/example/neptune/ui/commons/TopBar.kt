@@ -17,8 +17,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.neptune.R
 
 @Composable
 fun TopBar(onBack: () -> Unit) {
@@ -38,12 +40,12 @@ fun TopBar(onBack: () -> Unit) {
         ) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
-                contentDescription = "Back"
+                contentDescription = ""
             )
         }
 
         Text(
-            text = "Neptune",
+            text = stringResource(id = R.string.app_name),
             color = MaterialTheme.colorScheme.onPrimary,
             style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier
@@ -83,7 +85,8 @@ fun SessionInfoBar(onStatistics: () -> Unit, onInfo: () -> Unit, title: String) 
         ) {
             Icon(
                 imageVector = Icons.Outlined.Info,
-                contentDescription = "info"
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.onSecondary
             )
         }
 
@@ -106,7 +109,8 @@ fun SessionInfoBar(onStatistics: () -> Unit, onInfo: () -> Unit, title: String) 
         ) {
             Icon(
                 imageVector = Icons.Outlined.DateRange,
-                contentDescription = "statistics"
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.onSecondary
             )
         }
 

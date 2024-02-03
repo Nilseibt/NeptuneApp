@@ -29,4 +29,10 @@
 
     <!--The default strings for the joinView-->
     <string name="enter_six_digit_code">6-digit code</string>
+
+    <!--The default strings for tracks-->
+    <string name="unlock_track_text">Unlock track</string>
+    <string name="lock_track_text">Lock track</string>
+    <string name="add_track_to_queue_text">Add to queue</string>
+    <string name="remove_track_from_queue_text">Remove from queue</string>
 </resources>

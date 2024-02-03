@@ -28,4 +28,10 @@
     <string name="track_cooldown_text">Track Cooldown</string>
     <string name="scan_qr_code">QR-Code scannen</string>
     <string name="enter_six_digit_code">6-stelliger Beitrittscode</string>
+
+    <!--The default strings for tracks-->
+    <string name="unlock_track_text">Track entsperren</string>
+    <string name="lock_track_text">Track sperren</string>
+    <string name="add_track_to_queue_text">Zur Queue hinzufügen</string>
+    <string name="remove_track_from_queue_text">Aus Queue entfernen</string>
 </resources>
