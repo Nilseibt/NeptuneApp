@@ -50,6 +50,9 @@ class SessionEntitiesSearchViewModel(
         navController.popBackStack()
     }
 
+    fun isEntitySelected(entityName : String) : Boolean {
+        return appState.sessionBuilder.isEntitySelected(entityName)
+    }
 
     private fun artistSearchCallback(artistList: List<String>) {
         entitiesSearchList = artistList.toMutableStateList()
