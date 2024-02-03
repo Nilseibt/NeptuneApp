@@ -1,15 +1,21 @@
 package com.example.neptune.ui.views.modeSettingsView
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -74,12 +80,25 @@ fun ModeSettingsView(navController: NavController) {
                     }
                     Spacer(modifier = Modifier.height(searchSliderDistance))
 
-                    modeSettingsViewModel.getSelectedEntities().forEach {
+                    val itemList = modeSettingsViewModel.getSelectedEntities()
+
+                    LazyRow {
+                        items(itemList) { item ->
+                            // your composable here
+                            FilledTonalButton(onClick = { modeSettingsViewModel.onToggleSelect(item) }) {
+                                Text(text = item)
+                                Icon(imageVector = Icons.Default.Clear, contentDescription = null)
+                            }
+                        }
+                    }
+
+                    /** modeSettingsViewModel.getSelectedEntities().forEach {
                         Button(onClick = { modeSettingsViewModel.onToggleSelect(it) }) {
                             Text(text = it)
                             Icon(imageVector = Icons.Default.Clear, contentDescription = null)
                         }
                     }
+                    */
                 }
 
                 if (modeSettingsViewModel.isGenreSession()) {
@@ -90,14 +109,29 @@ fun ModeSettingsView(navController: NavController) {
                         Text(text = stringResource(id = R.string.genre_search))
                     }
                     Spacer(modifier = Modifier.height(searchSliderDistance))
+
+                    val itemList = modeSettingsViewModel.getSelectedEntities()
+
+                    LazyRow {
+                        items(itemList) { item ->
+                            // your composable here
+                            FilledTonalButton(onClick = { modeSettingsViewModel.onToggleSelect(item) }) {
+                                Text(text = item)
+                                Icon(imageVector = Icons.Default.Clear, contentDescription = null)
+                            }
+                        }
+                    }
+
+                    /**
                     modeSettingsViewModel.getSelectedEntities().forEach {
                         Button(onClick = { modeSettingsViewModel.onToggleSelect(it) }) {
                             Text(text = it)
                             Icon(imageVector = Icons.Default.Clear, contentDescription = null)
                         }
                     }
+                    */
                 }
-                
+
                 //Text(text = "Track Cooldown", color = Color.White)
                 Text(text = stringResource(id = R.string.track_cooldown_text), color = Color.White)
                 Slider(
@@ -117,3 +151,6 @@ fun ModeSettingsView(navController: NavController) {
         }
     }
 }
+
+
+
