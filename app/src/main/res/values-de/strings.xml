@@ -22,7 +22,7 @@
     <string name="playlist_mode_name">Playlist Modus</string>
 
     <!--The German strings for the joinView-->
-    <string name="default_playlist">Standardplaylist</string>
+    <string name="default_playlist">Link zu Default Playlist einfügen</string>
     <string name="artist_search">Artists suchen</string>
     <string name="genre_search">Genres suchen</string>
     <string name="track_cooldown_text">Track Cooldown</string>
