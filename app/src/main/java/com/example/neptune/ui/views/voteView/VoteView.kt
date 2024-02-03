@@ -61,7 +61,7 @@ fun VoteView(navController: NavController) {
             title = voteViewModel.getTopBarDescription()
         )
 
-        Box(modifier = Modifier.weight(7f)) {
+        Box(modifier = Modifier.weight(9f)) {
             TrackListComposable(
                 tracks = voteViewModel.getVoteList(),
                 trackListType = TrackListType.PARTICIPANT_VOTE,
