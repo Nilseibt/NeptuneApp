@@ -10,6 +10,11 @@
 
     <!--German Strings used in multiple Views, e.g. for confirmation buttons-->
     <string name="confirmation_button_text">Bestätigen</string>
+    <string name="track_search_button_text">Track suchen</string>
+    <string name="leave_session_text">Session verlassen</string>
+    <string name="leave_session_confirmation_text">Bist du sicher, dass du die Session velassen willst?</string>
+    <string name="confirmation_text">Ja</string>
+    <string name="decline_text">Nein</string>
 
     <!--The German strings for the StartView-->
     <string name="join_session">Session beitreten</string>

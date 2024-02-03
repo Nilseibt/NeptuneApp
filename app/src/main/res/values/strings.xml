@@ -9,6 +9,11 @@
 
     <!--Strings used in multiple Views, e.g. for confirmation buttons-->
     <string name="confirmation_button_text">Confirm</string>
+    <string name="track_search_button_text">Search track</string>
+    <string name="leave_session_text">Leave session</string>
+    <string name="leave_session_confirmation_text">Are you sure you want to leave the session?</string>
+    <string name="confirmation_text">Yes</string>
+    <string name="decline_text">No</string>
 
     <!--The default strings for the StartView-->
     <string name="join_session">Join Session</string>
