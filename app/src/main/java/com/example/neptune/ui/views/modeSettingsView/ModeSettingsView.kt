@@ -7,14 +7,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -60,6 +64,7 @@ fun ModeSettingsView(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 val searchSliderDistance = 16.dp
+                val iconTextDistance = 8.dp
 
                 if (modeSettingsViewModel.isPlaylistLinkInputAvailable()) {
                     //Text(text = "Standardplaylist", color = Color.White)
@@ -72,10 +77,13 @@ fun ModeSettingsView(navController: NavController) {
                 }
 
                 if (modeSettingsViewModel.isArtistSession()) {
-                    Button(
-                        onClick = { modeSettingsViewModel.onArtistSearch(navController) }
+                    FilledTonalButton(
+                        onClick = { modeSettingsViewModel.onArtistSearch(navController) },
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         //Text("Artists suchen")
+                        Icon(imageVector = Icons.Filled.Search, contentDescription = null)
+                        Spacer(modifier = Modifier.width(iconTextDistance))
                         Text(text = stringResource(id = R.string.artist_search))
                     }
                     Spacer(modifier = Modifier.height(searchSliderDistance))
@@ -85,7 +93,7 @@ fun ModeSettingsView(navController: NavController) {
                     LazyRow {
                         items(itemList) { item ->
                             // your composable here
-                            FilledTonalButton(onClick = { modeSettingsViewModel.onToggleSelect(item) }) {
+                            ElevatedButton(onClick = { modeSettingsViewModel.onToggleSelect(item) }) {
                                 Text(text = item)
                                 Icon(imageVector = Icons.Default.Clear, contentDescription = null)
                             }
@@ -102,10 +110,13 @@ fun ModeSettingsView(navController: NavController) {
                 }
 
                 if (modeSettingsViewModel.isGenreSession()) {
-                    Button(
-                        onClick = { modeSettingsViewModel.onGenreSearch(navController) }
+                    FilledTonalButton(
+                        onClick = { modeSettingsViewModel.onGenreSearch(navController) },
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         //Text("Genres suchen")
+                        Icon(imageVector = Icons.Filled.Search, contentDescription = null)
+                        Spacer(modifier = Modifier.width(8.dp))
                         Text(text = stringResource(id = R.string.genre_search))
                     }
                     Spacer(modifier = Modifier.height(searchSliderDistance))
@@ -115,7 +126,7 @@ fun ModeSettingsView(navController: NavController) {
                     LazyRow {
                         items(itemList) { item ->
                             // your composable here
-                            FilledTonalButton(onClick = { modeSettingsViewModel.onToggleSelect(item) }) {
+                            ElevatedButton(onClick = { modeSettingsViewModel.onToggleSelect(item) }) {
                                 Text(text = item)
                                 Icon(imageVector = Icons.Default.Clear, contentDescription = null)
                             }
@@ -133,6 +144,9 @@ fun ModeSettingsView(navController: NavController) {
                 }
 
                 //Text(text = "Track Cooldown", color = Color.White)
+
+                Spacer(modifier = Modifier.height(searchSliderDistance))
+
                 Text(text = stringResource(id = R.string.track_cooldown_text))
                 Slider(
                     value = modeSettingsViewModel.getCooldownSliderPosition(),
