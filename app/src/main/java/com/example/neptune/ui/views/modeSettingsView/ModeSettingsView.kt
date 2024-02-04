@@ -133,7 +133,7 @@ fun ModeSettingsView(navController: NavController) {
                 }
 
                 //Text(text = "Track Cooldown", color = Color.White)
-                Text(text = stringResource(id = R.string.track_cooldown_text), color = Color.White)
+                Text(text = stringResource(id = R.string.track_cooldown_text))
                 Slider(
                     value = modeSettingsViewModel.getCooldownSliderPosition(),
                     onValueChange = { modeSettingsViewModel.onCooldownSliderPositionChange(it) },
