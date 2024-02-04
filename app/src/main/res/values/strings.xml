@@ -10,8 +10,6 @@
     <!--Strings used in multiple Views, e.g. for confirmation buttons-->
     <string name="confirmation_button_text">Confirm</string>
     <string name="track_search_button_text">Search track</string>
-    <string name="leave_session_text">Leave session</string>
-    <string name="leave_session_confirmation_text">Are you sure you want to leave the session?</string>
     <string name="confirmation_text">Yes</string>
     <string name="decline_text">No</string>
 
@@ -40,4 +38,15 @@
     <string name="lock_track_text">Lock track</string>
     <string name="add_track_to_queue_text">Add to queue</string>
     <string name="remove_track_from_queue_text">Remove from queue</string>
+
+    <!--The default strings for the voteView-->
+    <string name="leave_session_text">Leave session</string>
+    <string name="leave_session_confirmation_text">Are you sure you want to leave the session?</string>
+
+    <!--The default strings for the controlView-->
+    <string name="queue_list_name">Queue:</string>
+    <string name="vote_list_name">Vote List:</string>
+    <string name="terminate_session_text">Terminate session</string>
+    <string name="terminate_session_confirmation_text">Are you sure you want to terminate the session for everyone?</string>
+
 </resources>

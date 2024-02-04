@@ -80,6 +80,10 @@ class ControlViewModel(
         }
     }
 
+    fun isPaused(): Boolean {
+        return host.getPlaybackState().value != PlaybackState.PLAYING
+    }
+
     fun isTogglePauseAvailable(): Boolean {
         return host.getPlaybackState().value != PlaybackState.INITIAL
     }
