@@ -21,7 +21,7 @@ object ViewsCollection {
     val START_VIEW =
         View(
             name = "START_VIEW",
-            Composable = { navController -> StartView(navController) }
+            ComposableWithActivity = { navController, activity -> StartView(navController, activity) }
         )
     val JOIN_VIEW =
         View(

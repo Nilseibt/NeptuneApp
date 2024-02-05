@@ -51,14 +51,18 @@ open class SpotifyConnector(
         val resultList = mutableListOf<Track>()
         val tracksJsonList = jsonResponse.getJSONObject("tracks").getJSONArray("items")
         for (index in 0 until tracksJsonList.length()) {
+
             val trackJson = tracksJsonList.getJSONObject(index)
             val trackId = trackJson.getString("id")
             val trackName = trackJson.getString("name")
+
             val trackArtistsJsonList = trackJson.getJSONArray("artists")
             val artistNames = mutableListOf<String>()
             for (artistIndex in 0 until trackArtistsJsonList.length()) {
-                artistNames.add(trackArtistsJsonList.getJSONObject(artistIndex).getString("name"))
+                val artistJson = trackArtistsJsonList.getJSONObject(artistIndex)
+                artistNames.add(artistJson.getString("name"))
             }
+
             val trackImageUrl = trackJson.getJSONObject("album").getJSONArray("images")
                 .getJSONObject(0).getString("url")
 
@@ -70,17 +74,6 @@ open class SpotifyConnector(
             resultList.add(track)
         }
         onCallbackFinished(resultList)
-    }
-
-
-    override fun searchWithGenre(
-        searchInput: String,
-        onCallbackFinished: (resultList: MutableList<Track>) -> Unit
-    ) {
-        search(searchInput, 10){
-            //TODO actually search for the genre
-            onCallbackFinished(it)
-        }
     }
 
 

@@ -17,15 +17,14 @@ open class FullParticipant(
 ) : User(session, backendConnector, upvoteDatabase) {
 
     override fun search(input: String) {
-        if (session.sessionType == SessionType.GENRE){
-            searchWithGenre(input)
-        }
-
         var resultLimit = 0
         if(session.sessionType == SessionType.GENERAL){
             resultLimit = 20
         }
         else if (session.sessionType == SessionType.ARTIST){
+            resultLimit = 50
+        }
+        else if (session.sessionType == SessionType.GENRE){
             resultLimit = 50
         }
         searchList.value.clear()
@@ -42,18 +41,4 @@ open class FullParticipant(
         }
     }
 
-    private fun searchWithGenre(input: String){
-        searchList.value.clear()
-        streamingConnector.searchWithGenre(input) { resultList ->
-            resultList.forEach { track ->
-                if(session.validateTrack(track)) {
-                    if (hasSessionTrack(track.id)) {
-                        searchList.value.addTrack(getSessionTrack(track.id))
-                    } else {
-                        searchList.value.addTrack(mutableStateOf(track))
-                    }
-                }
-            }
-        }
-    }
 }

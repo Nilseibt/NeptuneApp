@@ -4,10 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.neptune.MainActivity
 import com.example.neptune.ui.views.ViewsCollection
 
 @Composable
-fun NeptuneNavGraph() {
+fun NeptuneNavGraph(activity: MainActivity) {
 
     val navController = rememberNavController()
 
@@ -18,7 +19,7 @@ fun NeptuneNavGraph() {
         }
 
         composable(ViewsCollection.START_VIEW.name) {
-            ViewsCollection.START_VIEW.Composable(navController)
+            ViewsCollection.START_VIEW.ComposableWithActivity(navController, activity)
         }
 
         composable(ViewsCollection.JOIN_VIEW.name) {
