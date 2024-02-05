@@ -31,27 +31,37 @@ import androidx.navigation.NavController
 import com.example.neptune.NeptuneApp
 import com.example.neptune.R
 import com.example.neptune.data.model.session.SessionType
+import com.example.neptune.ui.commons.TopBar
 import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
 
 @Composable
 fun ModeSelectView(navController: NavController) {
 
+    val modeSelectViewModel = viewModel<ModeSelectViewModel>(
+        factory = viewModelFactory {
+            ModeSelectViewModel(
+                NeptuneApp.model.appState
+            )
+        }
+    )
+
+    BackHandler {
+        modeSelectViewModel.onBack(navController)
+    }
+
     NeptuneTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            val modeSelectViewModel = viewModel<ModeSelectViewModel>(
-                factory = viewModelFactory {
-                    ModeSelectViewModel(
-                        NeptuneApp.model.appState
-                    )
-                }
-            )
 
-            BackHandler {
-                modeSelectViewModel.onBack(navController)
+            Column(modifier = Modifier
+                .fillMaxSize()
+            ) {
+
+                TopBar(onBack = { modeSelectViewModel.onBack(navController) })
+
             }
 
             Column(

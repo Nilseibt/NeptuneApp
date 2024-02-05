@@ -36,25 +36,35 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.neptune.NeptuneApp
 import com.example.neptune.R
+import com.example.neptune.ui.commons.TopBar
 import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
 
 @Composable
 fun ModeSettingsView(navController: NavController) {
 
+    val modeSettingsViewModel = viewModel<ModeSettingsViewModel>(
+        factory = viewModelFactory {
+            ModeSettingsViewModel(
+                NeptuneApp.model.appState
+            )
+        }
+    )
+
+    BackHandler {
+        modeSettingsViewModel.onBack(navController)
+    }
+
     NeptuneTheme {
         Surface(modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background) {
-            val modeSettingsViewModel = viewModel<ModeSettingsViewModel>(
-                factory = viewModelFactory {
-                    ModeSettingsViewModel(
-                        NeptuneApp.model.appState
-                    )
-                }
-            )
 
-            BackHandler {
-                modeSettingsViewModel.onBack(navController)
+            Column(modifier = Modifier
+                .fillMaxSize()
+            ) {
+
+                TopBar(onBack = { modeSettingsViewModel.onBack(navController) })
+
             }
 
             Column(modifier = Modifier
