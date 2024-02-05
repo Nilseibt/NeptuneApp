@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.neptune.MainActivity
 import com.example.neptune.NeptuneApp
 import com.example.neptune.R
 import com.example.neptune.ui.commons.TopBar
@@ -31,13 +32,14 @@ import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
 import com.example.neptune.ui.theme.SpotifyBrandGreen
 @Composable
-fun StartView(navController: NavController) {
+fun StartView(navController: NavController, activity: MainActivity) {
 
     val startViewModel = viewModel<StartViewModel>(
         factory = viewModelFactory {
             StartViewModel(
                 NeptuneApp.model.appState,
-                navController
+                navController,
+                activity
             )
         }
     )

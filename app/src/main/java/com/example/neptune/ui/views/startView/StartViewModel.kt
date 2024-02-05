@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.android.volley.toolbox.Volley
+import com.example.neptune.MainActivity
 import com.example.neptune.NeptuneApp
 import com.example.neptune.data.model.appState.AppState
 import com.example.neptune.data.model.backendConnector.ParticipantBackendConnector
@@ -20,7 +21,8 @@ import kotlinx.coroutines.launch
 
 class StartViewModel(
     val appState: AppState,
-    val navController: NavController
+    val navController: NavController,
+    val activity: MainActivity
 ) : ViewModel() {
 
 
@@ -75,7 +77,7 @@ class StartViewModel(
 
     fun onConfirmLeave(navController: NavController) {
         leaveDialogShown = false
-        navController.popBackStack()
+        activity.finish()
     }
 
     fun onDismissLeave(navController: NavController) {
