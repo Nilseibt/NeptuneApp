@@ -28,29 +28,39 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.neptune.R
+import com.example.neptune.ui.commons.TopBar
 import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
 
 @Composable
 fun JoinView(navController: NavController) {
 
+    val joinViewModel = viewModel<JoinViewModel>(
+        factory = viewModelFactory {
+            JoinViewModel(
+                //NeptuneApp.appState
+            )
+        }
+    )
+
+    BackHandler {
+        joinViewModel.onBack(navController)
+    }
+
     NeptuneTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
             ) {
-            val joinViewModel = viewModel<JoinViewModel>(
-                factory = viewModelFactory {
-                    JoinViewModel(
-                        //NeptuneApp.appState
-                    )
-                }
-            )
 
-            BackHandler {
-                joinViewModel.onBack(navController)
+
+            Column(modifier = Modifier
+                .fillMaxSize()
+            ) {
+
+                TopBar(onBack = { joinViewModel.onBack(navController) })
+
             }
-
             Column (modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
