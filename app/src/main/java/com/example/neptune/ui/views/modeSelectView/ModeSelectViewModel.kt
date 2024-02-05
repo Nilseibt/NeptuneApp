@@ -38,5 +38,4 @@ class ModeSelectViewModel(
     fun onBack(navController: NavController) {
         navController.popBackStack()
     }
-
 }
