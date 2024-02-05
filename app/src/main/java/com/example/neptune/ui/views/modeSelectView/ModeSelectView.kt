@@ -1,6 +1,7 @@
 package com.example.neptune.ui.views.modeSelectView
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,9 +14,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -23,6 +27,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -32,9 +38,17 @@ import com.example.neptune.NeptuneApp
 import com.example.neptune.R
 import com.example.neptune.data.model.session.SessionType
 import com.example.neptune.ui.commons.TopBar
+import com.example.neptune.ui.theme.Blue10
+import com.example.neptune.ui.theme.Blue20
+import com.example.neptune.ui.theme.Blue30
+import com.example.neptune.ui.theme.Blue40
+import com.example.neptune.ui.theme.DarkBlue10
 import com.example.neptune.ui.theme.NeptuneTheme
+import com.example.neptune.ui.theme.SpotifyBrandGreen
 import com.example.neptune.ui.views.util.viewModelFactory
 
+val colorWhenSelected = Blue40
+val colorWhenNotSelected = Color.Gray
 @Composable
 fun ModeSelectView(navController: NavController) {
 
@@ -50,6 +64,11 @@ fun ModeSelectView(navController: NavController) {
         modeSelectViewModel.onBack(navController)
     }
 
+    fun determineButtonColor(mode: SessionType): Color {
+        val isModeSelected = modeSelectViewModel.isModeSelected(mode)
+        return if (isModeSelected) colorWhenSelected else colorWhenNotSelected
+    }
+
     NeptuneTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -59,9 +78,7 @@ fun ModeSelectView(navController: NavController) {
             Column(modifier = Modifier
                 .fillMaxSize()
             ) {
-
                 TopBar(onBack = { modeSelectViewModel.onBack(navController) })
-
             }
 
             Column(
@@ -78,6 +95,7 @@ fun ModeSelectView(navController: NavController) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceEvenly
@@ -87,9 +105,13 @@ fun ModeSelectView(navController: NavController) {
                         if (modeSelectViewModel.isModeSelected(SessionType.GENERAL)) {
                             generalModifier.border(5.dp, Color.Black, RoundedCornerShape(50))
                         }
-                        Button(
+
+                        FilledTonalButton(
                             onClick = { modeSelectViewModel.onSelectMode(SessionType.GENERAL) },
-                            modifier = generalModifier
+                            modifier = generalModifier,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = determineButtonColor(SessionType.GENERAL)
+                            )
                         ) {
                             //Text(text = "General Mode")
                             Text(text = stringResource(id = R.string.general_mode_name))
@@ -102,9 +124,12 @@ fun ModeSelectView(navController: NavController) {
                         if (modeSelectViewModel.isModeSelected(SessionType.ARTIST)) {
                             artistModifier.border(5.dp, Color.Black, RoundedCornerShape(50))
                         }
-                        Button(
+                        FilledTonalButton(
                             onClick = { modeSelectViewModel.onSelectMode(SessionType.ARTIST) },
-                            modifier = artistModifier
+                            modifier = artistModifier,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = determineButtonColor(SessionType.ARTIST)
+                            )
                         ) {
                             //Text(text = "Artist Mode")
                             Text(text = stringResource(id = R.string.artist_mode_name))
@@ -120,9 +145,12 @@ fun ModeSelectView(navController: NavController) {
                         if (modeSelectViewModel.isModeSelected(SessionType.GENRE)) {
                             genreModifier.border(5.dp, Color.Black, RoundedCornerShape(50))
                         }
-                        Button(
+                        FilledTonalButton(
                             onClick = { modeSelectViewModel.onSelectMode(SessionType.GENRE) },
-                            modifier = genreModifier
+                            modifier = genreModifier,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = determineButtonColor(SessionType.GENRE)
+                            )
                         ) {
                             //Text(text = "Genre Mode")
                             Text(text = stringResource(id = R.string.genre_mode_name))
@@ -135,9 +163,12 @@ fun ModeSelectView(navController: NavController) {
                         if (modeSelectViewModel.isModeSelected(SessionType.PLAYLIST)) {
                             playlistModifier.border(5.dp, Color.Black, RoundedCornerShape(50))
                         }
-                        Button(
+                        FilledTonalButton(
                             onClick = { modeSelectViewModel.onSelectMode(SessionType.PLAYLIST) },
-                            modifier = playlistModifier
+                            modifier = playlistModifier,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = determineButtonColor(SessionType.PLAYLIST)
+                            )
                         ) {
                             //Text(text = "Playlist Mode")
                             Text(text = stringResource(id = R.string.playlist_mode_name))
