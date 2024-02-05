@@ -49,4 +49,9 @@
     <string name="terminate_session_text">Terminate session</string>
     <string name="terminate_session_confirmation_text">Are you sure you want to terminate the session for everyone?</string>
 
+    <!--The default strings for the searchView-->
+    <string name="locked_filter_name">Locked</string>
+    <string name="cooldown_filter_name">Cooldown</string>
+    <string name="search_text">Search Track</string>
+
 </resources>
