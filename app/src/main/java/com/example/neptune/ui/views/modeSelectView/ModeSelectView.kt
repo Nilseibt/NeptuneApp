@@ -142,18 +142,21 @@ fun ModeSelectView(navController: NavController) {
 
                 Box(
                     modifier = Modifier
-                        //.border(1.dp, Color.Black, RoundedCornerShape(1))
-                        .padding(8.dp)
-                        .size(200.dp, 50.dp)
+                        //.border(1.dp, Color.White, RoundedCornerShape(1))
+                        //.padding(8.dp)
+                        .size(300.dp, 100.dp)
                         .fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Card {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
                         Text(
                             text = modeSelectViewModel.getSelectedModeDescription(),
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(2.dp),
+                                .padding(40.dp),
                             textAlign = TextAlign.Center
                         )
                     }
