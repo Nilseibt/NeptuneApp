@@ -32,13 +32,8 @@ class VoteViewModel(
         navController.navigate(ViewsCollection.SEARCH_VIEW.name)
     }
 
-    fun getTopBarDescription(): String {
-        return when(participant.session.sessionType){
-            SessionType.GENERAL -> "General Mode"
-            SessionType.ARTIST -> "Artist Mode"
-            SessionType.GENRE -> "Genre Mode"
-            SessionType.PLAYLIST -> "Playlist Mode"
-        }
+    fun getTopBarDescription(): SessionType {
+        return participant.session.sessionType
     }
 
     fun onOpenInfo(navController: NavController) {

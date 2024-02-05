@@ -128,13 +128,8 @@ class ControlViewModel(
         navController.navigate(ViewsCollection.SEARCH_VIEW.name)
     }
 
-    fun getTopBarDescription(): String {
-        return when(host.session.sessionType){
-            SessionType.GENERAL -> "General Mode"
-            SessionType.ARTIST -> "Artist Mode"
-            SessionType.GENRE -> "Genre Mode"
-            SessionType.PLAYLIST -> "Playlist Mode"
-        }
+    fun getTopBarDescription(): SessionType {
+        return host.session.sessionType
     }
 
     fun onOpenInfo(navController: NavController) {

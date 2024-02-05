@@ -58,7 +58,7 @@ fun VoteView(navController: NavController) {
         SessionInfoBar(
             onStatistics = { voteViewModel.onOpenStats(navController) },
             onInfo = { voteViewModel.onOpenInfo(navController) },
-            title = voteViewModel.getTopBarDescription()
+            description = voteViewModel.getTopBarDescription()
         )
 
         Box(modifier = Modifier.weight(9f)) {

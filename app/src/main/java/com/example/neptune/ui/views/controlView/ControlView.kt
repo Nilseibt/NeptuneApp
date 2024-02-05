@@ -66,7 +66,7 @@ fun ControlView(navController: NavController) {
         SessionInfoBar(
             onStatistics = { controlViewModel.onOpenStats(navController) },
             onInfo = { controlViewModel.onOpenInfo(navController) },
-            title = controlViewModel.getTopBarDescription()
+            description = controlViewModel.getTopBarDescription()
         )
 
         Text(

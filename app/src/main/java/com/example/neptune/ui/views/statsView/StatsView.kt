@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.neptune.NeptuneApp
+import com.example.neptune.ui.commons.TopBar
 import com.example.neptune.ui.views.util.viewModelFactory
 import com.example.neptune.ui.views.voteView.VoteViewModel
 
@@ -49,4 +51,12 @@ fun StatsView(navController: NavController) {
     BackHandler {
         statsViewModel.onBack(navController)
     }
+}
+
+@Preview
+@Composable
+fun StatsPreview() {
+
+    TopBar {}
+
 }

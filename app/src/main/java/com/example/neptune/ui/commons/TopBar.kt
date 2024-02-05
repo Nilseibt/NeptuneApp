@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.neptune.R
+import com.example.neptune.data.model.session.SessionType
 
 @Composable
 fun TopBar(onBack: () -> Unit) {
@@ -68,7 +69,7 @@ fun TopBar(onBack: () -> Unit) {
 }
 
 @Composable
-fun SessionInfoBar(onStatistics: () -> Unit, onInfo: () -> Unit, title: String) {
+fun SessionInfoBar(onStatistics: () -> Unit, onInfo: () -> Unit, description: SessionType) {
 
     Row(
         modifier = Modifier
@@ -90,6 +91,12 @@ fun SessionInfoBar(onStatistics: () -> Unit, onInfo: () -> Unit, title: String) 
             )
         }
 
+        val title = when(description) {
+            SessionType.GENERAL -> stringResource(id = R.string.general_mode_name)
+            SessionType.ARTIST -> stringResource(id = R.string.artist_mode_name)
+            SessionType.GENRE -> stringResource(id = R.string.genre_mode_name)
+            SessionType.PLAYLIST -> stringResource(id = R.string.playlist_mode_name)
+        }
         Text(
             text = title,
             color = MaterialTheme.colorScheme.onSecondary,

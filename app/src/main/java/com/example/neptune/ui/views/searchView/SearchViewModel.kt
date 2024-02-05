@@ -122,13 +122,8 @@ class SearchViewModel(
         return user.blockList.value.getTracks()
     }
 
-    fun getTopBarDescription(): String {
-        return when (user.session.sessionType) {
-            SessionType.GENERAL -> "General Mode"
-            SessionType.ARTIST -> "Artist Mode"
-            SessionType.GENRE -> "Genre Mode"
-            SessionType.PLAYLIST -> "Playlist Mode"
-        }
+    fun getTopBarDescription(): SessionType {
+        return user.session.sessionType
     }
 
     fun onOpenInfo(navController: NavController) {

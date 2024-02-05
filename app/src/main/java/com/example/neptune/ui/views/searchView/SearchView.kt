@@ -17,8 +17,8 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,7 +58,7 @@ fun SearchView(navController: NavController) {
         SessionInfoBar(
             onStatistics = { searchViewModel.onOpenStats(navController) },
             onInfo = { searchViewModel.onOpenInfo(navController) },
-            title = searchViewModel.getTopBarDescription()
+            description = searchViewModel.getTopBarDescription()
         )
 
         Row(
@@ -99,7 +99,7 @@ fun SearchView(navController: NavController) {
 
             }
 
-            TextField(
+            OutlinedTextField(
                 value = searchViewModel.getTrackSearchInput(),
                 onValueChange = { searchViewModel.onTrackSearchInputChange(it) },
                 enabled = searchViewModel.getActiveFilter() == Filter.NONE,
