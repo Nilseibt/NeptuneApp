@@ -3,6 +3,7 @@ package com.example.neptune.ui.views.startView
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,27 +26,38 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.neptune.NeptuneApp
 import com.example.neptune.R
+import com.example.neptune.ui.commons.TopBar
 import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
 import com.example.neptune.ui.theme.SpotifyBrandGreen
 @Composable
 fun StartView(navController: NavController) {
+
+    val startViewModel = viewModel<StartViewModel>(
+        factory = viewModelFactory {
+            StartViewModel(
+                NeptuneApp.model.appState,
+                navController
+            )
+        }
+    )
+
+    BackHandler {
+        startViewModel.onBack(navController)
+    }
+
     NeptuneTheme {
         Surface(
-            modifier = Modifier.fillMaxSize(),
+            //modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            val startViewModel = viewModel<StartViewModel>(
-                factory = viewModelFactory {
-                    StartViewModel(
-                        NeptuneApp.model.appState,
-                        navController
-                    )
-                }
-            )
 
-            BackHandler {
-                startViewModel.onBack(navController)
+            Column(modifier = Modifier
+                .fillMaxSize()
+            ) {
+
+                TopBar(onBack = { startViewModel.onBack(navController) })
+
             }
 
             Column (
@@ -55,6 +67,7 @@ fun StartView(navController: NavController) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
                 Button(onClick = { startViewModel.onJoinSession(navController) }) {
                     //Text(text = "Session beitreten")
                     Text(text = stringResource(id = R.string.join_session))
