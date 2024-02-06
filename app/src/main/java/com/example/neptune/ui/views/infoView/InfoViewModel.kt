@@ -50,10 +50,6 @@ class InfoViewModel(
         //TODO
     }
 
-    fun onOpenStats(navController: NavController) {
-        navController.navigate(ViewsCollection.STATS_VIEW.name)
-    }
-
     fun onBack(navController: NavController) {
         navController.popBackStack()
     }

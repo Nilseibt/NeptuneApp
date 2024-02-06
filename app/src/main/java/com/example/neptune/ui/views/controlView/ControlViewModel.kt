@@ -72,14 +72,6 @@ class ControlViewModel(
         host.moveTrackDownInQueue(index)
     }
 
-    fun getPausedDescription(): String {
-        return when(host.getPlaybackState().value){
-            PlaybackState.INITIAL -> ""
-            PlaybackState.PAUSED -> "Weiter"
-            PlaybackState.PLAYING -> "Pause"
-        }
-    }
-
     fun isPaused(): Boolean {
         return host.getPlaybackState().value != PlaybackState.PLAYING
     }
