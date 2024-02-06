@@ -43,8 +43,6 @@ import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.theme.SpotifyBrandGreen
 import com.example.neptune.ui.views.util.viewModelFactory
 
-val colorWhenSelected = Blue40
-val colorWhenNotSelected = Color.Gray
 @Composable
 fun ModeSelectView(navController: NavController) {
 
@@ -60,10 +58,10 @@ fun ModeSelectView(navController: NavController) {
         modeSelectViewModel.onBack(navController)
     }
 
-    fun determineButtonColor(mode: SessionType): Color {
+    /*fun determineButtonColor(mode: SessionType): Color {
         val isModeSelected = modeSelectViewModel.isModeSelected(mode)
         return if (isModeSelected) colorWhenSelected else colorWhenNotSelected
-    }
+    }*/
 
     NeptuneTheme {
         Surface(
@@ -96,7 +94,7 @@ fun ModeSelectView(navController: NavController) {
                             mode = SessionType.GENERAL,
                             modeName = stringResource(R.string.general_mode_name),
                             modeSelectViewModel = modeSelectViewModel,
-                            modeModifier = generalModifier
+                            modifier = generalModifier
                         )
 
                         /*FilledTonalButton(
@@ -117,7 +115,7 @@ fun ModeSelectView(navController: NavController) {
                             mode = SessionType.ARTIST,
                             modeName = stringResource(id = R.string.artist_mode_name),
                             modeSelectViewModel = modeSelectViewModel,
-                            modeModifier = artistModifier
+                            modifier = artistModifier
                         )
 
                         /*FilledTonalButton(
@@ -147,7 +145,7 @@ fun ModeSelectView(navController: NavController) {
                             mode = SessionType.GENRE,
                             modeName = stringResource(id = R.string.genre_mode_name),
                             modeSelectViewModel = modeSelectViewModel,
-                            modeModifier = genreModifier
+                            modifier = genreModifier
                         )
 
                         /*FilledTonalButton(
@@ -215,21 +213,24 @@ fun ModeButton(
     mode: SessionType,
     modeName : String,
     modeSelectViewModel: ModeSelectViewModel,
-    modeModifier : Modifier
+    modifier : Modifier
 ) {
-    val determineButtonColor: Color = determineButtonColor(mode, modeSelectViewModel)
+    val colorWhenSelected = MaterialTheme.colorScheme.secondary
+    val buttonColor: Color = determineButtonColor(mode, modeSelectViewModel, colorWhenSelected)
 
     FilledTonalButton(
         onClick = { modeSelectViewModel.onSelectMode(mode) },
-        modifier = modeModifier,
-        colors = ButtonDefaults.buttonColors(containerColor = determineButtonColor)
+        modifier = modifier,
+        colors = ButtonDefaults.buttonColors(containerColor = buttonColor)
     ) {
         Text(text = modeName)
     }
 }
 
 
-fun determineButtonColor(mode : SessionType, modeSelectViewModel : ModeSelectViewModel) : Color{
+fun determineButtonColor(mode : SessionType, modeSelectViewModel : ModeSelectViewModel, colorWhenSelected : Color) : Color {
+    val colorWhenNotSelected = Color.Gray
+
     val isModeSelected = modeSelectViewModel.isModeSelected(mode)
 
     return if (isModeSelected) colorWhenSelected else colorWhenNotSelected
