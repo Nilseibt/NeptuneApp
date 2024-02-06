@@ -110,18 +110,21 @@ fun TrackComposable(
 
         }
 
-        Row(modifier = Modifier.weight(1f)) {
+        Row(modifier = Modifier.weight(2f)) {
 
             Text(
                 text = track.getUpvotes().toString(),
                 color = MaterialTheme.colorScheme.onTertiary,
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.align(alignment = Alignment.CenterVertically)
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterVertically)
+                    .weight(1f)
             )
 
             IconButton(
-                onClick = { onToggleUpvote(track) }
+                onClick = { onToggleUpvote(track) },
+                modifier = Modifier.weight(1f)
             ) {
                 Icon(
                     imageVector = if (track.isUpvoted()) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,

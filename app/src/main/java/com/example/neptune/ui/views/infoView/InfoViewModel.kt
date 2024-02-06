@@ -12,13 +12,8 @@ class InfoViewModel(
     val user: User
 ) : ViewModel() {
 
-    fun getModeName(): String {
-        return when(user.session.sessionType){
-            SessionType.GENERAL -> "General Mode"
-            SessionType.ARTIST -> "Artist Mode"
-            SessionType.GENRE -> "Genre Mode"
-            SessionType.PLAYLIST -> "Playlist Mode"
-        }
+    fun getMode(): SessionType {
+        return user.session.sessionType
     }
 
     fun isArtistMode(): Boolean {

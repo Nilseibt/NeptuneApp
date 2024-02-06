@@ -12,16 +12,14 @@
     <string name="track_search_button_text">Search track</string>
     <string name="confirmation_text">Yes</string>
     <string name="decline_text">No</string>
-
-    <!--The default strings for the StartView-->
-    <string name="join_session">Join Session</string>
-    <string name="create_session">Create Session</string>
-
-    <!--The default strings for the ModeSelectView-->
     <string name="general_mode_name">General Mode</string>
     <string name="artist_mode_name">Artist Mode</string>
     <string name="genre_mode_name">Genre Mode</string>
     <string name="playlist_mode_name">Playlist Mode</string>
+
+    <!--The default strings for the StartView-->
+    <string name="join_session">Join Session</string>
+    <string name="create_session">Create Session</string>
 
     <!--The default strings for the ModeSettingsView-->
     <string name="default_playlist">Insert link for Default Playlist</string>
@@ -54,5 +52,11 @@
     <string name="cooldown_filter_name">Cooldown</string>
     <string name="search_text">Search Track</string>
     <string name="finished">Finished</string>
+
+    <!--The default strings for the infoView-->
+    <string name="artists_text">Artists:</string>
+    <string name="genre_text">Genres:</string>
+    <string name="session_code_text">Session Code:</string>
+    <string name="share_text">Share</string>
 
 </resources>

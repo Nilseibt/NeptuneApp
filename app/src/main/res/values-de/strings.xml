@@ -13,16 +13,14 @@
     <string name="track_search_button_text">Track suchen</string>
     <string name="confirmation_text">Ja</string>
     <string name="decline_text">Nein</string>
-
-    <!--The German strings for the StartView-->
-    <string name="join_session">Session beitreten</string>
-    <string name="create_session">Session erstellen</string>
-
-    <!--The German strings for the ModeSelectView-->
     <string name="general_mode_name">General Modus</string>
     <string name="artist_mode_name">Artist Modus</string>
     <string name="genre_mode_name">Genre Modus</string>
     <string name="playlist_mode_name">Playlist Modus</string>
+
+    <!--The German strings for the StartView-->
+    <string name="join_session">Session beitreten</string>
+    <string name="create_session">Session erstellen</string>
 
     <!--The German strings for the joinView-->
     <string name="default_playlist">Link zu Default Playlist einfügen</string>
@@ -32,26 +30,32 @@
     <string name="scan_qr_code">QR-Code scannen</string>
     <string name="enter_six_digit_code">6-stelliger Beitrittscode</string>
 
-    <!--The default strings for tracks-->
+    <!--The German strings for tracks-->
     <string name="unlock_track_text">Track entsperren</string>
     <string name="lock_track_text">Track sperren</string>
     <string name="add_track_to_queue_text">Zur Queue hinzufügen</string>
     <string name="remove_track_from_queue_text">Aus Queue entfernen</string>
 
-    <!--The default strings for the voteView-->
+    <!--The German strings for the voteView-->
     <string name="leave_session_text">Session verlassen</string>
     <string name="leave_session_confirmation_text">Bist du sicher, dass du die Session verlassen willst?</string>
 
-    <!--The default strings for the controlView-->
+    <!--The German strings for the controlView-->
     <string name="queue_list_name">Queue:</string>
     <string name="vote_list_name">Vorschlagsliste:</string>
     <string name="terminate_session_text">Session beenden</string>
     <string name="terminate_session_confirmation_text">Bist du sicher, dass du die Session für alle beenden willst?</string>
 
-    <!--The default strings for the searchView-->
+    <!--The German strings for the searchView-->
     <string name="locked_filter_name">Gesperrt</string>
     <string name="cooldown_filter_name">Cooldown</string>
     <string name="search_text">Track suchen</string>
     <string name="finished">Fertig</string>
+
+    <!--The German strings for the infoView-->
+    <string name="artists_text">Artists:</string>
+    <string name="genre_text">Genres:</string>
+    <string name="session_code_text">Beitrittscode:</string>
+    <string name="share_text">Teilen</string>
 
 </resources>
