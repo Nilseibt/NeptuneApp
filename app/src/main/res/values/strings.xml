@@ -20,6 +20,10 @@
     <!--The default strings for the StartView-->
     <string name="join_session">Join Session</string>
     <string name="create_session">Create Session</string>
+    <string name="leave_application">Leave Application</string>
+    <string name="sure_about_leaving_application">Are you sure you want to leave the application?</string>
+    <string name="app_leave_confirmation">Yes</string>
+    <string name="app_leave_declination">No</string>
 
     <!--The default strings for the ModeSettingsView-->
     <string name="default_playlist">Insert link for Default Playlist</string>
@@ -58,5 +62,4 @@
     <string name="genre_text">Genres:</string>
     <string name="session_code_text">Session Code:</string>
     <string name="share_text">Share</string>
-
 </resources>

@@ -1,13 +1,10 @@
 package com.example.neptune.ui.views.startView
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
@@ -71,7 +68,6 @@ fun StartView(navController: NavController, activity: MainActivity) {
             ) {
 
                 Button(onClick = { startViewModel.onJoinSession(navController) }) {
-                    //Text(text = "Session beitreten")
                     Text(text = stringResource(id = R.string.join_session))
                 }
                 Spacer(modifier = Modifier.height(32.dp))
@@ -79,7 +75,6 @@ fun StartView(navController: NavController, activity: MainActivity) {
                     onClick = { startViewModel.onCreateSession(navController) },
                     enabled = startViewModel.createSessionPossible()
                 ) {
-                    //Text(text = "Session erstellen")
                     Text(text = stringResource(id = R.string.create_session))
                 }
                 Spacer(modifier = Modifier.height(32.dp))
@@ -97,10 +92,10 @@ fun StartView(navController: NavController, activity: MainActivity) {
 
                 AlertDialog(
                     title = {
-                        Text(text = "App verlassen")
+                        Text(text = stringResource(id = R.string.leave_application))
                     },
                     text = {
-                        Text(text = "Sicher, dass du die App verlassen willst?")
+                        Text(text = stringResource(id = R.string.sure_about_leaving_application))
                     },
                     onDismissRequest = { },
                     confirmButton = {
@@ -109,7 +104,7 @@ fun StartView(navController: NavController, activity: MainActivity) {
                                 startViewModel.onConfirmLeave(navController)
                             }
                         ) {
-                            Text("Ja")
+                            Text(text = stringResource(id = R.string.app_leave_confirmation))
                         }
                     },
                     dismissButton = {
@@ -118,7 +113,7 @@ fun StartView(navController: NavController, activity: MainActivity) {
                                 startViewModel.onDismissLeave(navController)
                             }
                         ) {
-                            Text("Nein")
+                            Text(text = stringResource(id = R.string.app_leave_declination))
                         }
                     }
                 )
