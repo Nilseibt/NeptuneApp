@@ -13,10 +13,6 @@
     <string name="track_search_button_text">Track suchen</string>
     <string name="confirmation_text">Ja</string>
     <string name="decline_text">Nein</string>
-    <string name="general_mode_name">General Modus</string>
-    <string name="artist_mode_name">Artist Modus</string>
-    <string name="genre_mode_name">Genre Modus</string>
-    <string name="playlist_mode_name">Playlist Modus</string>
 
     <!--The German strings for the StartView-->
     <string name="join_session">Session beitreten</string>
@@ -27,12 +23,24 @@
     <string name="app_leave_declination">Nein</string>
 
     <!--The German strings for the joinView-->
+    <string name="scan_qr_code">QR-Code scannen</string>
+    <string name="enter_six_digit_code">6-stelliger Beitrittscode</string>
+
+    <!--The German strings for the ModeSelectView-->
+    <string name="general_mode_name">General Modus</string>
+    <string name="artist_mode_name">Artist Modus</string>
+    <string name="genre_mode_name">Genre Modus</string>
+    <string name="playlist_mode_name">Playlist Modus</string>
+    <string name="general_mode_description">General Mode Description</string>
+    <string name="artist_mode_description">Artist mode description</string>
+    <string name="genre_mode_description">Genre mode description</string>
+    <string name="playlist_mode_description">Playlist mode description</string>
+
+    <!--The German strings for the ModeSettingsView-->
     <string name="default_playlist">Link zu Default Playlist einfügen</string>
     <string name="artist_search">Artists suchen</string>
     <string name="genre_search">Genres suchen</string>
     <string name="track_cooldown_text">Track Cooldown</string>
-    <string name="scan_qr_code">QR-Code scannen</string>
-    <string name="enter_six_digit_code">6-stelliger Beitrittscode</string>
 
     <!--The German strings for tracks-->
     <string name="unlock_track_text">Track entsperren</string>

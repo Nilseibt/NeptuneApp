@@ -12,10 +12,6 @@
     <string name="track_search_button_text">Search track</string>
     <string name="confirmation_text">Yes</string>
     <string name="decline_text">No</string>
-    <string name="general_mode_name">General Mode</string>
-    <string name="artist_mode_name">Artist Mode</string>
-    <string name="genre_mode_name">Genre Mode</string>
-    <string name="playlist_mode_name">Playlist Mode</string>
 
     <!--The default strings for the StartView-->
     <string name="join_session">Join Session</string>
@@ -25,15 +21,25 @@
     <string name="app_leave_confirmation">Yes</string>
     <string name="app_leave_declination">No</string>
 
+    <!--The default strings for the joinView-->
+    <string name="enter_six_digit_code">6-digit code</string>
+    <string name="scan_qr_code">Scan QR-Code</string>
+
+    <!--The default strings for the ModeSelectView-->
+    <string name="general_mode_name">General Mode</string>
+    <string name="artist_mode_name">Artist Mode</string>
+    <string name="genre_mode_name">Genre Mode</string>
+    <string name="playlist_mode_name">Playlist Mode</string>
+    <string name="general_mode_description">General Mode Description</string>
+    <string name="artist_mode_description">Artist mode description</string>
+    <string name="genre_mode_description">Genre mode description</string>
+    <string name="playlist_mode_description">Playlist mode description</string>
+
     <!--The default strings for the ModeSettingsView-->
     <string name="default_playlist">Insert link for Default Playlist</string>
     <string name="artist_search">Search Artists</string>
     <string name="genre_search">Search genres</string>
     <string name="track_cooldown_text">Track Cooldown</string>
-    <string name="scan_qr_code">Scan QR-Code</string>
-
-    <!--The default strings for the joinView-->
-    <string name="enter_six_digit_code">6-digit code</string>
 
     <!--The default strings for tracks-->
     <string name="unlock_track_text">Unlock track</string>
@@ -62,4 +68,7 @@
     <string name="genre_text">Genres:</string>
     <string name="session_code_text">Session Code:</string>
     <string name="share_text">Share</string>
+
+
+
 </resources>
