@@ -69,4 +69,15 @@
     <string name="genre_text">Genres:</string>
     <string name="session_code_text">Beitrittscode:</string>
     <string name="share_text">Teilen</string>
+
+    <!--The German strings for the statsView-->
+    <string name="statistics_text">Statistiken</string>
+    <string name="most_popular_track_text">Beliebtester Track:</string>
+    <string name="most_popular_genre_text">Beliebtestes Genre:</string>
+    <string name="most_popular_artist_text">Beliebtester Artist:</string>
+    <string name="total_played_tracks_text">Insgesamt abgespielte Tracks:</string>
+    <string name="total_upvote_text">Insgesamte Anzahl Upvotes:</string>
+    <string name="total_participant_text">Insgesamte Anzahl Teilnehmer:</string>
+    <string name="session_duration_text">Session Dauer:</string>
+
 </resources>
