@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.neptune.NeptuneApp
@@ -81,7 +82,8 @@ fun ModeSelectView(navController: NavController) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                             .weight(1f)
                             .padding(32.dp),
                         horizontalArrangement = Arrangement.SpaceEvenly
@@ -89,7 +91,15 @@ fun ModeSelectView(navController: NavController) {
                         val generalModifier = Modifier
                             .weight(1f)
                             .padding(8.dp)
-                        FilledTonalButton(
+
+                        ModeButton(
+                            mode = SessionType.GENERAL,
+                            modeName = stringResource(R.string.general_mode_name),
+                            modeSelectViewModel = modeSelectViewModel,
+                            modeModifier = generalModifier
+                        )
+
+                        /*FilledTonalButton(
                             onClick = { modeSelectViewModel.onSelectMode(SessionType.GENERAL) },
                             modifier = generalModifier,
                             colors = ButtonDefaults.buttonColors(
@@ -97,12 +107,20 @@ fun ModeSelectView(navController: NavController) {
                             )
                         ) {
                             Text(text = stringResource(id = R.string.general_mode_name))
-                        }
+                        }*/
 
                         val artistModifier = Modifier
                             .weight(1f)
                             .padding(8.dp)
-                        FilledTonalButton(
+
+                        ModeButton(
+                            mode = SessionType.ARTIST,
+                            modeName = stringResource(id = R.string.artist_mode_name),
+                            modeSelectViewModel = modeSelectViewModel,
+                            modeModifier = artistModifier
+                        )
+
+                        /*FilledTonalButton(
                             onClick = { modeSelectViewModel.onSelectMode(SessionType.ARTIST) },
                             modifier = artistModifier,
                             colors = ButtonDefaults.buttonColors(
@@ -110,7 +128,7 @@ fun ModeSelectView(navController: NavController) {
                             )
                         ) {
                             Text(text = stringResource(id = R.string.artist_mode_name))
-                        }
+                        }*/
                     }
 
                     Row(
@@ -123,7 +141,16 @@ fun ModeSelectView(navController: NavController) {
                         val genreModifier = Modifier
                             .weight(1f)
                             .padding(8.dp)
-                        FilledTonalButton(
+
+
+                        ModeButton(
+                            mode = SessionType.GENRE,
+                            modeName = stringResource(id = R.string.genre_mode_name),
+                            modeSelectViewModel = modeSelectViewModel,
+                            modeModifier = genreModifier
+                        )
+
+                        /*FilledTonalButton(
                             onClick = { modeSelectViewModel.onSelectMode(SessionType.GENRE) },
                             modifier = genreModifier,
                             colors = ButtonDefaults.buttonColors(
@@ -131,12 +158,20 @@ fun ModeSelectView(navController: NavController) {
                             )
                         ) {
                             Text(text = stringResource(id = R.string.genre_mode_name))
-                        }
+                        }*/
+
                         val playlistModifier = Modifier
                             .weight(1f)
                             .padding(8.dp)
 
-                        FilledTonalButton(
+                        ModeButton(
+                            mode = SessionType.PLAYLIST,
+                            modeName = stringResource(id =R.string.playlist_mode_name),
+                            modeSelectViewModel = modeSelectViewModel,
+                            genreModifier
+                        )
+
+                        /*FilledTonalButton(
                             onClick = { modeSelectViewModel.onSelectMode(SessionType.PLAYLIST) },
                             modifier = playlistModifier,
                             colors = ButtonDefaults.buttonColors(
@@ -144,7 +179,7 @@ fun ModeSelectView(navController: NavController) {
                             )
                         ) {
                             Text(text = stringResource(id = R.string.playlist_mode_name))
-                        }
+                        }*/
                     }
 
                     Row(modifier = Modifier
@@ -174,6 +209,33 @@ fun ModeSelectView(navController: NavController) {
         }
     }
 }
+
+@Composable
+fun ModeButton(
+    mode: SessionType,
+    modeName : String,
+    modeSelectViewModel: ModeSelectViewModel,
+    modeModifier : Modifier
+) {
+    val determineButtonColor: Color = determineButtonColor(mode, modeSelectViewModel)
+
+    FilledTonalButton(
+        onClick = { modeSelectViewModel.onSelectMode(mode) },
+        modifier = modeModifier,
+        colors = ButtonDefaults.buttonColors(containerColor = determineButtonColor)
+    ) {
+        Text(text = modeName)
+    }
+}
+
+
+fun determineButtonColor(mode : SessionType, modeSelectViewModel : ModeSelectViewModel) : Color{
+    val isModeSelected = modeSelectViewModel.isModeSelected(mode)
+
+    return if (isModeSelected) colorWhenSelected else colorWhenNotSelected
+}
+
+
 
 /*
 @Composable
@@ -350,4 +412,3 @@ fun ModeSelectView(navController: NavController) {
     }
 }
 */
-
