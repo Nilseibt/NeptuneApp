@@ -30,10 +30,10 @@
     <string name="artist_mode_name">Artist Mode</string>
     <string name="genre_mode_name">Genre Mode</string>
     <string name="playlist_mode_name">Playlist Mode</string>
-    <string name="general_mode_description">General Mode Description</string>
-    <string name="artist_mode_description">Artist mode description</string>
-    <string name="genre_mode_description">Genre mode description</string>
-    <string name="playlist_mode_description">Playlist mode description</string>
+    <string name="general_mode_description">Grenzenlose Freiheit! Hier könnt ihr Tracks ohne jegliche Einschränkungen vorschlagen.</string>
+    <string name="artist_mode_description">Beschränkt die verfügbaren Tracks auf eine ausgewählte Handvoll an Artists.</string>
+    <string name="genre_mode_description">beschränkt die verfügbaren Tracks auf eine ausgewählte Handvoll an Genres.</string>
+    <string name="playlist_mode_description">Beschränkt die Musikauswahl auf eine von dir im Vorhinein festgelegte Playlist.</string>
 
     <!--The default strings for the ModeSettingsView-->
     <string name="default_playlist">Insert link for Default Playlist</string>

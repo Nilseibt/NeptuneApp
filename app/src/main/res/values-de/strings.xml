@@ -31,10 +31,10 @@
     <string name="artist_mode_name">Artist Modus</string>
     <string name="genre_mode_name">Genre Modus</string>
     <string name="playlist_mode_name">Playlist Modus</string>
-    <string name="general_mode_description">General Mode Description</string>
-    <string name="artist_mode_description">Artist mode description</string>
-    <string name="genre_mode_description">Genre mode description</string>
-    <string name="playlist_mode_description">Playlist mode description</string>
+    <string name="general_mode_description">Absolute freedom! You all will be able to propose every track you could imagine.</string>
+    <string name="artist_mode_description">Restricts the available tracks to a selected handful of artists.</string>
+    <string name="genre_mode_description">Restricts the available tracks to a selected handful of genres.</string>
+    <string name="playlist_mode_description">Only allows your guests to propose tracks from a specific playlists.</string>
 
     <!--The German strings for the ModeSettingsView-->
     <string name="default_playlist">Link zu Default Playlist einfügen</string>
