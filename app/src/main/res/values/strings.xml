@@ -53,5 +53,6 @@
     <string name="locked_filter_name">Locked</string>
     <string name="cooldown_filter_name">Cooldown</string>
     <string name="search_text">Search Track</string>
+    <string name="finished">Finished</string>
 
 </resources>

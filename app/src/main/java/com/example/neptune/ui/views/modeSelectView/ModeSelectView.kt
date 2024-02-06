@@ -1,8 +1,6 @@
 package com.example.neptune.ui.views.modeSelectView
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,8 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -27,8 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
-import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -102,9 +96,12 @@ fun ModeSelectView(navController: NavController) {
                     ) {
                         val generalModifier = Modifier
                             .weight(1f)
+                        /*
                         if (modeSelectViewModel.isModeSelected(SessionType.GENERAL)) {
+
                             generalModifier.border(5.dp, Color.Black, RoundedCornerShape(50))
                         }
+                        */
 
                         FilledTonalButton(
                             onClick = { modeSelectViewModel.onSelectMode(SessionType.GENERAL) },
@@ -121,9 +118,11 @@ fun ModeSelectView(navController: NavController) {
 
                         val artistModifier = Modifier
                             .weight(1f)
-                        if (modeSelectViewModel.isModeSelected(SessionType.ARTIST)) {
+                        /*
+                        (modeSelectViewModel.isModeSelected(SessionType.ARTIST)) {
                             artistModifier.border(5.dp, Color.Black, RoundedCornerShape(50))
                         }
+                        */
                         FilledTonalButton(
                             onClick = { modeSelectViewModel.onSelectMode(SessionType.ARTIST) },
                             modifier = artistModifier,
@@ -142,9 +141,11 @@ fun ModeSelectView(navController: NavController) {
                     ) {
                         val genreModifier = Modifier
                             .weight(1f)
+                        /*
                         if (modeSelectViewModel.isModeSelected(SessionType.GENRE)) {
                             genreModifier.border(5.dp, Color.Black, RoundedCornerShape(50))
                         }
+                        */
                         FilledTonalButton(
                             onClick = { modeSelectViewModel.onSelectMode(SessionType.GENRE) },
                             modifier = genreModifier,
@@ -160,9 +161,11 @@ fun ModeSelectView(navController: NavController) {
 
                         val playlistModifier = Modifier
                             .weight(1f)
+                        /*
                         if (modeSelectViewModel.isModeSelected(SessionType.PLAYLIST)) {
                             playlistModifier.border(5.dp, Color.Black, RoundedCornerShape(50))
                         }
+                        */
                         FilledTonalButton(
                             onClick = { modeSelectViewModel.onSelectMode(SessionType.PLAYLIST) },
                             modifier = playlistModifier,
