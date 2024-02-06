@@ -29,6 +29,7 @@ import com.example.neptune.ui.commons.SessionInfoBar
 import com.example.neptune.ui.commons.TopBar
 import com.example.neptune.ui.commons.TrackListComposable
 import com.example.neptune.ui.commons.TrackListType
+import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
 import kotlinx.coroutines.delay
 
@@ -47,99 +48,89 @@ fun VoteView(navController: NavController) {
         voteViewModel.onBack(navController)
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background)
-    ) {
+    NeptuneTheme {
 
-        TopBar(onBack = { voteViewModel.onBack(navController) })
-
-        SessionInfoBar(
-            onStatistics = { voteViewModel.onOpenStats(navController) },
-            onInfo = { voteViewModel.onOpenInfo(navController) },
-            description = voteViewModel.getTopBarDescription()
-        )
-
-        Box(modifier = Modifier.weight(9f)) {
-            TrackListComposable(
-                tracks = voteViewModel.getVoteList(),
-                trackListType = TrackListType.PARTICIPANT_VOTE,
-                onToggleUpvote = { voteViewModel.onToggleUpvote(it) })
-        }
-
-        Button(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            onClick = { voteViewModel.onSearchTracks(navController) }
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background)
         ) {
 
-            Icon(
-                imageVector = Icons.Filled.Search,
-                contentDescription = "",
-                tint = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.weight(1f)
+            TopBar(onBack = { voteViewModel.onBack(navController) })
+
+            SessionInfoBar(
+                onStatistics = { voteViewModel.onOpenStats(navController) },
+                onInfo = { voteViewModel.onOpenInfo(navController) },
+                description = voteViewModel.getTopBarDescription()
             )
 
-            Text(
-                text = stringResource(id = R.string.track_search_button_text),
-                color = MaterialTheme.colorScheme.onPrimary,
-                style = MaterialTheme.typography.headlineLarge,
+            Box(modifier = Modifier.weight(9f)) {
+                TrackListComposable(
+                    tracks = voteViewModel.getVoteList(),
+                    trackListType = TrackListType.PARTICIPANT_VOTE,
+                    onToggleUpvote = { voteViewModel.onToggleUpvote(it) })
+            }
+
+            Button(
                 modifier = Modifier
-                    .weight(9f)
-                    .padding(3.dp),
-                textAlign = TextAlign.Center
-            )
+                    .fillMaxWidth()
+                    .weight(1f),
+                onClick = { voteViewModel.onSearchTracks(navController) }
+            ) {
+
+                Icon(
+                    imageVector = Icons.Filled.Search,
+                    contentDescription = "",
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.weight(1f)
+                )
+
+                Text(
+                    text = stringResource(id = R.string.track_search_button_text),
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    style = MaterialTheme.typography.headlineLarge,
+                    modifier = Modifier
+                        .weight(9f)
+                        .padding(3.dp),
+                    textAlign = TextAlign.Center
+                )
+
+            }
+
 
         }
 
+        if(voteViewModel.isLeaveSessionDialogShown()) {
 
-    }
-
-    if(voteViewModel.isLeaveSessionDialogShown()) {
-
-        AlertDialog(
-            title = { Text(text = stringResource(id = R.string.leave_session_text)) },
-            text = { Text(text = stringResource(id = R.string.leave_session_confirmation_text)) },
-            onDismissRequest = { },
-            confirmButton = {
-                TextButton(
-                    onClick = { voteViewModel.onConfirmLeaveSession(navController) }
-                ) {
-                    Text(text = stringResource(id = R.string.confirmation_text))
+            AlertDialog(
+                title = { Text(text = stringResource(id = R.string.leave_session_text)) },
+                text = { Text(text = stringResource(id = R.string.leave_session_confirmation_text)) },
+                onDismissRequest = { },
+                confirmButton = {
+                    TextButton(
+                        onClick = { voteViewModel.onConfirmLeaveSession(navController) }
+                    ) {
+                        Text(text = stringResource(id = R.string.confirmation_text))
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = { voteViewModel.onDismissLeaveSession(navController) }
+                    ) {
+                        Text(text = stringResource(id = R.string.decline_text))
+                    }
                 }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = { voteViewModel.onDismissLeaveSession(navController) }
-                ) {
-                    Text(text = stringResource(id = R.string.decline_text))
-                }
+            )
+        }
+
+        LaunchedEffect(
+            key1 = Unit,
+            block = {
+            while (true) {
+                voteViewModel.syncState()
+                delay(5000)
             }
+        }
         )
     }
-
-    LaunchedEffect(key1 = Unit, block = {
-        while (true) {
-            voteViewModel.syncState()
-            delay(5000)
-        }
-    })
 }
-
-/*
-        Button(onClick = { voteViewModel.onOpenInfo(navController) }) {
-            Text("Info öffnen (Icon)")
-        }
-
-        Text("TopBar Beschr.: " + voteViewModel.getTopBarDescription())
-
-        Button(onClick = { voteViewModel.onOpenStats(navController) }) {
-            Text("Statistiken öffnen (Icon)")
-        }
-
-        Button(onClick = { voteViewModel.onSearchTracks(navController) }){
-            Text(text = "Tracks suchen")
-        }
- */
