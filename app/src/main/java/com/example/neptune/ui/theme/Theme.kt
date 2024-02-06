@@ -28,9 +28,9 @@ private val DarkColorScheme = darkColorScheme(
     onSecondaryContainer = DarkBlue90,
 
 
-    background = DarkBlue10,
+    background = DarkBlue80,
     onBackground = DarkBlue90,
-    surface = DarkBlue10,
+    surface = DarkBlue80,
     onSurface = DarkBlue90
     /* primary = Purple80,
     secondary = PurpleGrey80,
