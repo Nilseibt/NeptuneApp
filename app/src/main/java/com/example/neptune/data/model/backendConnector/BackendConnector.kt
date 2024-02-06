@@ -61,7 +61,7 @@ open class BackendConnector(
             if (jsonResponse.get("genres").toString() != "null") {
                 val jsonGenresArray = jsonResponse.getJSONArray("genres")
                 for (genreIndex in 0 until jsonGenresArray.length()) {
-                    artists.add(jsonGenresArray.getString(genreIndex))
+                    genres.add(jsonGenresArray.getString(genreIndex))
                 }
             }
             callback(userSessionState, sessionId, timestamp, mode, artists, genres)

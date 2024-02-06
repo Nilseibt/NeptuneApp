@@ -18,7 +18,7 @@ class MockTracks {
     val trackId1 = "1"
     val name1 = "Baum"
     val artists1 = listOf("alligatoah", "kiz")
-    val genres1 = listOf("irgendwas", "mit Rap")
+    val genres1 = mutableListOf("irgendwas", "mit Rap")
     val imageUrl1 = "https:randomadress"
     val upvote1 = 1
     var track1 = Track(

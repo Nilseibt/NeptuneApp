@@ -67,13 +67,129 @@ open class SpotifyConnector(
                 .getJSONObject(0).getString("url")
 
             val track = Track(
-                trackId, trackName, artistNames, listOf(), trackImageUrl,
+                trackId, trackName, artistNames, mutableListOf(), trackImageUrl,
                 mutableIntStateOf(0), mutableStateOf(false),
                 mutableStateOf(false), mutableStateOf(false)
             )
             resultList.add(track)
         }
         onCallbackFinished(resultList)
+    }
+
+    override fun searchWithGenres(
+        searchInput: String,
+        resultLimit: Int,
+        onCallbackFinished: (resultList: MutableList<Track>) -> Unit
+    ) {
+
+        var headers: MutableMap<String, String> = HashMap()
+        headers["Authorization"] = "Bearer $accessToken"
+
+        var parameters: MutableMap<String, String> = HashMap()
+        parameters["q"] = URLEncoder.encode(searchInput, "UTF-8")
+        parameters["type"] = "track"
+        parameters["limit"] = resultLimit.toString()
+
+        newGetRequest(
+            "https://api.spotify.com/v1/search",
+            headers,
+            parameters
+        ) { jsonResponse ->
+            searchTracksWithGenresCallback(jsonResponse, onCallbackFinished)
+        }
+    }
+
+    private fun searchTracksWithGenresCallback(
+        jsonResponse: JSONObject,
+        onCallbackFinished: (resultList: MutableList<Track>) -> Unit
+    ) {
+        val artistIds = mutableListOf<String>()
+
+        val resultList = mutableListOf<Track>()
+        val tracksJsonList = jsonResponse.getJSONObject("tracks").getJSONArray("items")
+        for (index in 0 until tracksJsonList.length()) {
+
+            val trackJson = tracksJsonList.getJSONObject(index)
+            val trackId = trackJson.getString("id")
+            val trackName = trackJson.getString("name")
+
+            val trackArtistsJsonList = trackJson.getJSONArray("artists")
+            val artistNames = mutableListOf<String>()
+            for (artistIndex in 0 until trackArtistsJsonList.length()) {
+                val artistJson = trackArtistsJsonList.getJSONObject(artistIndex)
+                artistNames.add(artistJson.getString("name"))
+                artistIds.add(artistJson.getString("id"))
+            }
+
+            val trackImageUrl = trackJson.getJSONObject("album").getJSONArray("images")
+                .getJSONObject(0).getString("url")
+
+            val track = Track(
+                trackId, trackName, artistNames, mutableListOf(), trackImageUrl,
+                mutableIntStateOf(0), mutableStateOf(false),
+                mutableStateOf(false), mutableStateOf(false)
+            )
+            resultList.add(track)
+        }
+        getGenresOfArtists(artistIds){resultMap ->
+            resultList.forEach { track ->
+                track.artists.forEach { artist ->
+                    val genresOfArtist = resultMap[artist]!!
+                    genresOfArtist.forEach { genre ->
+                        if(genre !in track.genres){
+                            track.genres.add(genre)
+                        }
+                    }
+                }
+            }
+            onCallbackFinished(resultList)
+        }
+    }
+
+
+    private fun getGenresOfArtists(
+        artistIds: List<String>,
+        onCallbackFinished: (resultMap: Map<String, List<String>>) -> Unit
+    ) {
+        var flattenedIds = ""
+        artistIds.forEach {
+            flattenedIds += "$it,"
+        }
+        flattenedIds = flattenedIds.substring(0, flattenedIds.length - 1)
+
+        var headers: MutableMap<String, String> = HashMap()
+        headers["Authorization"] = "Bearer $accessToken"
+
+        var parameters: MutableMap<String, String> = HashMap()
+        parameters["ids"] = flattenedIds
+
+        newGetRequest(
+            "https://api.spotify.com/v1/artists",
+            headers,
+            parameters
+        ) { jsonResponse ->
+            genresOfArtistsCallback(jsonResponse, onCallbackFinished)
+        }
+    }
+
+    private fun genresOfArtistsCallback(
+        jsonResponse: JSONObject,
+        onCallbackFinished: (resultMap: Map<String, List<String>>) -> Unit
+    ) {
+        val resultMap = mutableMapOf<String, List<String>>()
+
+        val artistsJsonList = jsonResponse.getJSONArray("artists")
+        for (artistIndex in 0 until artistsJsonList.length()) {
+            val artistJson = artistsJsonList.getJSONObject(artistIndex)
+            val artistName = artistJson.getString("name")
+            val genresJsonList = artistJson.getJSONArray("genres")
+            val genresList = mutableListOf<String>()
+            for (genreIndex in 0 until genresJsonList.length()) {
+                genresList.add(genresJsonList.getString(genreIndex))
+            }
+            resultMap[artistName] = genresList
+        }
+        onCallbackFinished(resultMap)
     }
 
 

@@ -8,7 +8,7 @@ class Track(
     val id: String,
     val name: String,
     val artists: List<String>,
-    val genres: List<String>,
+    val genres: MutableList<String>,
     val imageUrl: String,
     private var upvotes: MutableState<Int>,
     private var isUpvoted: MutableState<Boolean>,

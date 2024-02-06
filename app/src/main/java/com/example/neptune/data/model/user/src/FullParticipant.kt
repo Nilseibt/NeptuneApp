@@ -18,23 +18,35 @@ open class FullParticipant(
 
     override fun search(input: String) {
         var resultLimit = 0
-        if(session.sessionType == SessionType.GENERAL){
+        if (session.sessionType == SessionType.GENERAL) {
             resultLimit = 20
-        }
-        else if (session.sessionType == SessionType.ARTIST){
+        } else if (session.sessionType == SessionType.ARTIST) {
             resultLimit = 50
-        }
-        else if (session.sessionType == SessionType.GENRE){
-            resultLimit = 50
+        } else if (session.sessionType == SessionType.GENRE) {
+            resultLimit = 30
         }
         searchList.value.clear()
-        streamingConnector.search(input, resultLimit) { resultList ->
-            resultList.forEach { track ->
-                if(session.validateTrack(track)) {
-                    if (hasSessionTrack(track.id)) {
-                        searchList.value.addTrack(getSessionTrack(track.id))
-                    } else {
-                        searchList.value.addTrack(mutableStateOf(track))
+        if (session.sessionType == SessionType.GENERAL || session.sessionType == SessionType.ARTIST) {
+            streamingConnector.search(input, resultLimit) { resultList ->
+                resultList.forEach { track ->
+                    if (session.validateTrack(track)) {
+                        if (hasSessionTrack(track.id)) {
+                            searchList.value.addTrack(getSessionTrack(track.id))
+                        } else {
+                            searchList.value.addTrack(mutableStateOf(track))
+                        }
+                    }
+                }
+            }
+        } else if (session.sessionType == SessionType.GENRE) {
+            streamingConnector.searchWithGenres(input, resultLimit) { resultList ->
+                resultList.forEach { track ->
+                    if (session.validateTrack(track)) {
+                        if (hasSessionTrack(track.id)) {
+                            searchList.value.addTrack(getSessionTrack(track.id))
+                        } else {
+                            searchList.value.addTrack(mutableStateOf(track))
+                        }
                     }
                 }
             }

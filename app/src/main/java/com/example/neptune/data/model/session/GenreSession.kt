@@ -1,7 +1,9 @@
 package com.example.neptune.data.model.session
 
+import androidx.compose.ui.text.capitalize
 import com.example.neptune.data.model.track.src.Track
 import java.sql.Timestamp
+import java.util.Locale
 
 class GenreSession(
     id: Int,
@@ -11,8 +13,8 @@ class GenreSession(
 ) :
     Session(id, timestamp, cooldown, SessionType.GENRE) {
     override fun validateTrack(track: Track): Boolean {
-        for (genres in track.genres) {
-            if (genres in genres) {
+        for (genre in track.genres) {
+            if (genre.capitalize() in genres) {
                 return true
             }
         }

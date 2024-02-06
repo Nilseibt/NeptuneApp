@@ -208,7 +208,7 @@ class Model() {
             artists = sessionBuilder.getSelectedEntities().toList()
         }
         var genres = listOf<String>()
-        if (mode == "Genres") {
+        if (mode == "Genre") {
             genres = sessionBuilder.getSelectedEntities().toList()
         }
 
