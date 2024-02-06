@@ -71,17 +71,18 @@ fun ModeSelectView(navController: NavController) {
         ) {
             Column(modifier = Modifier
                 .background(MaterialTheme.colorScheme.background)
-                .fillMaxSize()) {
+                .fillMaxSize(),
+                verticalArrangement = Arrangement.Center) {
 
                 TopBar(onBack = { modeSelectViewModel.onBack(navController) })
 
                 Column(modifier = Modifier
                     .weight(2f),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth()
-                            //.weight(1f)
+                            .weight(1f)
                             .padding(32.dp),
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
@@ -115,7 +116,7 @@ fun ModeSelectView(navController: NavController) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            //.weight(1f)
+                            .weight(1f)
                             .padding(32.dp),
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
@@ -147,7 +148,7 @@ fun ModeSelectView(navController: NavController) {
                     }
 
                     Row(modifier = Modifier
-                        .weight(1f)) {
+                        .weight(2f)) {
                         Card(modifier = Modifier
                             .padding(32.dp)) {
                             Text(
