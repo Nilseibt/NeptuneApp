@@ -49,7 +49,7 @@ fun TrackComposable(
         modifier = Modifier
             .fillMaxWidth()
             .background(color = MaterialTheme.colorScheme.tertiary)
-            .clip(shape = RoundedCornerShape(3.dp))
+            .clip(shape = RoundedCornerShape(10.dp))
             .height(70.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

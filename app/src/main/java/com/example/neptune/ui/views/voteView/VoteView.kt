@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
@@ -75,7 +76,8 @@ fun VoteView(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                onClick = { voteViewModel.onSearchTracks(navController) }
+                onClick = { voteViewModel.onSearchTracks(navController) },
+                shape = RoundedCornerShape(10.dp)
             ) {
 
                 Icon(

@@ -8,9 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -22,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -78,12 +76,12 @@ fun SearchView(navController: NavController) {
                         modifier = Modifier.weight(1f)
                     ) {
                         val icon = when (searchViewModel.getActiveFilter()) {
-                            Filter.NONE -> Icons.Default.ArrowDropDown
-                            Filter.BLOCKED -> Icons.Default.Lock
-                            Filter.COOLDOWN -> Icons.Default.DateRange
+                            Filter.NONE -> painterResource(id = R.drawable.baseline_filter_alt_24)
+                            Filter.BLOCKED -> painterResource(id = R.drawable.baseline_block_24)
+                            Filter.COOLDOWN -> painterResource(id = R.drawable.baseline_lock_clock_24)
                         }
                         Icon(
-                            imageVector = icon,
+                            painter = icon,
                             contentDescription = "",
                             tint = MaterialTheme.colorScheme.onBackground
                         )
@@ -107,7 +105,7 @@ fun SearchView(navController: NavController) {
                     onValueChange = { searchViewModel.onTrackSearchInputChange(it) },
                     enabled = searchViewModel.getActiveFilter() == Filter.NONE,
                     modifier = Modifier.weight(7f),
-                    supportingText = { Text(text = stringResource(id = R.string.search_text)) }
+                    label = { Text(text = stringResource(id = R.string.search_text)) }
                 )
 
                 IconButton(

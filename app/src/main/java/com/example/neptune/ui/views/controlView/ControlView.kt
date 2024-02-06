@@ -8,10 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -25,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -130,7 +129,8 @@ fun ControlView(navController: NavController) {
                     modifier = Modifier.weight(1f)
                 ) {
                     Icon(
-                        imageVector = if(controlViewModel.isPaused()) Icons.Filled.PlayArrow else Icons.Filled.Clear,
+                        painter = if(!controlViewModel.isPaused()) painterResource(id = R.drawable.baseline_pause_24)
+                        else painterResource(id = R.drawable.baseline_play_arrow_24),
                         contentDescription = "",
                         tint = MaterialTheme.colorScheme.onBackground
                     )
@@ -142,7 +142,7 @@ fun ControlView(navController: NavController) {
                     modifier = Modifier.weight(1f)
                 ) {
                     Icon(
-                        imageVector = Icons.Filled.ArrowForward,
+                        painter = painterResource(id = R.drawable.baseline_skip_next_24),
                         contentDescription = "",
                         tint = MaterialTheme.colorScheme.onBackground
                     )
@@ -161,7 +161,8 @@ fun ControlView(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1.5f),
-                onClick = { controlViewModel.onSearchTracks(navController) }
+                onClick = { controlViewModel.onSearchTracks(navController) },
+                shape = RoundedCornerShape(10.dp)
             ) {
 
                 Icon(
