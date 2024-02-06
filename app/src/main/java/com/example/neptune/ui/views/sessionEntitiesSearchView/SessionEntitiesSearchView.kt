@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -74,37 +75,42 @@ fun SessionEntitiesSearchView(navController: NavController) {
                     verticalArrangement = Arrangement.SpaceAround,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    TextField(
-                        value = sessionEntitiesSearchViewModel.getSearchInput(),
-                        onValueChange = { sessionEntitiesSearchViewModel.onSearchInputChange(it) })
+                    Box (modifier = Modifier.weight(1f)) {
+                        TextField(
+                            value = sessionEntitiesSearchViewModel.getSearchInput(),
+                            onValueChange = { sessionEntitiesSearchViewModel.onSearchInputChange(it) })
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
 
-                    /*Column(
-                        modifier = Modifier
-                            .verticalScroll(rememberScrollState())
-                            .weight(1f),
-                        horizontalAlignment = Alignment.Start
-                    ) {
-                        sessionEntitiesSearchViewModel.getEntitiesSearchList().forEach {
 
-                            var isSelected by remember { mutableStateOf(false) }
-                            isSelected = sessionEntitiesSearchViewModel.isEntitySelected(it)
-                            FilledTonalButton(onClick = {
-                                //isSelected = !isSelected
-                                sessionEntitiesSearchViewModel.onToggleSelect(it)
-                            }) {
-                                Text(text = it)
-                                //Text(text = if (isSelected) "Selected: $it" else it)
-                                Icon(
-                                    imageVector = if (isSelected) Icons.Default.Clear else Icons.Default.Add,
-                                    contentDescription = null
-                                )
+                    Box (modifier = Modifier.weight(5f)) {
+                        Column(
+                            modifier = Modifier
+                                .verticalScroll(rememberScrollState())
+                                .fillMaxHeight(),
+                            horizontalAlignment = Alignment.Start
+                        ) {
+                            sessionEntitiesSearchViewModel.getEntitiesSearchList().forEach {
+
+                                var isSelected by remember { mutableStateOf(false) }
+                                isSelected = sessionEntitiesSearchViewModel.isEntitySelected(it)
+                                FilledTonalButton(onClick = {
+                                    //isSelected = !isSelected
+                                    sessionEntitiesSearchViewModel.onToggleSelect(it)
+                                }) {
+                                    Text(text = it)
+                                    //Text(text = if (isSelected) "Selected: $it" else it)
+                                    Icon(
+                                        imageVector = if (isSelected) Icons.Default.Clear else Icons.Default.Add,
+                                        contentDescription = null
+                                    )
+                                }
                             }
                         }
-                    }*/
+                    }
 
-                    val itemList = sessionEntitiesSearchViewModel.getEntitiesSearchList()
+                    /*val itemList = sessionEntitiesSearchViewModel.getEntitiesSearchList()
 
                     LazyColumn(modifier = Modifier
                         .weight(1f),
@@ -124,16 +130,17 @@ fun SessionEntitiesSearchView(navController: NavController) {
                                 )
                             }
                         }
-                    }
+                    }*/
 
 
-
-                    Button(
-                        onClick = { sessionEntitiesSearchViewModel.onBack(navController) },
-                        modifier = Modifier
-                            .padding(16.dp)
-                    ) {
-                        Text(text = stringResource(id = R.string.finished))
+                    Box (modifier = Modifier.weight(1f)) {
+                        Button(
+                            onClick = { sessionEntitiesSearchViewModel.onBack(navController) },
+                            modifier = Modifier
+                                .padding(16.dp)
+                        ) {
+                            Text(text = stringResource(id = R.string.finished))
+                        }
                     }
                 }
             }
