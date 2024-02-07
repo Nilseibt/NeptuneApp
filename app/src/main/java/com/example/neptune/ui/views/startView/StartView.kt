@@ -1,6 +1,7 @@
 package com.example.neptune.ui.views.startView
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,6 +26,7 @@ import com.example.neptune.MainActivity
 import com.example.neptune.NeptuneApp
 import com.example.neptune.R
 import com.example.neptune.ui.commons.TopBar
+import com.example.neptune.ui.theme.ButtonBorderBlue
 import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
 import com.example.neptune.ui.theme.SpotifyBrandGreen
@@ -67,12 +69,15 @@ fun StartView(navController: NavController, activity: MainActivity) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Button(onClick = { startViewModel.onJoinSession(navController) }) {
+                Button(onClick = { startViewModel.onJoinSession(navController) },
+                    border = BorderStroke(3.dp, ButtonBorderBlue)
+                ) {
                     Text(text = stringResource(id = R.string.join_session))
                 }
                 Spacer(modifier = Modifier.height(32.dp))
                 Button(
                     onClick = { startViewModel.onCreateSession(navController) },
+                    border = BorderStroke(3.dp, ButtonBorderBlue),
                     enabled = startViewModel.createSessionPossible()
                 ) {
                     Text(text = stringResource(id = R.string.create_session))
