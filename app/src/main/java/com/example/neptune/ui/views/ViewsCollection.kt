@@ -3,6 +3,7 @@ package com.example.neptune.ui.views
 import com.example.neptune.ui.views.controlView.ControlView
 import com.example.neptune.ui.views.infoView.InfoView
 import com.example.neptune.ui.views.joinView.JoinView
+import com.example.neptune.ui.views.loadingView.LoadingView
 import com.example.neptune.ui.views.modeSelectView.ModeSelectView
 import com.example.neptune.ui.views.modeSettingsView.ModeSettingsView
 import com.example.neptune.ui.views.searchView.SearchView
@@ -13,10 +14,10 @@ import com.example.neptune.ui.views.voteView.VoteView
 
 
 object ViewsCollection {
-    val NAV_VIEW =
+    val LOADING_VIEW =
         View(
-            name = "NAV_VIEW",
-            Composable = { navController -> NavView(navController) }
+            name = "LOADING_VIEW",
+            ComposableWithActivityAndArgument = { navController, activity, argument -> LoadingView(navController, activity, argument) }
         )
     val START_VIEW =
         View(

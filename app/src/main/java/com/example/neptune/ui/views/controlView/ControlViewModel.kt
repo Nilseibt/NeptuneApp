@@ -143,11 +143,13 @@ class ControlViewModel(
     fun onConfirmDeleteSession(navController: NavController) {
         deleteSessionDialogShown = false
         (host.backendConnector as HostBackendConnector).deleteSession()
-        navController.popBackStack(
+        if(!navController.popBackStack(
             ViewsCollection.START_VIEW.name,
             inclusive = false,
             saveState = false
-        )
+        )){
+            navController.navigate(ViewsCollection.START_VIEW.name)
+        }
     }
 
     fun onDismissDeleteSession(navController: NavController) {

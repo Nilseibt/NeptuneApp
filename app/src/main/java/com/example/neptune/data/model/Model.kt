@@ -103,7 +103,7 @@ class Model() {
     var user: User? = null
 
 
-    fun recreateUserSessionStateInitially(navController: NavController) {
+    fun recreateUserSessionStateInitially(navController: NavController, onCallbackFinished: () -> Unit) {
         backendConnector = BackendConnector(appState.getDeviceId(), backendConnectorVolleyQueue)
         backendConnector!!.getUserSessionState { userSessionState, sessionId, timestamp, mode, artists, genres ->
             callbackRecreateUserSessionState(
@@ -115,6 +115,7 @@ class Model() {
                 genres,
                 navController
             )
+            onCallbackFinished()
         }
     }
 
@@ -191,6 +192,9 @@ class Model() {
 
             sessionBuilder.reset()
             navController.navigate(ViewsCollection.VOTE_VIEW.name)
+        }
+        if (userSessionState == "NONE") {
+            navController.navigate(ViewsCollection.START_VIEW.name)
         }
     }
 

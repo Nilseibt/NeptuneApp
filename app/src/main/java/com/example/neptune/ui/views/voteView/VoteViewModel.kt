@@ -58,11 +58,13 @@ class VoteViewModel(
     fun onConfirmLeaveSession(navController: NavController) {
         leaveSessionDialogShown = false
         (participant.backendConnector as ParticipantBackendConnector).participantLeaveSession()
-        navController.popBackStack(
-            ViewsCollection.START_VIEW.name,
-            inclusive = false,
-            saveState = false
-        )
+        if(!navController.popBackStack(
+                ViewsCollection.START_VIEW.name,
+                inclusive = false,
+                saveState = false
+            )){
+            navController.navigate(ViewsCollection.START_VIEW.name)
+        }
     }
 
 

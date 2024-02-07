@@ -14,20 +14,20 @@ fun NeptuneNavGraph(activity: MainActivity) {
 
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = ViewsCollection.START_VIEW.name) {
-
-        composable(ViewsCollection.NAV_VIEW.name) {
-            ViewsCollection.NAV_VIEW.Composable(navController)
-        }
+    NavHost(navController = navController, startDestination = ViewsCollection.LOADING_VIEW.name) {
 
         composable(
-            ViewsCollection.START_VIEW.name,
+            ViewsCollection.LOADING_VIEW.name,
             deepLinks = listOf(navDeepLink {
                 uriPattern = "https://nep-tune.de/join/{argument}"
             }),
         ) { backStackEntry ->
-            val parameter = backStackEntry.arguments?.getString("argument")
-            Text("Join session: $parameter")
+            val argument = backStackEntry.arguments?.getString("argument")
+            ViewsCollection.LOADING_VIEW.ComposableWithActivityAndArgument(navController, activity, argument)
+        }
+
+        composable(ViewsCollection.START_VIEW.name) {
+            ViewsCollection.START_VIEW.ComposableWithActivity(navController, activity)
         }
 
         composable(ViewsCollection.JOIN_VIEW.name) {
