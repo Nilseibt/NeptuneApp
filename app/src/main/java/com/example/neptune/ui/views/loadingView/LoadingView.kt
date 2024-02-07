@@ -58,7 +58,7 @@ fun LoadingView(navController: NavController, activity: MainActivity, argument: 
                 contentDescription = "",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(50.dp)
+                    .padding(100.dp, 20.dp)
                     .weight(3f)
                     .align(Alignment.CenterHorizontally)
             )
