@@ -32,7 +32,7 @@
     <string name="playlist_mode_name">Playlist Mode</string>
 
     <!--The default strings for the ModeSettingsView-->
-    <string name="default_playlist">Insert link for Default Playlist</string>
+    <string name="default_playlist">Default Playlist (link)</string>
     <string name="artist_search">Search Artists</string>
     <string name="genre_search">Search genres</string>
     <string name="track_cooldown_text">Track Cooldown</string>
