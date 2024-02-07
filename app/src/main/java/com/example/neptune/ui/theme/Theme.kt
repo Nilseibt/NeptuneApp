@@ -28,7 +28,7 @@ private val DarkColorScheme = darkColorScheme(
     onSecondaryContainer = DarkBlue90,
 
 
-    background = DarkBlue80,
+    background = DarkBlue10,
     onBackground = DarkBlue90,
     surface = DarkBlue80,
     onSurface = DarkBlue90
@@ -60,7 +60,7 @@ private val LightColorScheme = lightColorScheme(
     onSurface = Color(0xFF1C1B1F),
     */
 )
-@Composable
+/* @Composable
 fun NeptuneTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
@@ -78,6 +78,32 @@ fun NeptuneTheme(
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as Activity).window
+            window.statusBarColor = colorScheme.primary.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+        }
+    }
+
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = Typography,
+        content = content,
+    )
+}
+*/
+
+
+@Composable
+fun NeptuneTheme(
+    dynamicColor: Boolean = false,
+    content: @Composable () -> Unit
+) {
+    val colorScheme = DarkColorScheme
+    val darkTheme = true
+
+    val view = LocalView.current
+    if(!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.primary.toArgb()
