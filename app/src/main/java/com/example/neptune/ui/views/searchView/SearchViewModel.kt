@@ -132,7 +132,7 @@ class SearchViewModel(
 
 
     fun onOpenStats(navController: NavController) {
-        navController.navigate(ViewsCollection.INFO_VIEW.name)
+        navController.navigate(ViewsCollection.STATS_VIEW.name)
     }
 
 

@@ -161,7 +161,7 @@ fun InfoView(navController: NavController, activity: MainActivity) {
 
                 Image(
                     bitmap = infoViewModel.getQRCode(),
-                    contentDescription = "QRCode to join session",
+                    contentDescription = "",
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(30.dp)

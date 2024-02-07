@@ -71,116 +71,120 @@ fun ControlView(navController: NavController) {
                 description = controlViewModel.getTopBarDescription()
             )
 
-            Text(
-                text = stringResource(id = R.string.queue_list_name),
-                color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.titleMedium,
-                textAlign = TextAlign.Center
-            )
-
-            Box(modifier = Modifier.weight(7f)) {
-
-                TrackListComposable(
-                    tracks = controlViewModel.getQueueList(),
-                    trackListType = TrackListType.HOST_QUEUE,
-                    onToggleUpvote = { controlViewModel.onToggleUpvote(it) },
-                    onToggleDropdown = { controlViewModel.onToggleDropdownQueue(it) },
-                    isDropdownExpanded = { controlViewModel.isDropdownExpandedQueue(it) },
-                    onRemoveFromQueue = {controlViewModel.onRemoveFromQueue(it) },
-                    onToggleBlock = { controlViewModel.onToggleBlock(it) },
-                    onMoveUp = { controlViewModel.onMoveUp(it) },
-                    onMoveDown = { controlViewModel.onMoveDown(it) }
-                )
-
-            }
-
-            Text(
-                text = stringResource(id = R.string.vote_list_name),
-                color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.titleMedium,
-                textAlign = TextAlign.Center
-            )
-
-            Box(modifier = Modifier.weight(7f)) {
-
-                TrackListComposable(
-                    tracks = controlViewModel.getVoteList(),
-                    trackListType = TrackListType.HOST_VOTE,
-                    onToggleUpvote = { controlViewModel.onToggleUpvote(it) },
-                    onToggleDropdown = { controlViewModel.onToggleDropdownVote(it) },
-                    isDropdownExpanded = { controlViewModel.isDropdownExpandedVote(it) },
-                    onAddToQueue = { controlViewModel.onAddToQueue(it) },
-                    onToggleBlock = { controlViewModel.onToggleBlock(it) }
-                )
-
-            }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .background(color = MaterialTheme.colorScheme.background),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                IconButton(
-                    onClick = { controlViewModel.onTogglePause() },
-                    enabled = controlViewModel.isTogglePauseAvailable(),
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Icon(
-                        painter = if(!controlViewModel.isPaused()) painterResource(id = R.drawable.baseline_pause_24)
-                        else painterResource(id = R.drawable.baseline_play_arrow_24),
-                        contentDescription = "",
-                        tint = MaterialTheme.colorScheme.onBackground
-                    )
-                }
-
-                IconButton(
-                    onClick = { controlViewModel.onSkip() },
-                    enabled = controlViewModel.isSkipAvailable(),
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_skip_next_24),
-                        contentDescription = "",
-                        tint = MaterialTheme.colorScheme.onBackground
-                    )
-                }
-
-                Slider(
-                    value = controlViewModel.getTrackSliderPosition(),
-                    onValueChange = { controlViewModel.onTrackSliderPositionChange(it) },
-                    onValueChangeFinished = { controlViewModel.onTrackSliderFinish() },
-                    modifier = Modifier.weight(7f)
-                )
-
-            }
-
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1.5f),
-                onClick = { controlViewModel.onSearchTracks(navController) },
-                shape = RoundedCornerShape(10.dp)
-            ) {
-
-                Icon(
-                    imageVector = Icons.Filled.Search,
-                    contentDescription = "",
-                    tint = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.weight(1f)
-                )
+            Column(modifier = Modifier.fillMaxSize().padding(5.dp)) {
 
                 Text(
-                    text = stringResource(id = R.string.track_search_button_text),
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    style = MaterialTheme.typography.headlineLarge,
-                    modifier = Modifier
-                        .weight(9f)
-                        .padding(3.dp),
+                    text = stringResource(id = R.string.queue_list_name),
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.titleMedium,
                     textAlign = TextAlign.Center
                 )
+
+                Box(modifier = Modifier.weight(7f)) {
+
+                    TrackListComposable(
+                        tracks = controlViewModel.getQueueList(),
+                        trackListType = TrackListType.HOST_QUEUE,
+                        onToggleUpvote = { controlViewModel.onToggleUpvote(it) },
+                        onToggleDropdown = { controlViewModel.onToggleDropdownQueue(it) },
+                        isDropdownExpanded = { controlViewModel.isDropdownExpandedQueue(it) },
+                        onRemoveFromQueue = { controlViewModel.onRemoveFromQueue(it) },
+                        onToggleBlock = { controlViewModel.onToggleBlock(it) },
+                        onMoveUp = { controlViewModel.onMoveUp(it) },
+                        onMoveDown = { controlViewModel.onMoveDown(it) }
+                    )
+
+                }
+
+                Text(
+                    text = stringResource(id = R.string.vote_list_name),
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center
+                )
+
+                Box(modifier = Modifier.weight(7f)) {
+
+                    TrackListComposable(
+                        tracks = controlViewModel.getVoteList(),
+                        trackListType = TrackListType.HOST_VOTE,
+                        onToggleUpvote = { controlViewModel.onToggleUpvote(it) },
+                        onToggleDropdown = { controlViewModel.onToggleDropdownVote(it) },
+                        isDropdownExpanded = { controlViewModel.isDropdownExpandedVote(it) },
+                        onAddToQueue = { controlViewModel.onAddToQueue(it) },
+                        onToggleBlock = { controlViewModel.onToggleBlock(it) }
+                    )
+
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .background(color = MaterialTheme.colorScheme.background),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    IconButton(
+                        onClick = { controlViewModel.onTogglePause() },
+                        enabled = controlViewModel.isTogglePauseAvailable(),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Icon(
+                            painter = if (!controlViewModel.isPaused()) painterResource(id = R.drawable.baseline_pause_24)
+                            else painterResource(id = R.drawable.baseline_play_arrow_24),
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+
+                    IconButton(
+                        onClick = { controlViewModel.onSkip() },
+                        enabled = controlViewModel.isSkipAvailable(),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_skip_next_24),
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+
+                    Slider(
+                        value = controlViewModel.getTrackSliderPosition(),
+                        onValueChange = { controlViewModel.onTrackSliderPositionChange(it) },
+                        onValueChangeFinished = { controlViewModel.onTrackSliderFinish() },
+                        modifier = Modifier.weight(7f)
+                    )
+
+                }
+
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1.5f),
+                    onClick = { controlViewModel.onSearchTracks(navController) },
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+
+                    Icon(
+                        imageVector = Icons.Filled.Search,
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    Text(
+                        text = stringResource(id = R.string.track_search_button_text),
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        style = MaterialTheme.typography.headlineLarge,
+                        modifier = Modifier
+                            .weight(9f)
+                            .padding(3.dp),
+                        textAlign = TextAlign.Center
+                    )
+
+                }
 
             }
 

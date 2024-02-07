@@ -65,44 +65,47 @@ fun VoteView(navController: NavController) {
                 description = voteViewModel.getTopBarDescription()
             )
 
-            Box(modifier = Modifier.weight(9f)) {
-                TrackListComposable(
-                    tracks = voteViewModel.getVoteList(),
-                    trackListType = TrackListType.PARTICIPANT_VOTE,
-                    onToggleUpvote = { voteViewModel.onToggleUpvote(it) })
-            }
+            Column(modifier = Modifier.fillMaxSize().padding(5.dp)) {
 
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                onClick = { voteViewModel.onSearchTracks(navController) },
-                shape = RoundedCornerShape(10.dp)
-            ) {
+                Box(modifier = Modifier.weight(9f)) {
+                    TrackListComposable(
+                        tracks = voteViewModel.getVoteList(),
+                        trackListType = TrackListType.PARTICIPANT_VOTE,
+                        onToggleUpvote = { voteViewModel.onToggleUpvote(it) })
+                }
 
-                Icon(
-                    imageVector = Icons.Filled.Search,
-                    contentDescription = "",
-                    tint = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.weight(1f)
-                )
-
-                Text(
-                    text = stringResource(id = R.string.track_search_button_text),
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    style = MaterialTheme.typography.headlineLarge,
+                Button(
                     modifier = Modifier
-                        .weight(9f)
-                        .padding(3.dp),
-                    textAlign = TextAlign.Center
-                )
+                        .fillMaxWidth()
+                        .weight(1f),
+                    onClick = { voteViewModel.onSearchTracks(navController) },
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+
+                    Icon(
+                        imageVector = Icons.Filled.Search,
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    Text(
+                        text = stringResource(id = R.string.track_search_button_text),
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        style = MaterialTheme.typography.headlineLarge,
+                        modifier = Modifier
+                            .weight(9f)
+                            .padding(3.dp),
+                        textAlign = TextAlign.Center
+                    )
+
+                }
 
             }
-
 
         }
 
-        if(voteViewModel.isLeaveSessionDialogShown()) {
+        if (voteViewModel.isLeaveSessionDialogShown()) {
 
             AlertDialog(
                 title = { Text(text = stringResource(id = R.string.leave_session_text)) },
@@ -128,11 +131,12 @@ fun VoteView(navController: NavController) {
         LaunchedEffect(
             key1 = Unit,
             block = {
-            while (true) {
-                voteViewModel.syncState(navController)
-                delay(5000)
+                while (true) {
+                    voteViewModel.syncState(navController)
+                    delay(5000)
+                }
             }
-        }
         )
     }
+
 }
