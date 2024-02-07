@@ -56,7 +56,7 @@ object ViewsCollection {
     val INFO_VIEW =
         View(
             name = "INFO_VIEW",
-            Composable = { navController -> InfoView(navController) }
+            ComposableWithActivity = { navController, activity -> InfoView(navController, activity) }
         )
     val STATS_VIEW =
         View(

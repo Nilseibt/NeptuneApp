@@ -1,15 +1,21 @@
 package com.example.neptune.ui.views.infoView
 
+import android.app.Activity
+import android.content.Intent
+import androidx.core.app.ShareCompat
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.neptune.MainActivity
+import com.example.neptune.NeptuneApp
 import com.example.neptune.data.model.session.ArtistSession
 import com.example.neptune.data.model.session.GenreSession
 import com.example.neptune.data.model.session.SessionType
 import com.example.neptune.data.model.user.src.User
-import com.example.neptune.ui.views.ViewsCollection
+
 
 class InfoViewModel(
-    val user: User
+    val user: User,
+    val activity: MainActivity
 ) : ViewModel() {
 
     fun getMode(): SessionType {
@@ -36,18 +42,13 @@ class InfoViewModel(
         return user.session.id.toString()
     }
 
-    fun getQrCodeUrl(): String {
-        //TODO
-        return "QR url"
-    }
-
-    fun getShareLink(): String {
-        //TODO
-        return "sharelink.com"
-    }
-
     fun onShareLink() {
-        //TODO
+        val shareText = "Neptune Session Code: " + user.session.id.toString()
+        ShareCompat.IntentBuilder.from(activity)
+            .setType("text/plain")
+            .setText(shareText)
+            .setChooserTitle("Share Session Code")
+            .startChooser()
     }
 
     fun onBack(navController: NavController) {

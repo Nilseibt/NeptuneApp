@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.neptune.MainActivity
 import com.example.neptune.NeptuneApp
 import com.example.neptune.R
 import com.example.neptune.data.model.session.SessionType
@@ -35,12 +36,13 @@ import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
 
 @Composable
-fun InfoView(navController: NavController) {
+fun InfoView(navController: NavController, activity: MainActivity) {
 
     val infoViewModel = viewModel<InfoViewModel>(
         factory = viewModelFactory {
             InfoViewModel(
-                NeptuneApp.model.user!!
+                NeptuneApp.model.user!!,
+                activity
             )
         }
     )
@@ -176,7 +178,7 @@ fun InfoView(navController: NavController) {
                 )
 
                 Button(
-                    onClick = { },
+                    onClick = { infoViewModel.onShareLink() },
                     modifier = Modifier.weight(1f)
                 ) {
                     Icon(

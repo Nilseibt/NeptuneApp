@@ -13,9 +13,5 @@ class MainActivity : ComponentActivity() {
         setContent {
             NeptuneNavGraph(this)
         }
-        // ATTENTION: This was auto-generated to handle app links.
-        val appLinkIntent: Intent = intent
-        val appLinkAction: String? = appLinkIntent.action
-        val appLinkData: Uri? = appLinkIntent.data
     }
 }

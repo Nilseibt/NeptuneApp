@@ -1,9 +1,11 @@
 package com.example.neptune.ui
 
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import com.example.neptune.MainActivity
 import com.example.neptune.ui.views.ViewsCollection
 
@@ -18,7 +20,12 @@ fun NeptuneNavGraph(activity: MainActivity) {
             ViewsCollection.NAV_VIEW.Composable(navController)
         }
 
-        composable(ViewsCollection.START_VIEW.name) {
+        composable(ViewsCollection.START_VIEW.name,
+            deepLinks = listOf(navDeepLink {
+                uriPattern = "http://nep-tune.de"
+                action = Intent.ACTION_VIEW
+            })
+        ) {
             ViewsCollection.START_VIEW.ComposableWithActivity(navController, activity)
         }
 
@@ -47,7 +54,7 @@ fun NeptuneNavGraph(activity: MainActivity) {
         }
 
         composable(ViewsCollection.INFO_VIEW.name) {
-            ViewsCollection.INFO_VIEW.Composable(navController)
+            ViewsCollection.INFO_VIEW.ComposableWithActivity(navController, activity)
         }
 
         composable(ViewsCollection.STATS_VIEW.name) {
