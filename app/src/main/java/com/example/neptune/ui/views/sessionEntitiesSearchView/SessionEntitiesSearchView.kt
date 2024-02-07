@@ -93,14 +93,11 @@ fun SessionEntitiesSearchView(navController: NavController) {
                         ) {
                             sessionEntitiesSearchViewModel.getEntitiesSearchList().forEach {
 
-                                var isSelected by remember { mutableStateOf(false) }
-                                isSelected = sessionEntitiesSearchViewModel.isEntitySelected(it)
+                                val isSelected = sessionEntitiesSearchViewModel.isEntitySelected(it)
                                 FilledTonalButton(onClick = {
-                                    //isSelected = !isSelected
                                     sessionEntitiesSearchViewModel.onToggleSelect(it)
                                 }) {
                                     Text(text = it)
-                                    //Text(text = if (isSelected) "Selected: $it" else it)
                                     Icon(
                                         imageVector = if (isSelected) Icons.Default.Clear else Icons.Default.Add,
                                         contentDescription = null
