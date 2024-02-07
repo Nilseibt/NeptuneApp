@@ -1,6 +1,7 @@
 package com.example.neptune.ui.commons
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -34,6 +36,7 @@ import com.example.neptune.data.model.track.src.Track
 fun TrackComposable(
     track: Track,
     trackIndexInList: Int,
+    totalTracksInList: Int,
     trackListType: TrackListType,
     onToggleUpvote: (Track) -> Unit,
     onToggleDropdown: (index: Int) -> Unit,
@@ -86,25 +89,35 @@ fun TrackComposable(
 
         if (trackListType == TrackListType.HOST_QUEUE) {
 
+            //TODO change color gray to actual color
+            val moveUpAvailable = trackIndexInList > 1
+            val moveUpIconColor =
+                if (moveUpAvailable) MaterialTheme.colorScheme.onTertiary else Color.Gray
+
             IconButton(
-                onClick = { onMoveUp(trackIndexInList) },
+                onClick = { if(moveUpAvailable) { onMoveUp(trackIndexInList) } },
                 modifier = Modifier.weight(1f)
             ) {
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowUp,
                     contentDescription = "",
-                    tint = MaterialTheme.colorScheme.onTertiary
+                    tint = moveUpIconColor
                 )
             }
 
+            //TODO change color gray to actual color
+            val moveDownAvailable = trackIndexInList > 0 && trackIndexInList < totalTracksInList - 1
+            val moveDownIconColor =
+                if (moveDownAvailable) MaterialTheme.colorScheme.onTertiary else Color.Gray
+
             IconButton(
-                onClick = { onMoveDown(trackIndexInList) },
+                onClick = { if(moveDownAvailable) { onMoveDown(trackIndexInList) } },
                 modifier = Modifier.weight(1f)
             ) {
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowDown,
                     contentDescription = "",
-                    tint = MaterialTheme.colorScheme.onTertiary
+                    tint = moveDownIconColor
                 )
             }
 
@@ -139,56 +152,62 @@ fun TrackComposable(
             || trackListType == TrackListType.HOST_VOTE
             || trackListType == TrackListType.HOST_SEARCH) {
 
-            IconButton(
-                onClick = { onToggleDropdown(trackIndexInList) },
-                modifier = Modifier.weight(1f)
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.MoreVert,
-                    contentDescription = "",
-                    tint = MaterialTheme.colorScheme.onTertiary
-                )
-            }
+            Box (modifier = Modifier.weight(1f)) {
 
-            DropdownMenu(
-                expanded = isDropdownExpanded(trackIndexInList),
-                onDismissRequest = { onToggleDropdown(trackIndexInList) }
-            ) {
-
-                if (trackListType == TrackListType.HOST_SEARCH || trackListType == TrackListType.HOST_VOTE) {
-
-                    DropdownMenuItem(
-                        text = { Text(
-                            text = if (track.isBlocked()) stringResource(id = R.string.unlock_track_text)
-                            else stringResource(id = R.string.lock_track_text)
-                        ) },
-                        onClick = { onToggleBlock(track) }
+                IconButton(
+                    onClick = { onToggleDropdown(trackIndexInList) },
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.MoreVert,
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.onTertiary
                     )
-
-                    DropdownMenuItem(
-                        text = { Text(text = stringResource(id = R.string.add_track_to_queue_text)) },
-                        onClick = { onAddToQueue(track) }
-                    )
-
                 }
 
-                if (trackListType == TrackListType.HOST_QUEUE) {
+                DropdownMenu(
+                    expanded = isDropdownExpanded(trackIndexInList),
+                    onDismissRequest = { onToggleDropdown(trackIndexInList) }
+                ) {
 
-                    DropdownMenuItem(
-                        text = { Text(
-                            text = if (track.isBlocked()) stringResource(id = R.string.unlock_track_text)
-                            else stringResource(id = R.string.lock_track_text)
-                        ) },
-                        onClick = { onToggleBlock(track) }
-                    )
+                    if (trackListType == TrackListType.HOST_SEARCH || trackListType == TrackListType.HOST_VOTE) {
 
-                    DropdownMenuItem(
-                        text = { Text(text = stringResource(id = R.string.remove_track_from_queue_text)) },
-                        onClick = { onRemoveFromQueue(trackIndexInList) }
-                    )
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = if (track.isBlocked()) stringResource(id = R.string.unlock_track_text)
+                                    else stringResource(id = R.string.lock_track_text)
+                                )
+                            },
+                            onClick = { onToggleBlock(track) }
+                        )
+
+                        DropdownMenuItem(
+                            text = { Text(text = stringResource(id = R.string.add_track_to_queue_text)) },
+                            onClick = { onAddToQueue(track) }
+                        )
+
+                    }
+
+                    if (trackListType == TrackListType.HOST_QUEUE) {
+
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = if (track.isBlocked()) stringResource(id = R.string.unlock_track_text)
+                                    else stringResource(id = R.string.lock_track_text)
+                                )
+                            },
+                            onClick = { onToggleBlock(track) }
+                        )
+
+                        DropdownMenuItem(
+                            text = { Text(text = stringResource(id = R.string.remove_track_from_queue_text)) },
+                            onClick = { onRemoveFromQueue(trackIndexInList) }
+                        )
+
+                    }
 
                 }
-
             }
 
         }

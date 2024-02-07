@@ -47,6 +47,7 @@ fun TrackListComposable(
                 TrackComposable(
                     tracks[trackIndex].value,
                     trackIndex,
+                    tracks.size,
                     trackListType,
                     onToggleUpvote,
                     onToggleDropdown,
