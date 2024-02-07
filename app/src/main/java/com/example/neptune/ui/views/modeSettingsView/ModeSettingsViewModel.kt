@@ -92,6 +92,7 @@ class ModeSettingsViewModel(
     }
 
     fun onBack(navController: NavController) {
+        appState.sessionBuilder.reset()
         navController.popBackStack()
     }
 
