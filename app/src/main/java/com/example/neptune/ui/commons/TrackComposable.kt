@@ -200,10 +200,12 @@ fun TrackComposable(
                             onClick = { onToggleBlock(track) }
                         )
 
-                        DropdownMenuItem(
-                            text = { Text(text = stringResource(id = R.string.remove_track_from_queue_text)) },
-                            onClick = { onRemoveFromQueue(trackIndexInList) }
-                        )
+                        if(trackIndexInList != 0) {
+                            DropdownMenuItem(
+                                text = { Text(text = stringResource(id = R.string.remove_track_from_queue_text)) },
+                                onClick = { onRemoveFromQueue(trackIndexInList) }
+                            )
+                        }
 
                     }
 
