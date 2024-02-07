@@ -50,7 +50,7 @@ fun StatsView(navController: NavController) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(10.dp)
+                    .padding(20.dp)
             ) {
 
                 Row(
@@ -81,7 +81,7 @@ fun StatsView(navController: NavController) {
                         text = statsViewModel.mostUpvotedTrack.value,
                         color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.weight(2f),
+                        modifier = Modifier.weight(1f),
                         textAlign = TextAlign.Center
                     )
                 }
@@ -103,7 +103,7 @@ fun StatsView(navController: NavController) {
                             text = statsViewModel.mostUpvotedGenre.value,
                             color = MaterialTheme.colorScheme.onBackground,
                             style = MaterialTheme.typography.titleLarge,
-                            modifier = Modifier.weight(2f),
+                            modifier = Modifier.weight(1f),
                             textAlign = TextAlign.Center
                         )
                     }
@@ -125,7 +125,7 @@ fun StatsView(navController: NavController) {
                         text = statsViewModel.mostUpvotedArtist.value,
                         color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.weight(2f),
+                        modifier = Modifier.weight(1f),
                         textAlign = TextAlign.Center
                     )
                 }
@@ -145,7 +145,7 @@ fun StatsView(navController: NavController) {
                         text = statsViewModel.totalPlayedTracks.value,
                         color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.weight(2f),
+                        modifier = Modifier.weight(1f),
                         textAlign = TextAlign.Center
                     )
                 }
@@ -165,7 +165,7 @@ fun StatsView(navController: NavController) {
                         text = statsViewModel.totalUpvotes.value,
                         color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.weight(2f),
+                        modifier = Modifier.weight(1f),
                         textAlign = TextAlign.Center
                     )
                 }
@@ -185,7 +185,7 @@ fun StatsView(navController: NavController) {
                         text = statsViewModel.totalParticipants.value,
                         color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.weight(2f),
+                        modifier = Modifier.weight(1f),
                         textAlign = TextAlign.Center
                     )
                 }
@@ -205,7 +205,7 @@ fun StatsView(navController: NavController) {
                         text = statsViewModel.sessionDuration.value,
                         color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.weight(2f),
+                        modifier = Modifier.weight(1f),
                         textAlign = TextAlign.Center
                     )
                 }

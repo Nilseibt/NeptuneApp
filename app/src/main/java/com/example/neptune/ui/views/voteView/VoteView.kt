@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -65,7 +66,9 @@ fun VoteView(navController: NavController) {
                 description = voteViewModel.getTopBarDescription()
             )
 
-            Column(modifier = Modifier.fillMaxSize().padding(5.dp)) {
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)) {
 
                 Box(modifier = Modifier.weight(9f)) {
                     TrackListComposable(
@@ -86,7 +89,9 @@ fun VoteView(navController: NavController) {
                         imageVector = Icons.Filled.Search,
                         contentDescription = "",
                         tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier
+                            .weight(1f)
+                            .size(40.dp)
                     )
 
                     Text(
