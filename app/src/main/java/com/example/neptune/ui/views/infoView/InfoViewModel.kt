@@ -63,7 +63,7 @@ class InfoViewModel(
     fun getQRCode(): ImageBitmap {
         val writer = QRCodeWriter()
         val bitMatrix =
-            writer.encode("http://nep-tune.de/join/${user.session.id}", BarcodeFormat.QR_CODE, 100, 100)
+            writer.encode("http://nep-tune.de/join/${user.session.id}", BarcodeFormat.QR_CODE, 300, 300)
         val w = bitMatrix.width
         val h = bitMatrix.height
         val pixels = IntArray(w * h)
