@@ -29,7 +29,8 @@ private val DarkColorScheme = darkColorScheme(
 
     onBackground = DarkBlue90,
     surface = DarkBlue80,
-    onSurface = DarkBlue90
+    onSurface = DarkBlue90,
+    tertiary = ButtonBlue
     /* primary = Purple80,
     secondary = PurpleGrey80,
     tertiary = Pink80
@@ -105,7 +106,7 @@ fun NeptuneTheme(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
 

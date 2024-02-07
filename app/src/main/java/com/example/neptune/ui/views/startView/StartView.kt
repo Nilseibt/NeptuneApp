@@ -26,7 +26,7 @@ import com.example.neptune.MainActivity
 import com.example.neptune.NeptuneApp
 import com.example.neptune.R
 import com.example.neptune.ui.commons.TopBar
-import com.example.neptune.ui.theme.ButtonBorderBlue
+import com.example.neptune.ui.theme.ButtonBlue
 import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
 import com.example.neptune.ui.theme.SpotifyBrandGreen
@@ -70,14 +70,14 @@ fun StartView(navController: NavController, activity: MainActivity) {
             ) {
 
                 Button(onClick = { startViewModel.onJoinSession(navController) },
-                    border = BorderStroke(3.dp, ButtonBorderBlue)
+                    border = BorderStroke(3.dp, ButtonBlue)
                 ) {
                     Text(text = stringResource(id = R.string.join_session))
                 }
                 Spacer(modifier = Modifier.height(32.dp))
                 Button(
                     onClick = { startViewModel.onCreateSession(navController) },
-                    border = BorderStroke(3.dp, ButtonBorderBlue),
+                    border = BorderStroke(3.dp, ButtonBlue),
                     enabled = startViewModel.createSessionPossible()
                 ) {
                     Text(text = stringResource(id = R.string.create_session))
