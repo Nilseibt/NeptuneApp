@@ -27,6 +27,11 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,6 +44,7 @@ import com.example.neptune.R
 import com.example.neptune.ui.commons.TopBar
 import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
+import kotlinx.coroutines.delay
 
 @Composable
 fun ModeSettingsView(navController: NavController) {
@@ -165,8 +171,25 @@ fun ModeSettingsView(navController: NavController) {
                 Text(text = modeSettingsViewModel.getTrackCooldownString())
                 
                 Spacer(modifier = Modifier.height(40.dp))
+
+
+                // This is a guard for prohibiting double clicking the confirm button
+                var confirmButtonEnabled by remember { mutableStateOf(true) }
+                LaunchedEffect(confirmButtonEnabled) {
+                    if (confirmButtonEnabled) {
+                        return@LaunchedEffect
+                    } else {
+                        delay(1000)
+                        confirmButtonEnabled = true
+                    }
+                }
                 Button(
-                    onClick = { modeSettingsViewModel.onConfirmSettings(navController) }
+                    onClick = {
+                        if (confirmButtonEnabled) {
+                            confirmButtonEnabled = false
+                            modeSettingsViewModel.onConfirmSettings(navController)
+                        }
+                    }
                 ) {
                     //Text("Bestätigen")
                     Text(text = stringResource(id = R.string.confirmation_button_text))

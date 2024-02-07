@@ -38,8 +38,23 @@ fun TopBar(onBack: () -> Unit) {
             .height(60.dp)
     ) {
 
+        // This is a guard for prohibiting double clicking the back button
+        var backButtonEnabled by remember { mutableStateOf(true) }
+        LaunchedEffect(backButtonEnabled) {
+            if (backButtonEnabled) {
+                return@LaunchedEffect
+            } else {
+                delay(500)
+                backButtonEnabled = true
+            }
+        }
         IconButton(
-            onClick = onBack,
+            onClick = {
+                if (backButtonEnabled) {
+                    backButtonEnabled = false
+                    onBack()
+                }
+            },
             modifier = Modifier
                 .weight(1f)
                 .align(alignment = Alignment.CenterVertically)
@@ -83,8 +98,23 @@ fun SessionInfoBar(onStatistics: () -> Unit, onInfo: () -> Unit, description: Se
             .height(30.dp)
     ) {
 
+        // This is a guard for prohibiting double clicking the info button
+        var infoButtonEnabled by remember { mutableStateOf(true) }
+        LaunchedEffect(infoButtonEnabled) {
+            if (infoButtonEnabled) {
+                return@LaunchedEffect
+            } else {
+                delay(1000)
+                infoButtonEnabled = true
+            }
+        }
         IconButton(
-            onClick = onInfo,
+            onClick = {
+                if (infoButtonEnabled) {
+                    infoButtonEnabled = false
+                    onInfo()
+                }
+            },
             modifier = Modifier
                 .weight(1f)
                 .align(alignment = Alignment.CenterVertically)
@@ -113,16 +143,20 @@ fun SessionInfoBar(onStatistics: () -> Unit, onInfo: () -> Unit, description: Se
             textAlign = TextAlign.Center
         )
 
-        var enabled by remember {mutableStateOf(true)}
-        LaunchedEffect(enabled) {
-            if (enabled) return@LaunchedEffect
-            else delay(1000L)
-            enabled = true
+        // This is a guard for prohibiting double clicking the stats button
+        var statsButtonEnabled by remember { mutableStateOf(true) }
+        LaunchedEffect(statsButtonEnabled) {
+            if (statsButtonEnabled) {
+                return@LaunchedEffect
+            } else {
+                delay(1000)
+                statsButtonEnabled = true
+            }
         }
         IconButton(
             onClick = {
-                if (enabled) {
-                    enabled = false
+                if (statsButtonEnabled) {
+                    statsButtonEnabled = false
                     onStatistics()
                 }
             },

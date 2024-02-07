@@ -20,6 +20,11 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -32,6 +37,7 @@ import com.example.neptune.R
 import com.example.neptune.ui.commons.TopBar
 import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
+import kotlinx.coroutines.delay
 
 @Composable
 fun JoinView(navController: NavController) {
@@ -83,8 +89,23 @@ fun JoinView(navController: NavController) {
                         .padding(8.dp),
                     horizontalArrangement = Arrangement.End
                 ){
+                    // This is a guard for prohibiting double clicking the join button
+                    var joinButtonEnabled by remember { mutableStateOf(true) }
+                    LaunchedEffect(joinButtonEnabled) {
+                        if (joinButtonEnabled) {
+                            return@LaunchedEffect
+                        } else {
+                            delay(1000)
+                            joinButtonEnabled = true
+                        }
+                    }
                     Button(
-                        onClick = { joinViewModel.onConfirmSessionCode(navController) },
+                        onClick = {
+                            if (joinButtonEnabled) {
+                                joinButtonEnabled = false
+                                joinViewModel.onConfirmSessionCode(navController)
+                            }
+                        },
                         enabled = joinViewModel.isCodeInputFormValid()
                     )
                     {
