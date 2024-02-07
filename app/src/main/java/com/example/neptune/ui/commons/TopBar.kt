@@ -1,5 +1,6 @@
 package com.example.neptune.ui.commons
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -61,14 +61,13 @@ fun TopBar(onBack: () -> Unit) {
             textAlign = TextAlign.Center
         )
 
-        Button(
-            onClick = { },
+        Image(
+            painter = painterResource(id = R.drawable.neptune_logo),
+            contentDescription = "",
             modifier = Modifier
                 .weight(1f)
-                .align(alignment = Alignment.CenterVertically)
-        ) {
-
-        }
+                .padding(10.dp)
+        )
 
     }
 }
