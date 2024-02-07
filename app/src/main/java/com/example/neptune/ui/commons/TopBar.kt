@@ -13,6 +13,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -21,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.neptune.R
 import com.example.neptune.data.model.session.SessionType
+import kotlinx.coroutines.delay
 
 @Composable
 fun TopBar(onBack: () -> Unit) {
@@ -90,7 +96,7 @@ fun SessionInfoBar(onStatistics: () -> Unit, onInfo: () -> Unit, description: Se
             )
         }
 
-        val title = when(description) {
+        val title = when (description) {
             SessionType.GENERAL -> stringResource(id = R.string.general_mode_name)
             SessionType.ARTIST -> stringResource(id = R.string.artist_mode_name)
             SessionType.GENRE -> stringResource(id = R.string.genre_mode_name)
@@ -107,8 +113,19 @@ fun SessionInfoBar(onStatistics: () -> Unit, onInfo: () -> Unit, description: Se
             textAlign = TextAlign.Center
         )
 
+        var enabled by remember {mutableStateOf(true)}
+        LaunchedEffect(enabled) {
+            if (enabled) return@LaunchedEffect
+            else delay(1000L)
+            enabled = true
+        }
         IconButton(
-            onClick = onStatistics,
+            onClick = {
+                if (enabled) {
+                    enabled = false
+                    onStatistics()
+                }
+            },
             modifier = Modifier
                 .weight(1f)
                 .align(alignment = Alignment.CenterVertically)
