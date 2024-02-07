@@ -106,7 +106,10 @@ fun InfoView(navController: NavController, activity: MainActivity) {
                         LazyRow {
                             items(infoViewModel.getAllGenres()) { item ->
                                 TextButton(onClick = {  }) {
-                                    Text(text = item)
+                                    Text(
+                                        text = item,
+                                        color = MaterialTheme.colorScheme.onBackground
+                                    )
                                 }
                             }
                         }
