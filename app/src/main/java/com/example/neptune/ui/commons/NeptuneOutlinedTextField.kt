@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import com.example.neptune.ui.theme.White
 import com.example.neptune.ui.views.joinView.JoinViewModel
+import com.example.neptune.ui.views.modeSettingsView.ModeSettingsViewModel
 import com.example.neptune.ui.views.searchView.SearchViewModel
 
 @Composable
@@ -44,7 +45,7 @@ fun NeptuneOutlinedTextField(
 
 @Composable
 fun NeptuneOutlinedTextField(
-    searchViewModel: SearchViewModel,
+    modeSettingsViewModel: ModeSettingsViewModel,
     labelText: String,
     modifier: Modifier = Modifier,
     focusedBorderColor: Color = White,
@@ -54,8 +55,8 @@ fun NeptuneOutlinedTextField(
     cursorColor: Color = White
 ) {
     OutlinedTextField(
-        value = searchViewModel.getTrackSearchInput(),
-        onValueChange = { searchViewModel.onTrackSearchInputChange(it) },
+        value = modeSettingsViewModel.getCurrentPlaylistLinkInput(),
+        onValueChange = { modeSettingsViewModel.onPlaylistLinkInputChange(it) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         modifier = modifier.fillMaxWidth().padding(end = 8.dp),
         label = { Text(text = labelText, color = focusedLabelColor) },
