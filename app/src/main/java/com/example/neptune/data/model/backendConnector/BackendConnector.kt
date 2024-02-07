@@ -208,7 +208,7 @@ open class BackendConnector(
     }
 
 
-    fun addTrackToSession(track: Track, callback: () -> Unit) {
+    fun addTrackToSession(track: Track, callback: () -> Unit = {}) {
 
         val artistsJSONArray = JSONArray()
         track.artists.forEach {

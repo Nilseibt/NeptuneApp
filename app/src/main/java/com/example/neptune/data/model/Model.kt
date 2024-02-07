@@ -235,7 +235,14 @@ class Model() {
                 streamingConnector!! as HostStreamingConnector,
                 upvoteDatabase
             )
-            sessionBuilder.reset()
+            if(mode == "Playlist") {
+                GlobalScope.launch {
+                    sessionBuilder.getPlaylistTracks().forEach {
+                        user!!.backendConnector.addTrackToSession(it)
+                    }
+                    sessionBuilder.reset()
+                }
+            }
             navController.navigate(ViewsCollection.CONTROL_VIEW.name)
         }
     }

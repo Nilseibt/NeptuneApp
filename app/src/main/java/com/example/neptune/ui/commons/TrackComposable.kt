@@ -142,7 +142,8 @@ fun TrackComposable(
 
             IconButton(
                 onClick = { if(!isLocked) { onToggleUpvote(track) } },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                enabled = !isLocked
             ) {
                 Icon(
                     imageVector = if (track.isUpvoted()) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,

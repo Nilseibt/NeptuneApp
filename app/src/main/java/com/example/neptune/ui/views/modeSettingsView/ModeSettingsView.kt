@@ -89,6 +89,10 @@ fun ModeSettingsView(navController: NavController) {
                         onValueChange = { modeSettingsViewModel.onPlaylistLinkInputChange(it) },
                         label = { Text(text = stringResource(id = R.string.default_playlist), color = Color.White) }
                     )
+                    //TODO make text field nicer, add string resource
+                    if(!modeSettingsViewModel.isPlaylistLinkValid()){
+                        Text(text = "Playlist link not valid", color = Color.Red)
+                    }
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
@@ -189,7 +193,8 @@ fun ModeSettingsView(navController: NavController) {
                             confirmButtonEnabled = false
                             modeSettingsViewModel.onConfirmSettings(navController)
                         }
-                    }
+                    },
+                    enabled = modeSettingsViewModel.isPlaylistLinkValid()
                 ) {
                     //Text("Bestätigen")
                     Text(text = stringResource(id = R.string.confirmation_button_text))

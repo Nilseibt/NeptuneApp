@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import com.example.neptune.data.model.track.src.PlayList
+import com.example.neptune.data.model.track.src.Track
 import com.example.neptune.data.resources.GenreList
 import java.sql.Timestamp
 import kotlin.math.min
@@ -14,7 +15,7 @@ class SessionBuilder {
 
     private var selectedEntities = mutableStateListOf<String>() // artists or genres
 
-    private var playlistLink = ""
+    private var playlistTracks = mutableListOf<Track>()
 
     private var trackCooldown = -1
 
@@ -66,8 +67,12 @@ class SessionBuilder {
         this.selectedEntities = selectedEntities.toMutableStateList()
     }
 
-    fun setPlaylistLink(playlistLink: String) {
-        this.playlistLink = playlistLink
+    fun setPlaylistTracks(playlistTracks: MutableList<Track>) {
+        this.playlistTracks = playlistTracks
+    }
+
+    fun getPlaylistTracks(): MutableList<Track> {
+        return playlistTracks
     }
 
     fun setTrackCooldown(trackCooldown: Int) {
@@ -122,7 +127,7 @@ class SessionBuilder {
     fun reset() {
         sessionType = SessionType.GENERAL
         selectedEntities = mutableStateListOf()
-        playlistLink = ""
+        playlistTracks = mutableListOf()
         trackCooldown = -1
     }
 

@@ -8,6 +8,7 @@ import androidx.compose.runtime.toMutableStateList
 import com.example.neptune.data.model.backendConnector.BackendConnector
 import com.example.neptune.data.model.backendConnector.ParticipantBackendConnector
 import com.example.neptune.data.model.session.Session
+import com.example.neptune.data.model.session.SessionType
 import com.example.neptune.data.model.track.src.Track
 import com.example.neptune.data.model.track.src.TrackList
 import com.example.neptune.data.model.track.src.VoteList
@@ -171,7 +172,7 @@ open class User(
         val updatedBlockList = TrackList(mutableStateListOf())
         val updatedCooldownList = TrackList(mutableStateListOf())
         sessionTracks.forEach { (trackId, track) ->
-            if (track.value.getUpvotes() > 0) {
+            if (track.value.getUpvotes() > 0 || session.sessionType == SessionType.PLAYLIST) {
                 updatedVoteList.addTrack(track)
             }
             if(track.value.isBlocked()){

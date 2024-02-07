@@ -1,5 +1,6 @@
 package com.example.neptune.ui.views.modeSettingsView
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -10,7 +11,10 @@ import com.example.neptune.NeptuneApp
 import com.example.neptune.data.model.appState.AppState
 import com.example.neptune.data.model.session.SessionBuilder
 import com.example.neptune.data.model.session.SessionType
+import com.example.neptune.data.model.track.src.Track
 import com.example.neptune.ui.views.ViewsCollection
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlin.math.pow
 
 class ModeSettingsViewModel(
@@ -21,6 +25,9 @@ class ModeSettingsViewModel(
 
     private var sliderPosition by mutableFloatStateOf(0f)
 
+    private var isPlaylistLinkAccepted by mutableStateOf(false)
+
+    private var playlistTracks = mutableListOf<Track>()
 
     fun isPlaylistLinkInputAvailable(): Boolean {
         return getSessionType() == SessionType.PLAYLIST
@@ -32,11 +39,25 @@ class ModeSettingsViewModel(
 
     fun onPlaylistLinkInputChange(newInput: String) {
         playlistLinkInput = newInput
+        if (playlistLinkInput == "") {
+            isPlaylistLinkAccepted = false
+        } else {
+            val playlistLinkPattern = Regex("""playlist\/(.*?)\?si=.*""")
+            val playlistLinkMatchResult = playlistLinkPattern.find(playlistLinkInput)
+            Log.i("RES", (playlistLinkMatchResult != null).toString())
+            if (playlistLinkMatchResult != null) {
+                appState.streamingEstablisher.getPlaylist(playlistLinkMatchResult.groupValues[1]) { resultList ->
+                    playlistTracks = resultList
+                    isPlaylistLinkAccepted = true
+                }
+            } else {
+                isPlaylistLinkAccepted = false
+            }
+        }
     }
 
     fun isPlaylistLinkValid(): Boolean {
-        //TODO
-        return true
+        return isPlaylistLinkAccepted
     }
 
     fun getCooldownSliderPosition(): Float {
@@ -84,8 +105,8 @@ class ModeSettingsViewModel(
     }
 
     fun onConfirmSettings(navController: NavController) {
-        if(getSessionType() == SessionType.PLAYLIST) {
-            appState.sessionBuilder.setPlaylistLink(playlistLinkInput)
+        if (getSessionType() == SessionType.PLAYLIST) {
+            appState.sessionBuilder.setPlaylistTracks(playlistTracks)
         }
         appState.sessionBuilder.setTrackCooldown(sliderPositionToCooldownMinutes(sliderPosition))
         NeptuneApp.model.createNewSessionAndJoin(navController) //TODO check if that is the best option to do that
@@ -95,8 +116,6 @@ class ModeSettingsViewModel(
         appState.sessionBuilder.reset()
         navController.popBackStack()
     }
-
-
 
 
     private fun getSessionType(): SessionType {
