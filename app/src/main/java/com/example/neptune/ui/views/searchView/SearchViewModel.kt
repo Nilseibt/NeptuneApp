@@ -26,6 +26,9 @@ class SearchViewModel(
     private var activeFilter = mutableStateOf(Filter.NONE)
     private var isFilterDropdownExpanded = mutableStateOf(false)
 
+    private var inputChanged = false
+    private var lastInputChangeTimestamp = 0L
+
     fun getSearchTrackListType(): TrackListType {
         if (user is Host) {
             return TrackListType.HOST_SEARCH
@@ -40,9 +43,23 @@ class SearchViewModel(
 
     fun onTrackSearchInputChange(newInput: String) {
         searchInput = newInput
-        if (user.session.sessionType != SessionType.GENRE) {
-            if (searchInput != "") {
-                user.search(searchInput)
+        inputChanged = true
+        lastInputChangeTimestamp = System.currentTimeMillis()
+        if (searchInput == "") {
+            user.searchList.value.clear()
+        }
+    }
+
+    fun checkToUpdateSearch(){
+        val currentTimestamp = System.currentTimeMillis()
+        if(inputChanged && currentTimestamp - lastInputChangeTimestamp > 500){
+            if (user.session.sessionType != SessionType.GENRE) {
+                inputChanged = false
+                if (searchInput != "") {
+                    user.search(searchInput)
+                } else{
+                    user.searchList.value.clear()
+                }
             }
         }
     }
@@ -138,6 +155,7 @@ class SearchViewModel(
 
 
     fun onBack(navController: NavController) {
+        user.searchList.value.clear()
         navController.popBackStack()
     }
 

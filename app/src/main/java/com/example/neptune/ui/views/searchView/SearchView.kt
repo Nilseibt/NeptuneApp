@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -32,6 +33,7 @@ import com.example.neptune.ui.commons.TopBar
 import com.example.neptune.ui.commons.TrackListComposable
 import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
+import kotlinx.coroutines.delay
 
 @Composable
 fun SearchView(navController: NavController) {
@@ -116,16 +118,18 @@ fun SearchView(navController: NavController) {
                         label = { Text(text = stringResource(id = R.string.search_text)) }
                     )
 
-                    IconButton(
-                        onClick = { searchViewModel.onSearchButtonClick() },
-                        enabled = searchViewModel.isSearchButtonActive(),
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Search,
-                            contentDescription = "",
-                            tint = MaterialTheme.colorScheme.onBackground
-                        )
+                    if(searchViewModel.isSearchButtonActive()) {
+                        IconButton(
+                            onClick = { searchViewModel.onSearchButtonClick() },
+                            enabled = searchViewModel.isSearchButtonActive(),
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Search,
+                                contentDescription = "",
+                                tint = MaterialTheme.colorScheme.onBackground
+                            )
+                        }
                     }
 
                 }
@@ -151,5 +155,15 @@ fun SearchView(navController: NavController) {
         }
 
     }
+
+    LaunchedEffect(
+        key1 = Unit,
+        block = {
+            while (true) {
+                searchViewModel.checkToUpdateSearch()
+                delay(100)
+            }
+        }
+    )
 
 }

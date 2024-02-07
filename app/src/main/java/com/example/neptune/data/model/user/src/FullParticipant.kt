@@ -25,9 +25,9 @@ open class FullParticipant(
         } else if (session.sessionType == SessionType.GENRE) {
             resultLimit = 30
         }
-        searchList.value.clear()
         if (session.sessionType == SessionType.GENERAL || session.sessionType == SessionType.ARTIST) {
             streamingConnector.search(input, resultLimit) { resultList ->
+                searchList.value.clear()
                 resultList.forEach { track ->
                     if (session.validateTrack(track)) {
                         if (hasSessionTrack(track.id)) {
@@ -40,6 +40,7 @@ open class FullParticipant(
             }
         } else if (session.sessionType == SessionType.GENRE) {
             streamingConnector.searchWithGenres(input, resultLimit) { resultList ->
+                searchList.value.clear()
                 resultList.forEach { track ->
                     if (session.validateTrack(track)) {
                         if (hasSessionTrack(track.id)) {
