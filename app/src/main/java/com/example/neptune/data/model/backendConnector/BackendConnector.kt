@@ -214,13 +214,17 @@ open class BackendConnector(
         track.artists.forEach {
             artistsJSONArray.put(it)
         }
+        val genreJSONArray = JSONArray()
+        track.genres.forEach {
+            genreJSONArray.put(it)
+        }
 
         val postData = JSONObject()
         postData.put("deviceID", deviceId)
         postData.put("trackID", track.id)
         postData.put("trackName", track.name)
         postData.put("artist", artistsJSONArray)
-        postData.put("genre", JSONArray())
+        postData.put("genre", genreJSONArray)
         postData.put("imageURL", track.imageUrl)
 
         sendRequest("addTrackToSession", postData) { callback() }
