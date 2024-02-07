@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import com.example.neptune.MainActivity
 import com.example.neptune.NeptuneApp
 import com.example.neptune.data.model.appState.AppState
+import com.example.neptune.ui.views.ViewsCollection
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -30,7 +31,9 @@ class LoadingViewModel(
                             NeptuneApp.model.tryToJoinSession(
                                 sessionCode.toInt(),
                                 navController
-                            )
+                            ){
+                                navController.navigate(ViewsCollection.START_VIEW.name)
+                            }
                         }
                     }
                 }

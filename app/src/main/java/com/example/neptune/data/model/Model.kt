@@ -248,13 +248,18 @@ class Model() {
     }
 
 
-    fun tryToJoinSession(sessionId: Int, navController: NavController) {
+    fun tryToJoinSession(sessionId: Int, navController: NavController, onFail: () -> Unit) {
         backendConnector =
             ParticipantBackendConnector(appState.getDeviceId(), backendConnectorVolleyQueue)
 
         (backendConnector as ParticipantBackendConnector).participantJoinSession(
             sessionId
-        ) { timestamp, mode, artists, genres ->
+        ) { success, timestamp, mode, artists, genres ->
+
+            if(!success){
+                onFail()
+                return@participantJoinSession
+            }
 
             sessionBuilder.setSessionTypeFromBackendString(mode)
             if (mode == "Artist") {

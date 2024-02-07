@@ -14,7 +14,7 @@ class ParticipantBackendConnector(
 
     fun participantJoinSession(
         sessionId: Int,
-        callback: (timestamp: Int, mode: String, artists: List<String>, genres: List<String>) -> Unit
+        callback: (success: Boolean, timestamp: Int, mode: String, artists: List<String>, genres: List<String>) -> Unit
     ) {
         val postData = JSONObject()
         postData.put("participantDeviceID", deviceId)
@@ -27,35 +27,43 @@ class ParticipantBackendConnector(
 
     private fun callbackParticipantJoinSession(
         jsonResponse: JSONObject,
-        callback: (timestamp: Int, mode: String, artists: List<String>, genres: List<String>) -> Unit
+        callback: (success: Boolean, timestamp: Int, mode: String, artists: List<String>, genres: List<String>) -> Unit
     ) {
-        val timestamp = jsonResponse.getInt("timestamp")
-        val mode = jsonResponse.getString("modus")
-        val artists = mutableListOf<String>()
-        if (jsonResponse.get("artists").toString() != "null") {
-            val jsonArtistsArray = jsonResponse.getJSONArray("artists")
-            for (artistIndex in 0 until jsonArtistsArray.length()) {
-                artists.add(jsonArtistsArray.getString(artistIndex))
+        val status = jsonResponse.getString("status")
+
+        if (status == "success") {
+
+            val timestamp = jsonResponse.getInt("timestamp")
+            val mode = jsonResponse.getString("modus")
+            val artists = mutableListOf<String>()
+            if (jsonResponse.get("artists").toString() != "null") {
+                val jsonArtistsArray = jsonResponse.getJSONArray("artists")
+                for (artistIndex in 0 until jsonArtistsArray.length()) {
+                    artists.add(jsonArtistsArray.getString(artistIndex))
+                }
+            }
+            val genres = mutableListOf<String>()
+            if (jsonResponse.get("genres").toString() != "null") {
+                val jsonGenresArray = jsonResponse.getJSONArray("genres")
+                for (genreIndex in 0 until jsonGenresArray.length()) {
+                    genres.add(jsonGenresArray.getString(genreIndex))
+                }
+            }
+            callback(true, timestamp, mode, artists, genres)
+        } else {
+            val error = jsonResponse.getString("error")
+            if (error == "Session does not exist") {
+                callback(false, -1, "", listOf(), listOf())
             }
         }
-        val genres = mutableListOf<String>()
-        if (jsonResponse.get("genres").toString() != "null") {
-            val jsonGenresArray = jsonResponse.getJSONArray("genres")
-            for (genreIndex in 0 until jsonGenresArray.length()) {
-                genres.add(jsonGenresArray.getString(genreIndex))
-            }
-        }
-        callback(timestamp, mode, artists, genres)
     }
-
-
 
 
     fun participantLeaveSession(onCallbackFinished: () -> Unit = {}) {
         val postData = JSONObject()
         postData.put("participantDeviceID", deviceId)
 
-        sendRequest("participantLeaveSession", postData){
+        sendRequest("participantLeaveSession", postData) {
             onCallbackFinished()
         }
     }
