@@ -1,8 +1,10 @@
 package com.example.neptune.ui.views.modeSettingsView
 
+import NeptuneOutlinedTextField
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -84,15 +86,16 @@ fun ModeSettingsView(navController: NavController) {
 
                 if (modeSettingsViewModel.isPlaylistLinkInputAvailable()) {
                     //Text(text = "Standardplaylist", color = Color.White)
-                    OutlinedTextField(
+                    /*OutlinedTextField(
                         value = modeSettingsViewModel.getCurrentPlaylistLinkInput(),
                         onValueChange = { modeSettingsViewModel.onPlaylistLinkInputChange(it) },
                         label = { Text(text = stringResource(id = R.string.default_playlist), color = Color.White) }
-                    )
-                    //TODO make text field nicer, add string resource
-                    if(!modeSettingsViewModel.isPlaylistLinkValid()){
-                        Text(text = "Playlist link not valid", color = Color.Red)
-                    }
+                    )*/
+                    
+                    NeptuneOutlinedTextField(modeSettingsViewModel = modeSettingsViewModel, labelText = stringResource(
+                        id = R.string.default_playlist
+                    ))
+                    
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
@@ -110,7 +113,9 @@ fun ModeSettingsView(navController: NavController) {
 
                     val itemList = modeSettingsViewModel.getSelectedEntities()
 
-                    LazyRow {
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
                         items(itemList) { item ->
                             // your composable here
                             ElevatedButton(onClick = { modeSettingsViewModel.onToggleSelect(item) }) {
@@ -142,8 +147,9 @@ fun ModeSettingsView(navController: NavController) {
                     Spacer(modifier = Modifier.height(searchSliderDistance))
 
                     val itemList = modeSettingsViewModel.getSelectedEntities()
-
-                    LazyRow {
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
                         items(itemList) { item ->
                             // your composable here
                             ElevatedButton(onClick = { modeSettingsViewModel.onToggleSelect(item) }) {
@@ -193,8 +199,7 @@ fun ModeSettingsView(navController: NavController) {
                             confirmButtonEnabled = false
                             modeSettingsViewModel.onConfirmSettings(navController)
                         }
-                    },
-                    enabled = modeSettingsViewModel.isPlaylistLinkValid()
+                    }
                 ) {
                     //Text("Bestätigen")
                     Text(text = stringResource(id = R.string.confirmation_button_text))
