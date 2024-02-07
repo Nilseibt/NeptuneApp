@@ -1,5 +1,6 @@
 package com.example.neptune.ui.views.modeSettingsView
 
+import NeptuneOutlinedTextField
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -85,11 +86,16 @@ fun ModeSettingsView(navController: NavController) {
 
                 if (modeSettingsViewModel.isPlaylistLinkInputAvailable()) {
                     //Text(text = "Standardplaylist", color = Color.White)
-                    OutlinedTextField(
+                    /*OutlinedTextField(
                         value = modeSettingsViewModel.getCurrentPlaylistLinkInput(),
                         onValueChange = { modeSettingsViewModel.onPlaylistLinkInputChange(it) },
                         label = { Text(text = stringResource(id = R.string.default_playlist), color = Color.White) }
-                    )
+                    )*/
+                    
+                    NeptuneOutlinedTextField(modeSettingsViewModel = modeSettingsViewModel, labelText = stringResource(
+                        id = R.string.default_playlist
+                    ))
+                    
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
