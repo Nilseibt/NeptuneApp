@@ -1,16 +1,20 @@
 package com.example.neptune.ui.views.infoView
 
-import android.app.Activity
-import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.core.app.ShareCompat
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.neptune.MainActivity
-import com.example.neptune.NeptuneApp
 import com.example.neptune.data.model.session.ArtistSession
 import com.example.neptune.data.model.session.GenreSession
 import com.example.neptune.data.model.session.SessionType
 import com.example.neptune.data.model.user.src.User
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.WriterException
+import com.google.zxing.qrcode.QRCodeWriter
 
 
 class InfoViewModel(
@@ -53,6 +57,24 @@ class InfoViewModel(
 
     fun onBack(navController: NavController) {
         navController.popBackStack()
+    }
+
+    @Throws(WriterException::class)
+    fun getQRCode(): ImageBitmap {
+        val writer = QRCodeWriter()
+        val bitMatrix =
+            writer.encode("http://nep-tune/join/${user.session.id}", BarcodeFormat.QR_CODE, 100, 100)
+        val w = bitMatrix.width
+        val h = bitMatrix.height
+        val pixels = IntArray(w * h)
+        for (y in 0 until h) {
+            for (x in 0 until w) {
+                pixels[y * w + x] = if (bitMatrix[x, y]) Color.BLACK else Color.WHITE
+            }
+        }
+        val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        bitmap.setPixels(pixels, 0, w, 0, 0, w, h)
+        return bitmap.asImageBitmap()
     }
 
 }
