@@ -47,10 +47,10 @@ class InfoViewModel(
     }
 
     fun onShareLink() {
-        val shareText = "Neptune Session Code: " + user.session.id.toString()
+        val shareLink = "https://nep-tune.de/join/" + user.session.id.toString()
         ShareCompat.IntentBuilder.from(activity)
             .setType("text/plain")
-            .setText(shareText)
+            .setText(shareLink)
             .setChooserTitle("Share Session Code")
             .startChooser()
     }

@@ -129,7 +129,7 @@ fun VoteView(navController: NavController) {
             key1 = Unit,
             block = {
             while (true) {
-                voteViewModel.syncState()
+                voteViewModel.syncState(navController)
                 delay(5000)
             }
         }

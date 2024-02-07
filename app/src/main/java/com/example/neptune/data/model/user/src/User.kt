@@ -144,6 +144,12 @@ open class User(
 
     protected fun syncTracksFromBackend() {
         backendConnector.getAllTrackData() { listOfTracks ->
+            if(session.hasAddedTrack && listOfTracks.isEmpty()){
+                session.isSessionClosed = true
+            }
+            if(!session.hasAddedTrack && listOfTracks.isNotEmpty()){
+                session.hasAddedTrack = true
+            }
             listOfTracks.forEach { track ->
                 if (upvotedTrackIdsInSession.contains(track.id)) {
                     track.setUpvoted(true)

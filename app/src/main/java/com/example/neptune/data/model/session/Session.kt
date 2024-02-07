@@ -10,6 +10,9 @@ open class Session(
     val sessionType: SessionType = SessionType.GENERAL
 ) {
 
+    var hasAddedTrack = false
+    var isSessionClosed = false
+
     /**
      * default implementation
      * no restrictions in the GENERAL-Mode

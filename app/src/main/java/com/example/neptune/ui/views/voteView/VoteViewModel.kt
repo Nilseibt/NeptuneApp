@@ -71,7 +71,16 @@ class VoteViewModel(
     }
 
 
-    fun syncState(){
+    fun syncState(navController: NavController){
+        if(participant.session.isSessionClosed){
+            if(!navController.popBackStack(
+                ViewsCollection.START_VIEW.name,
+                inclusive = false,
+                saveState = false
+            )){
+                navController.navigate(ViewsCollection.START_VIEW.name)
+            }
+        }
         participant.syncState()
     }
 
