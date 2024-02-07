@@ -48,10 +48,15 @@ fun TrackComposable(
     onMoveDown: (index: Int) -> Unit
 ) {
 
+    val isLocked = track.isBlocked() || track.hasCooldown()
+
+    //TODO make correct color here
+    val backgroundColor = if(isLocked) Color.Gray else MaterialTheme.colorScheme.tertiary
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = MaterialTheme.colorScheme.tertiary)
+            .background(color = backgroundColor)
             .clip(shape = RoundedCornerShape(10.dp))
             .height(70.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -136,7 +141,7 @@ fun TrackComposable(
             )
 
             IconButton(
-                onClick = { onToggleUpvote(track) },
+                onClick = { if(!isLocked) { onToggleUpvote(track) } },
                 modifier = Modifier.weight(1f)
             ) {
                 Icon(

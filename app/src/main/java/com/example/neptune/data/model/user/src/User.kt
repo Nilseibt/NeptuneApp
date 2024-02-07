@@ -180,6 +180,11 @@ open class User(
             if(track.value.hasCooldown()){
                 updatedCooldownList.addTrack(track)
             }
+            for(searchListIndex in 0 until searchList.value.getTracks().size){
+                if(searchList.value.trackAt(searchListIndex).id == trackId){
+                    searchList.value.exchangeTrack(searchListIndex, track)
+                }
+            }
         }
         updatedVoteList.sortByUpvote()
         voteList.value = updatedVoteList

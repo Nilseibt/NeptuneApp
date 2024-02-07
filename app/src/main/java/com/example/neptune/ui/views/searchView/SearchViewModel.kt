@@ -50,16 +50,14 @@ class SearchViewModel(
         }
     }
 
-    fun checkToUpdateSearch(){
+    fun checkToUpdateSearch() {
         val currentTimestamp = System.currentTimeMillis()
-        if(inputChanged && currentTimestamp - lastInputChangeTimestamp > 500){
-            if (user.session.sessionType != SessionType.GENRE) {
-                inputChanged = false
-                if (searchInput != "") {
-                    user.search(searchInput)
-                } else{
-                    user.searchList.value.clear()
-                }
+        if (inputChanged && currentTimestamp - lastInputChangeTimestamp > 500) {
+            inputChanged = false
+            if (searchInput != "") {
+                user.search(searchInput)
+            } else {
+                user.searchList.value.clear()
             }
         }
     }
@@ -119,7 +117,7 @@ class SearchViewModel(
         isFilterDropdownExpanded.value = false
     }
 
-    fun isFilterDropdownExpanded(): Boolean{
+    fun isFilterDropdownExpanded(): Boolean {
         return isFilterDropdownExpanded.value
     }
 
@@ -157,6 +155,10 @@ class SearchViewModel(
     fun onBack(navController: NavController) {
         user.searchList.value.clear()
         navController.popBackStack()
+    }
+
+    fun syncState() {
+        user.syncState()
     }
 
 }

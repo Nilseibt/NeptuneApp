@@ -118,7 +118,8 @@ fun SearchView(navController: NavController) {
                         label = { Text(text = stringResource(id = R.string.search_text)) }
                     )
 
-                    if(searchViewModel.isSearchButtonActive()) {
+                    //TODO take the search button out
+                    if(searchViewModel.isSearchButtonActive() && false) {
                         IconButton(
                             onClick = { searchViewModel.onSearchButtonClick() },
                             enabled = searchViewModel.isSearchButtonActive(),
@@ -162,6 +163,16 @@ fun SearchView(navController: NavController) {
             while (true) {
                 searchViewModel.checkToUpdateSearch()
                 delay(100)
+            }
+        }
+    )
+
+    LaunchedEffect(
+        key1 = Unit,
+        block = {
+            while (true) {
+                searchViewModel.syncState()
+                delay(5000)
             }
         }
     )

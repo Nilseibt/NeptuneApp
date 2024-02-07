@@ -52,6 +52,9 @@ open class FullParticipant(
                 }
             }
         }
+        else if (session.sessionType == SessionType.PLAYLIST) {
+            super.search(input)
+        }
     }
 
 }
