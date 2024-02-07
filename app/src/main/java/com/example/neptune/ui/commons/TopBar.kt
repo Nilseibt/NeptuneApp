@@ -46,7 +46,8 @@ fun TopBar(onBack: () -> Unit) {
         ) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
-                contentDescription = ""
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.onPrimary
             )
         }
 
