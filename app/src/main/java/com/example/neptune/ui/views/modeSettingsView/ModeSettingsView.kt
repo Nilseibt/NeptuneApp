@@ -3,6 +3,7 @@ package com.example.neptune.ui.views.modeSettingsView
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -106,7 +107,9 @@ fun ModeSettingsView(navController: NavController) {
 
                     val itemList = modeSettingsViewModel.getSelectedEntities()
 
-                    LazyRow {
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
                         items(itemList) { item ->
                             // your composable here
                             ElevatedButton(onClick = { modeSettingsViewModel.onToggleSelect(item) }) {
@@ -138,8 +141,9 @@ fun ModeSettingsView(navController: NavController) {
                     Spacer(modifier = Modifier.height(searchSliderDistance))
 
                     val itemList = modeSettingsViewModel.getSelectedEntities()
-
-                    LazyRow {
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
                         items(itemList) { item ->
                             // your composable here
                             ElevatedButton(onClick = { modeSettingsViewModel.onToggleSelect(item) }) {
