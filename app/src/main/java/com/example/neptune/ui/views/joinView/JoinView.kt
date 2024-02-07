@@ -81,8 +81,11 @@ fun JoinView(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally){
 
                 NeptuneOutlinedTextField(joinViewModel, labelText = stringResource(id = R.string.enter_six_digit_code))
-                
-                Text(text = "")
+
+                //TODO change color and make string resource
+                if(joinViewModel.wasLastCodeInvalid()){
+                    Text(text = "Session code invalid", color = Color.Red)
+                }
 
                 /*
                 OutlinedTextField(

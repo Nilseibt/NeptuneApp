@@ -95,6 +95,11 @@ fun ModeSettingsView(navController: NavController) {
                     NeptuneOutlinedTextField(modeSettingsViewModel = modeSettingsViewModel, labelText = stringResource(
                         id = R.string.default_playlist
                     ))
+
+                    //TODO change color and make string resource
+                    if(!modeSettingsViewModel.isPlaylistLinkValid()){
+                        Text(text = "Playlist link invalid", color = Color.Red)
+                    }
                     
                     Spacer(modifier = Modifier.height(16.dp))
                 }
