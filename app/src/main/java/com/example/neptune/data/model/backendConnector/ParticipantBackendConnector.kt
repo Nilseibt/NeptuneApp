@@ -51,11 +51,13 @@ class ParticipantBackendConnector(
 
 
 
-    fun participantLeaveSession() {
+    fun participantLeaveSession(onCallbackFinished: () -> Unit = {}) {
         val postData = JSONObject()
         postData.put("participantDeviceID", deviceId)
 
-        sendRequest("participantLeaveSession", postData)
+        sendRequest("participantLeaveSession", postData){
+            onCallbackFinished()
+        }
     }
 
 }

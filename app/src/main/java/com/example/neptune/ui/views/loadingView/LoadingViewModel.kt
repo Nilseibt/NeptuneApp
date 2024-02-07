@@ -26,7 +26,10 @@ class LoadingViewModel(
                         if (sessionCode.toIntOrNull()?.let { true } == true
                             && sessionCode.length == 6
                         ) {
-                            NeptuneApp.model.tryToJoinSession(sessionCode.toInt(), navController)
+                            NeptuneApp.model.tryToJoinSession(
+                                sessionCode.toInt(),
+                                navController
+                            )
                         }
                     }
                 }
