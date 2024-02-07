@@ -14,6 +14,9 @@ interface UpvoteDataDao{
     @Delete
     suspend fun delete(upvoteData: UpvoteData)
 
+    @Query("DELETE FROM UPVOTE_DATA WHERE session_id = :sessionId AND timestamp = :timestamp")
+    suspend fun deleteAllTracksWithSession(sessionId: Int, timestamp: Int)
+
     @Query("SELECT COUNT() FROM UPVOTE_DATA WHERE session_id = :sessionId AND timestamp = :timestamp AND track_id = :trackId")
     suspend fun isUpvotedInSession(sessionId: Int, timestamp: Int, trackId: String): Int
 

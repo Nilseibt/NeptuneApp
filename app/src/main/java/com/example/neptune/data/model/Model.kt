@@ -29,6 +29,8 @@ import com.example.neptune.data.room.app.AppDataDatabase
 import com.example.neptune.data.room.streaming.StreamingConnectionDataDatabase
 import com.example.neptune.data.room.upvotes.UpvoteDataDatabase
 import com.example.neptune.ui.views.ViewsCollection
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class Model() {
 
@@ -272,6 +274,21 @@ class Model() {
 
             sessionBuilder.reset()
             navController.navigate(ViewsCollection.VOTE_VIEW.name)
+        }
+    }
+
+
+    suspend fun deleteIrrelevantUpvotes(){
+        val backendConnectorWithoutDeviceId = BackendConnector("", backendConnectorVolleyQueue)
+        val sessionsWithUpvotes = upvoteDatabase.getStoredSessions()
+        sessionsWithUpvotes.forEach { session ->
+            backendConnectorWithoutDeviceId.isSessionOpen(session.first, session.second){isOpen ->
+                if(!isOpen){
+                    GlobalScope.launch {
+                        upvoteDatabase.removeAllTracksWithSession(session.first,session.second)
+                    }
+                }
+            }
         }
     }
 

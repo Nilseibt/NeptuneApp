@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import com.example.neptune.MainActivity
 import com.example.neptune.NeptuneApp
 import com.example.neptune.data.model.appState.AppState
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class LoadingViewModel(
@@ -30,6 +31,9 @@ class LoadingViewModel(
                     }
                 }
             }
+        }
+        GlobalScope.launch {
+            NeptuneApp.model.deleteIrrelevantUpvotes()
         }
     }
 

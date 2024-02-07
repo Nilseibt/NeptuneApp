@@ -16,6 +16,10 @@ class UpvoteDatabase(
         upvoteDataDao.delete(UpvoteData(session.id, session.timestamp, trackId))
     }
 
+    suspend fun removeAllTracksWithSession(sessionId: Int, sessionTimestamp: Int){
+        upvoteDataDao.deleteAllTracksWithSession(sessionId, sessionTimestamp)
+    }
+
     suspend fun getStoredSessions(): List<Pair<Int, Int>> {
         val storedSessionsAsLists = upvoteDataDao.getStoredSessions()
         val storedSessionsAsPairs = mutableListOf<Pair<Int, Int>>()
