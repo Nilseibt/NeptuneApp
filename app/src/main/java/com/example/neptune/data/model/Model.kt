@@ -105,7 +105,7 @@ class Model() {
     var user: User? = null
 
 
-    fun recreateUserSessionStateInitially(navController: NavController, onUserNotInSession: () -> Unit) {
+    fun recreateUserSessionStateInitially(navController: NavController, joinLinkUsed: Boolean, onUserNotInSession: () -> Unit) {
         backendConnector = BackendConnector(appState.getDeviceId(), backendConnectorVolleyQueue)
         backendConnector!!.getUserSessionState { userSessionState, sessionId, timestamp, mode, artists, genres ->
             callbackRecreateUserSessionState(
@@ -115,7 +115,8 @@ class Model() {
                 mode,
                 artists,
                 genres,
-                navController
+                navController,
+                joinLinkUsed
             )
             if(user == null) {
                 onUserNotInSession()
@@ -130,7 +131,8 @@ class Model() {
         mode: String,
         artists: List<String>,
         genres: List<String>,
-        navController: NavController
+        navController: NavController,
+        joinLinkUsed: Boolean
     ) {
         if (userSessionState == "HOST") {
             backendConnector =
@@ -198,7 +200,10 @@ class Model() {
             navController.navigate(ViewsCollection.VOTE_VIEW.name)
         }
         if (userSessionState == "NONE") {
-            navController.navigate(ViewsCollection.START_VIEW.name)
+            if(!joinLinkUsed) {
+                navController.navigate(ViewsCollection.START_VIEW.name)
+            }
+            user = null
         }
     }
 
