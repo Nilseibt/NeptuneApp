@@ -64,7 +64,11 @@ fun SearchView(navController: NavController) {
                 description = searchViewModel.getTopBarDescription()
             )
 
-            Column(modifier = Modifier.fillMaxSize().padding(5.dp)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(10.dp)
+            ) {
 
                 Row(
                     modifier = Modifier

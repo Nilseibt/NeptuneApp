@@ -14,6 +14,11 @@ val Pink40 = Color(0xFF7D5260)
 val BlueMain = Color(0xff10165a)
 val WhiteSecondary = Color(0xffF4F4FB)
 val DarkBlueAccent = Color(0xff0A2938)
+val ButtonBlue = Color(0xff363a96)
+
+val PrimaryBackgroundColor = Color(0xff161a23)
+val PrimaryColor = Color(0xff101123)
+val White = Color(0xffeaefff)
 
 
 
