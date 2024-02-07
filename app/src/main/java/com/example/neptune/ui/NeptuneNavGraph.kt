@@ -1,6 +1,6 @@
 package com.example.neptune.ui
 
-import android.content.Intent
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -14,18 +14,19 @@ fun NeptuneNavGraph(activity: MainActivity) {
 
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = ViewsCollection.START_VIEW.name) {
+    NavHost(navController = navController, startDestination = ViewsCollection.LOADING_VIEW.name) {
 
-        composable(ViewsCollection.NAV_VIEW.name) {
-            ViewsCollection.NAV_VIEW.Composable(navController)
+        composable(
+            ViewsCollection.LOADING_VIEW.name,
+            deepLinks = listOf(navDeepLink {
+                uriPattern = "https://nep-tune.de/join/{argument}"
+            }),
+        ) { backStackEntry ->
+            val argument = backStackEntry.arguments?.getString("argument")
+            ViewsCollection.LOADING_VIEW.ComposableWithActivityAndArgument(navController, activity, argument)
         }
 
-        composable(ViewsCollection.START_VIEW.name,
-            deepLinks = listOf(navDeepLink {
-                uriPattern = "http://nep-tune.de"
-                action = Intent.ACTION_VIEW
-            })
-        ) {
+        composable(ViewsCollection.START_VIEW.name) {
             ViewsCollection.START_VIEW.ComposableWithActivity(navController, activity)
         }
 

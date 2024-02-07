@@ -8,5 +8,7 @@ data class View(
     val name: String, // is there because the navHost only works with strings
     val Composable: @Composable (navController: NavController) -> Unit = {},
     val ComposableWithActivity: @Composable (navController: NavController, activity: MainActivity)
-    -> Unit = { navController: NavController, mainActivity: MainActivity -> }
+    -> Unit = { navController: NavController, mainActivity: MainActivity -> },
+    val ComposableWithActivityAndArgument: @Composable (navController: NavController, activity: MainActivity, argument: String?)
+    -> Unit = { navController: NavController, activity: MainActivity, argument: String? -> }
 )

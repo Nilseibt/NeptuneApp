@@ -29,16 +29,6 @@ class StartViewModel(
     private var leaveDialogShown by mutableStateOf(false)
 
 
-    init {
-        viewModelScope.launch {
-            appState.generateOrRetrieveDeviceId()
-            appState.streamingEstablisher.restoreConnectionIfPossible {
-                NeptuneApp.model.recreateUserSessionStateInitially(navController)
-            }
-        }
-    }
-
-
     fun createSessionPossible(): Boolean {
         return getStreamingLevel().value == StreamingLevel.PREMIUM
     }
