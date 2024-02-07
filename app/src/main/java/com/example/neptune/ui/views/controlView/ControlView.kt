@@ -166,7 +166,7 @@ fun ControlView(navController: NavController) {
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1f),
+                        .weight(2f),
                     onClick = { controlViewModel.onSearchTracks(navController) },
                     shape = RoundedCornerShape(10.dp)
                 ) {
