@@ -1,6 +1,5 @@
 package com.example.neptune.ui
 
-import android.content.Intent
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
