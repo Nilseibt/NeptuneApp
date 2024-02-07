@@ -20,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -94,7 +95,7 @@ fun SessionEntitiesSearchView(navController: NavController) {
                             sessionEntitiesSearchViewModel.getEntitiesSearchList().forEach {
 
                                 val isSelected = sessionEntitiesSearchViewModel.isEntitySelected(it)
-                                FilledTonalButton(onClick = {
+                                ElevatedButton(onClick = {
                                     sessionEntitiesSearchViewModel.onToggleSelect(it)
                                 }) {
                                     Text(text = it)
