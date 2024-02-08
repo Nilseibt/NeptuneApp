@@ -24,6 +24,7 @@
     <!--The default strings for the joinView-->
     <string name="enter_six_digit_code">6-digit code</string>
     <string name="scan_qr_code">Scan QR-Code</string>
+    <string name="invalid_session_code">Invalid Session Code</string>
 
     <!--The default strings for the ModeSelectView-->
     <string name="general_mode_name">General Mode</string>
@@ -78,5 +79,6 @@
     <string name="total_upvote_text">Total number of upvotes:</string>
     <string name="total_participant_text">Total number of participants:</string>
     <string name="session_duration_text">Duration of the session:</string>
+
 
 </resources>

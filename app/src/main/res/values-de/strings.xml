@@ -18,6 +18,7 @@
     <!--The German strings for the joinView-->
     <string name="scan_qr_code">QR-Code scannen</string>
     <string name="enter_six_digit_code">6-stelliger Beitrittscode</string>
+    <string name="invalid_session_code">Invalid Session Code</string>
 
     <!--The German strings for the ModeSelectView-->
     <string name="general_mode_name">General Modus</string>
