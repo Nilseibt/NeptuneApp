@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -117,21 +115,6 @@ fun SearchView(navController: NavController) {
                         modifier = Modifier.weight(7f),
                         label = { Text(text = stringResource(id = R.string.search_text)) }
                     )
-
-                    //TODO take the search button out
-                    if(searchViewModel.isSearchButtonActive() && false) {
-                        IconButton(
-                            onClick = { searchViewModel.onSearchButtonClick() },
-                            enabled = searchViewModel.isSearchButtonActive(),
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.Search,
-                                contentDescription = "",
-                                tint = MaterialTheme.colorScheme.onBackground
-                            )
-                        }
-                    }
 
                 }
 

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
@@ -82,7 +83,7 @@ fun TopBar(onBack: () -> Unit) {
             contentDescription = "",
             modifier = Modifier
                 .weight(1f)
-                .padding(10.dp)
+                .padding(20.dp)
         )
 
     }
@@ -95,7 +96,7 @@ fun SessionInfoBar(onStatistics: () -> Unit, onInfo: () -> Unit, description: Se
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.secondary)
             .fillMaxWidth()
-            .height(30.dp)
+            .height(40.dp)
     ) {
 
         // This is a guard for prohibiting double clicking the info button
@@ -122,7 +123,8 @@ fun SessionInfoBar(onStatistics: () -> Unit, onInfo: () -> Unit, description: Se
             Icon(
                 painter = painterResource(id = R.drawable.baseline_groups_24),
                 contentDescription = "",
-                tint = MaterialTheme.colorScheme.onSecondary
+                tint = MaterialTheme.colorScheme.onSecondary,
+                modifier = Modifier.size(34.dp)
             )
         }
 
@@ -167,7 +169,8 @@ fun SessionInfoBar(onStatistics: () -> Unit, onInfo: () -> Unit, description: Se
             Icon(
                 painter = painterResource(id = R.drawable.baseline_bar_chart_24),
                 contentDescription = "",
-                tint = MaterialTheme.colorScheme.onSecondary
+                tint = MaterialTheme.colorScheme.onSecondary,
+                modifier = Modifier.size(34.dp)
             )
         }
 
