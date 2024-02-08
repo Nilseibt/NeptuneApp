@@ -27,6 +27,8 @@ class Host(
     private val userDragPlayProgress = mutableFloatStateOf(0f)
     private val isUserDraggingProgress = mutableStateOf(false)
 
+    private var streamingHint = mutableStateOf("")
+
     fun addTrackToQueue(track: Track) {
         if (hasSessionTrack(track.id)) {
             val sessionTrack = getSessionTrack(track.id)
@@ -56,62 +58,97 @@ class Host(
     }
 
     fun skip() {
-        val playedTrack = queue.value.popFirstTrack()
-        (backendConnector as HostBackendConnector).playedTrack(playedTrack)
-        voteList.value.removeTrack(playedTrack)
-        if (!queue.value.isEmpty()) {
-            (streamingConnector as HostStreamingConnector).addTrackToStreamingQueue(
-                queue.value.trackAt(0)
-            ) {
-                (streamingConnector as HostStreamingConnector).skipTrack()
+        (streamingConnector as HostStreamingConnector).checkIfPlayerDeviceAvailable(
+            {
+                val playedTrack = queue.value.popFirstTrack()
+                (backendConnector as HostBackendConnector).playedTrack(playedTrack)
+                voteList.value.removeTrack(playedTrack)
+                if (!queue.value.isEmpty()) {
+                    (streamingConnector as HostStreamingConnector).addTrackToStreamingQueue(
+                        queue.value.trackAt(0)
+                    ) {
+                        (streamingConnector as HostStreamingConnector).skipTrack()
+                    }
+                } else if (!voteList.value.isEmpty()) {
+                    addTrackToQueue(voteList.value.trackAt(0))
+                    (streamingConnector as HostStreamingConnector).addTrackToStreamingQueue(
+                        queue.value.trackAt(0)
+                    ) {
+                        (streamingConnector as HostStreamingConnector).skipTrack()
+                    }
+                }
+            },
+            {
+                streamingHint.value =
+                    "Please press play in the spotify app!"
             }
-        } else if (!voteList.value.isEmpty()) {
-            addTrackToQueue(voteList.value.trackAt(0))
-            (streamingConnector as HostStreamingConnector).addTrackToStreamingQueue(
-                queue.value.trackAt(0)
-            ) {
-                (streamingConnector as HostStreamingConnector).skipTrack()
-            }
-        }
+        )
     }
 
     private fun refillStreamingQueueIfNeeded() {
         if ((streamingConnector as HostStreamingConnector).getPlaybackState().value == PlaybackState.INITIAL) {
             if (!queue.value.isEmpty()) {
-                (streamingConnector as HostStreamingConnector).playTrack(
-                    queue.value.trackAt(0)
+                (streamingConnector as HostStreamingConnector).checkIfPlayerDeviceAvailable(
+                    {
+                        (streamingConnector as HostStreamingConnector).playTrack(
+                            queue.value.trackAt(0)
+                        )
+                    },
+                    {
+                        streamingHint.value =
+                            "Please open the Spotify App and start playing any track!"
+                    }
                 )
             } else if (!voteList.value.isEmpty()) {
                 addTrackToQueue(voteList.value.trackAt(0))
-                (streamingConnector as HostStreamingConnector).playTrack(
-                    queue.value.trackAt(0)
+                (streamingConnector as HostStreamingConnector).checkIfPlayerDeviceAvailable(
+                    {
+                        (streamingConnector as HostStreamingConnector).playTrack(
+                            queue.value.trackAt(0)
+                        )
+                    },
+                    {
+                        streamingHint.value =
+                            "Please open the Spotify App and start playing any track!"
+                    }
                 )
             }
         } else {
-            (streamingConnector as HostStreamingConnector).refillQueueIfNeeded({
-                if (!queue.value.isEmpty()) {
-                    val playedTrack = queue.value.popFirstTrack()
-                    (backendConnector as HostBackendConnector).playedTrack(playedTrack)
-                    voteList.value.removeTrack(playedTrack)
-                }
-                if (!queue.value.isEmpty()) {
-                    (streamingConnector as HostStreamingConnector).addTrackToStreamingQueue(
-                        queue.value.trackAt(0)
-                    )
-                } else if (!voteList.value.isEmpty()) {
-                    addTrackToQueue(voteList.value.trackAt(0))
-                    (streamingConnector as HostStreamingConnector).addTrackToStreamingQueue(
-                        queue.value.trackAt(0)
-                    )
-                } else {
+            (streamingConnector as HostStreamingConnector).checkIfPlayerDeviceAvailable(
+                {
+                    streamingHint.value = ""
+                    (streamingConnector as HostStreamingConnector).refillQueueIfNeeded({
+                        if (!queue.value.isEmpty()) {
+                            val playedTrack = queue.value.popFirstTrack()
+                            (backendConnector as HostBackendConnector).playedTrack(playedTrack)
+                            voteList.value.removeTrack(playedTrack)
+                        }
+                        if (!queue.value.isEmpty()) {
+                            (streamingConnector as HostStreamingConnector).addTrackToStreamingQueue(
+                                queue.value.trackAt(0)
+                            )
+                        } else if (!voteList.value.isEmpty()) {
+                            addTrackToQueue(voteList.value.trackAt(0))
+                            (streamingConnector as HostStreamingConnector).addTrackToStreamingQueue(
+                                queue.value.trackAt(0)
+                            )
+                        } else {
+                            (streamingConnector as HostStreamingConnector).setPlaybackState(
+                                PlaybackState.INITIAL
+                            )
+                        }
+                    }
+                    ) { progress ->
+                        actualTrackPlayProgress.value = progress
+
+                    }
+                },
+                {
                     (streamingConnector as HostStreamingConnector).setPlaybackState(
-                        PlaybackState.INITIAL
+                        PlaybackState.PAUSED
                     )
                 }
-            },
-                { progress ->
-                    actualTrackPlayProgress.value = progress
-                })
+            )
         }
     }
 
@@ -120,7 +157,14 @@ class Host(
     }
 
     fun resumePlay() {
-        (streamingConnector as HostStreamingConnector).resumePlay()
+        (streamingConnector as HostStreamingConnector).checkIfPlayerDeviceAvailable(
+            {
+                (streamingConnector as HostStreamingConnector).resumePlay()
+            },
+            {
+                streamingHint.value = "Please press play in the spotify app!"
+            }
+        )
     }
 
     fun dragPlayProgress(progress: Float) {
@@ -129,10 +173,18 @@ class Host(
     }
 
     fun finishDragPlayProgress() {
-        (streamingConnector as HostStreamingConnector).setPlayProgress(userDragPlayProgress.value){
-            actualTrackPlayProgress.value = userDragPlayProgress.value
-            isUserDraggingProgress.value = false
-        }
+        (streamingConnector as HostStreamingConnector).checkIfPlayerDeviceAvailable(
+            {
+                (streamingConnector as HostStreamingConnector).setPlayProgress(userDragPlayProgress.value) {
+                    actualTrackPlayProgress.value = userDragPlayProgress.value
+                    isUserDraggingProgress.value = false
+                }
+            },
+            {
+                isUserDraggingProgress.value = false
+                streamingHint.value = "Please press play in the spotify app!"
+            }
+        )
     }
 
     fun getPlayProgress(): Float {
@@ -167,13 +219,6 @@ class Host(
         }
     }
 
-    /*fun removeTrackFromBlockList(track: Track) {
-        blockList.value.removeTrack(track)
-        val hostBackendConnector = backendConnector as HostBackendConnector
-        hostBackendConnector.setBlockTrack(track, blocked = false)
-
-    }*/ //TODO probably not needed
-
     override fun leaveSession() {
         val hostBackendConnector = backendConnector as HostBackendConnector
         hostBackendConnector.deleteSession()
@@ -190,6 +235,10 @@ class Host(
             isVoteListTrackInQueue = (queue.value.trackAt(0).id == voteList.value.trackAt(0).id)
         }
         return !queue.value.isEmpty() && !isVoteListTrackInQueue
+    }
+
+    fun getStreamingHint(): MutableState<String> {
+        return streamingHint
     }
 
 }
