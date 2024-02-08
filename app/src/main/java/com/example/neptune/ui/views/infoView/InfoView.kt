@@ -20,6 +20,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -34,6 +39,7 @@ import com.example.neptune.data.model.session.SessionType
 import com.example.neptune.ui.commons.TopBar
 import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
+import kotlinx.coroutines.delay
 
 /**
  * The composable for the infoView.
@@ -46,7 +52,7 @@ fun InfoView(navController: NavController, activity: MainActivity) {
     val infoViewModel = viewModel<InfoViewModel>(
         factory = viewModelFactory {
             InfoViewModel(
-                NeptuneApp.model.user!!,
+                NeptuneApp.model.appState.user!!,
                 activity
             )
         }
@@ -285,8 +291,23 @@ private fun SessionCodeAsText(infoViewModel: InfoViewModel) {
 @Composable
 private fun SessionCodeShareButton(infoViewModel: InfoViewModel) {
 
+    // This is a guard for prohibiting double clicking the share button
+    var shareButtonEnabled by remember { mutableStateOf(true) }
+    LaunchedEffect(shareButtonEnabled) {
+        if (shareButtonEnabled) {
+            return@LaunchedEffect
+        } else {
+            delay(500)
+            shareButtonEnabled = true
+        }
+    }
     Button(
-        onClick = { infoViewModel.onShareLink() },
+        onClick = {
+            if (shareButtonEnabled) {
+                shareButtonEnabled = false
+                infoViewModel.onShareLink()
+            }
+        },
         modifier = Modifier.fillMaxWidth()
     ) {
 

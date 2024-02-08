@@ -53,7 +53,7 @@ fun ControlView(navController: NavController) {
     val controlViewModel = viewModel<ControlViewModel>(
         factory = viewModelFactory {
             ControlViewModel(
-                NeptuneApp.model.user as Host
+                NeptuneApp.model.appState.user as Host
             )
         }
     )

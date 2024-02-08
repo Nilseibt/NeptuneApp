@@ -67,7 +67,7 @@ fun SessionEntitiesSearchView(navController: NavController) {
                     verticalArrangement = Arrangement.SpaceAround,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = determineSearchText(sessionEntitiesSearchViewModel))
+                    Text(text = sessionEntitiesSearchViewModel.getSearchDescription())
                     Box (modifier = Modifier.weight(1f)) {
                         TextField(
                             value = sessionEntitiesSearchViewModel.getSearchInput(),
@@ -141,17 +141,5 @@ fun SessionEntitiesSearchView(navController: NavController) {
                 }
             }
         }
-    }
-}
-
-//TODO: Change method mit entsprechender Getter-Methode vom ViewModel, diese muss dann aber ggf.
-// public gemacht werden
-fun determineSearchText(sessionEntitiesSearchViewModel: SessionEntitiesSearchViewModel) : String{
-    //val sessionType : SessionType =sessionEntitiesSearchViewModel.getSessionType()
-    val sessionType = SessionType.ARTIST
-    return if (sessionType == SessionType.ARTIST) {
-        context.getString(R.string.artist_search)
-    } else {
-        context.getString(R.string.genre_search)
     }
 }

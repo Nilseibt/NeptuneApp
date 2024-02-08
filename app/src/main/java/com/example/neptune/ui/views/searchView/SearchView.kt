@@ -45,7 +45,7 @@ fun SearchView(navController: NavController) {
     val searchViewModel = viewModel<SearchViewModel>(
         factory = viewModelFactory {
             SearchViewModel(
-                NeptuneApp.model.user!!
+                NeptuneApp.model.appState.user!!
             )
         }
     )

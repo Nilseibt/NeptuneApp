@@ -124,7 +124,7 @@ fun NeptuneNavGraph(activity: MainActivity) {
         block = {
             while (true) {
                 delay(20*60*1000)
-                NeptuneApp.model.refreshSpotifyConnection()
+                NeptuneApp.model.appState.refreshSpotifyConnection()
             }
         }
     )

@@ -53,7 +53,6 @@ open class User(
         if (hasSessionTrack(trackId)) {
             return sessionTracks[trackId]!!
         } else {
-            //TODO ist das sinnvoll?
             throw Exception("Track is not a session track, check first with hasSessionTrack")
         }
     }

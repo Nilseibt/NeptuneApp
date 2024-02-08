@@ -45,7 +45,7 @@ fun VoteView(navController: NavController) {
     val voteViewModel = viewModel<VoteViewModel>(
         factory = viewModelFactory {
             VoteViewModel(
-                NeptuneApp.model.user!!
+                NeptuneApp.model.appState.user!!
             )
         }
     )

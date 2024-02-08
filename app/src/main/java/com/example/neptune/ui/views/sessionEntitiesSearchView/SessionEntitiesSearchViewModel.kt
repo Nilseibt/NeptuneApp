@@ -7,6 +7,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.neptune.NeptuneApp
+import com.example.neptune.R
 import com.example.neptune.data.model.appState.AppState
 import com.example.neptune.data.model.session.SessionType
 
@@ -53,6 +55,15 @@ class SessionEntitiesSearchViewModel(
     fun isEntitySelected(entityName : String) : Boolean {
         return appState.sessionBuilder.isEntitySelected(entityName)
     }
+
+    fun getSearchDescription(): String{
+        return if (getSessionType() == SessionType.ARTIST) {
+            NeptuneApp.context.getString(R.string.artist_search)
+        } else {
+            NeptuneApp.context.getString(R.string.genre_search)
+        }
+    }
+
 
     private fun artistSearchCallback(artistList: List<String>) {
         entitiesSearchList = artistList.toMutableStateList()

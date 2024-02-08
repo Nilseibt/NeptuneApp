@@ -106,7 +106,7 @@ class ModeSettingsViewModel(
             appState.sessionBuilder.setPlaylistTracks(playlistTracks)
         }
         appState.sessionBuilder.setTrackCooldown(sliderPositionToCooldownMinutes(sliderPosition))
-        NeptuneApp.model.createNewSessionAndJoin(navController) //TODO check if that is the best option to do that
+        NeptuneApp.model.appState.createNewSessionAndJoin(navController)
     }
 
     fun onBack(navController: NavController) {

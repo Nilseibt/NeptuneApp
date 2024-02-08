@@ -23,12 +23,12 @@ class LoadingViewModel(
             appState.generateOrRetrieveDeviceId()
             appState.streamingEstablisher.restoreConnectionIfPossible {
                 val joinLinkUsed = (sessionCode != null)
-                NeptuneApp.model.recreateUserSessionStateInitially(navController, joinLinkUsed) {
+                NeptuneApp.model.appState.recreateUserSessionStateInitially(navController, joinLinkUsed) {
                     if(joinLinkUsed) {
                         if (sessionCode!!.toIntOrNull()?.let { true } == true
                             && sessionCode.length == 6
                         ) {
-                            NeptuneApp.model.tryToJoinSession(
+                            NeptuneApp.model.appState.tryToJoinSession(
                                 sessionCode.toInt(),
                                 navController
                             ){
@@ -40,7 +40,7 @@ class LoadingViewModel(
             }
         }
         GlobalScope.launch {
-            NeptuneApp.model.deleteIrrelevantUpvotes()
+            NeptuneApp.model.appState.deleteIrrelevantUpvotes()
         }
     }
 

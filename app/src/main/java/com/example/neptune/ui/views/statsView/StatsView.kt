@@ -34,7 +34,7 @@ fun StatsView(navController: NavController) {
     val statsViewModel = viewModel<StatsViewModel>(
         factory = viewModelFactory {
             StatsViewModel(
-                NeptuneApp.model.user!!
+                NeptuneApp.model.appState.user!!
             )
         }
     )

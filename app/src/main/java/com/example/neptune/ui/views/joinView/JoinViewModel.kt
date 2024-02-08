@@ -36,16 +36,16 @@ class JoinViewModel() : ViewModel() {
     }
 
     fun onConfirmSessionCode(navController: NavController) {
-        NeptuneApp.model.tryToJoinSession(sessionCodeInput.toInt(), navController) {
+        NeptuneApp.model.appState.tryToJoinSession(sessionCodeInput.toInt(), navController) {
             lastCodeInvalid = true
         }
     }
 
     fun onQRCodeDetected(navController: NavController, qrCodeText: String) {
-        val pattern = Regex("""http://nep-tune.de/join/(\d{6})""")
-        val matchResult = pattern.find(qrCodeText)
-        if (matchResult != null) {
-            NeptuneApp.model.tryToJoinSession(matchResult.groupValues[1].toInt(), navController) {
+        val shareLinkPattern = Regex("""http://nep-tune.de/join/(\d{6})""")
+        val sessionCodeMatchResult = shareLinkPattern.find(qrCodeText)
+        if (sessionCodeMatchResult != null) {
+            NeptuneApp.model.appState.tryToJoinSession(sessionCodeMatchResult.groupValues[1].toInt(), navController) {
                 lastCodeInvalid = true
             }
         }
