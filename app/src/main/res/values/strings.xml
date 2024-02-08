@@ -9,7 +9,7 @@
 
     <!--Strings used in multiple Views, e.g. for confirmation buttons-->
     <string name="confirmation_button_text">Confirm</string>
-    <string name="track_search_button_text">Search track</string>
+    <string name="track_search_button_text">Search tracks</string>
     <string name="confirmation_text">Yes</string>
     <string name="decline_text">No</string>
 
@@ -48,6 +48,10 @@
     <string name="lock_track_text">Lock track</string>
     <string name="add_track_to_queue_text">Add to queue</string>
     <string name="remove_track_from_queue_text">Remove from queue</string>
+
+    <!--The default strings for Host Streaming Hints-->
+    <string name="press_play_in_app">Please press play in the Spotify app!</string>
+    <string name="play_any_track_in_app">Please open the Spotify App and play any track there!</string>
 
     <!--The default strings for the VoteView-->
     <string name="leave_session_text">Leave session</string>

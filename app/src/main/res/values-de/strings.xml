@@ -3,7 +3,7 @@
 
     <!--German Strings used in multiple Views, e.g. for confirmation buttons-->
     <string name="confirmation_button_text">Bestätigen</string>
-    <string name="track_search_button_text">Track suchen</string>
+    <string name="track_search_button_text">Tracks suchen</string>
     <string name="confirmation_text">Ja</string>
     <string name="decline_text">Nein</string>
 
@@ -42,6 +42,10 @@
     <string name="lock_track_text">Track sperren</string>
     <string name="add_track_to_queue_text">Zur Queue hinzufügen</string>
     <string name="remove_track_from_queue_text">Aus Queue entfernen</string>
+
+    <!--The German strings for Host Streaming Hints-->
+    <string name="press_play_in_app">Bitte drücke Play in der Spotify App!</string>
+    <string name="play_any_track_in_app">Bitte öffne die Spotify App und spiele dort irgendeinen Track ab!</string>
 
     <!--The German strings for the VoteView-->
     <string name="leave_session_text">Session verlassen</string>

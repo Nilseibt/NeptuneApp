@@ -14,16 +14,34 @@ import com.example.neptune.data.model.track.VoteList
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+/**
+ * Represents a user within a session with functionalities such as upvoting, searching, and managing track lists.
+ * @param session The session associated with the user.
+ * @param backendConnector The backend connector for the user.
+ * @param upvoteDatabase The upvote database for the user.
+ */
 open class User(
     val session: Session,
     val backendConnector: BackendConnector,
     private val upvoteDatabase: UpvoteDatabase
 ) {
 
-    var voteList = mutableStateOf(VoteList(mutableStateListOf<MutableState<Track>>()))
-    var searchList = mutableStateOf(TrackList(mutableStateListOf<MutableState<Track>>()))
-    var blockList = mutableStateOf(TrackList(mutableStateListOf<MutableState<Track>>()))
-    var cooldownList = mutableStateOf(TrackList(mutableStateListOf<MutableState<Track>>()))
+    /**
+     * The list of tracks that have been upvoted by users in the session.
+     */
+    var voteList = mutableStateOf(VoteList(mutableStateListOf()))
+    /**
+     * The list of tracks obtained from a search operation.
+     */
+    var searchList = mutableStateOf(TrackList(mutableStateListOf()))
+    /**
+     * The list of tracks that have been blocked by the host.
+     */
+    var blockList = mutableStateOf(TrackList(mutableStateListOf()))
+    /**
+     * The list of tracks that are on a cooldown period.
+     */
+    var cooldownList = mutableStateOf(TrackList(mutableStateListOf()))
 
 
     private var sessionTracks = HashMap<String, MutableState<Track>>()
@@ -37,6 +55,10 @@ open class User(
         }
     }
 
+    /**
+     * Adds or updates the specified track within the session.
+     * @param track The track to be added or updated.
+     */
     protected fun addOrUpdateSessionTrack(track: Track) {
         if (hasSessionTrack(track.id)) {
             getSessionTrack(track.id).value = track
@@ -45,10 +67,21 @@ open class User(
         }
     }
 
+    /**
+     * Checks if the specified track is within the session.
+     * @param trackId The ID of the track to check.
+     * @return True if the track is within the session, false otherwise.
+     */
     protected fun hasSessionTrack(trackId: String): Boolean {
         return sessionTracks.containsKey(trackId)
     }
 
+    /**
+     * Retrieves the track with the specified ID from the session.
+     * @param trackId The ID of the track to retrieve.
+     * @return The mutable state of the track.
+     * @throws Exception if the track is not found in the session.
+     */
     protected fun getSessionTrack(trackId: String): MutableState<Track> {
         if (hasSessionTrack(trackId)) {
             return sessionTracks[trackId]!!
@@ -57,6 +90,10 @@ open class User(
         }
     }
 
+    /**
+     * Toggles the upvote status of the specified track.
+     * @param track The track to toggle upvote status.
+     */
     fun toggleUpvote(track: Track) {
         if (hasSessionTrack(track.id)) {
             val sessionTrack = getSessionTrack(track.id)
@@ -98,11 +135,19 @@ open class User(
         }
     }
 
+    /**
+     * Searches for tracks based on the provided input query.
+     * @param input The search query.
+     */
     open fun search(input: String) {
         var foundTracks = voteList.value.search(input)
         searchList.value = TrackList(foundTracks.toMutableStateList())
     }
 
+    /**
+     * Requests statistics from the backend and invokes the provided callback with the statistics.
+     * @param callback The callback function to handle the statistics.
+     */
     fun requestStatistics(
         callback: (
         mostUpvotedSong: String,
@@ -117,30 +162,17 @@ open class User(
         backendConnector.getStatistics(callback)
     }
 
-    protected fun filterSearchResults(searchResult: MutableList<Track>): MutableList<Track> {
-        //TODO right now unused
-        val output: MutableList<Track> = ArrayList<Track>()
-        for (track in searchResult) {
-            if (!blockList.value.containsTrack(track) && !cooldownList.value.containsTrack(track) &&
-                session.validateTrack(track)
-            ) {
-                output.add(track)
-            }
-        }
-        return output
 
-    }
-
-    open fun leaveSession() {
-        //TODO right now unused
-        val particantBackendConnector = backendConnector as ParticipantBackendConnector
-        particantBackendConnector.participantLeaveSession()
-    }
-
+    /**
+     * Synchronizes the user's state with the backend by updating tracks and track lists.
+     */
     open fun syncState() {
         syncTracksFromBackend()
     }
 
+    /**
+     * Syncs tracks from the backend and updates track lists accordingly.
+     */
     protected fun syncTracksFromBackend() {
         backendConnector.getAllTrackData() { listOfTracks ->
             if(session.hasAddedTrack && listOfTracks.isEmpty()){
