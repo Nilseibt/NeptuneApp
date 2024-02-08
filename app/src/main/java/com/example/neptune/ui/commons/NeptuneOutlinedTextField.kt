@@ -9,15 +9,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import com.example.neptune.ui.theme.White
 import com.example.neptune.ui.views.joinView.JoinViewModel
 import com.example.neptune.ui.views.modeSettingsView.ModeSettingsViewModel
-import com.example.neptune.ui.views.searchView.SearchViewModel
-import com.example.neptune.ui.views.sessionEntitiesSearchView.SessionEntitiesSearchViewModel
 
+/**
+ * The Composable for an OutlinedTextField used in the JoinView.
+ *
+ * @param joinViewModel The ViewModel of the JoinView the Composable is used in
+ * @param labelText The text to be displayed as the TextField's label, depending on the situation
+ * @param modifier The modifier used for the TextField
+ * @param focusedBorderColor The Color of the TextField's border when the user interacts with it
+ * @param focusedLabelColor The Color of the TextField's label when the user interacts with it
+ * @param textStyle Enables to set the TextColor for the text entered in the TextField
+ */
 @Composable
 fun NeptuneOutlinedTextField(
     joinViewModel: JoinViewModel,
@@ -27,7 +33,6 @@ fun NeptuneOutlinedTextField(
     unfocusedBorderColor: Color = Color.Gray,
     focusedLabelColor: Color = White,
     textStyle: TextStyle = TextStyle(color = White),
-    cursorColor: Color = White
 ) {
     OutlinedTextField(
         value = joinViewModel.getCodeInput(),
@@ -38,12 +43,22 @@ fun NeptuneOutlinedTextField(
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = focusedBorderColor,
             unfocusedBorderColor = unfocusedBorderColor,
-            cursorColor = cursorColor
+            cursorColor = White
         ),
         textStyle = textStyle
     )
 }
 
+/**
+ * The Composable for an OutlinedTextField used in the JoinView.
+ *
+ * @param modeSettingsViewModel The ViewModel of the JoinView the Composable is used in
+ * @param labelText The text to be displayed as the TextField's label, depending on the situation
+ * @param modifier The modifier used for the TextField
+ * @param focusedBorderColor The Color of the TextField's border when the user interacts with it
+ * @param focusedLabelColor The Color of the TextField's label when the user interacts with it
+ * @param textStyle Enables to set the TextColor for the text entered in the TextField
+ */
 @Composable
 fun NeptuneOutlinedTextField(
     modeSettingsViewModel: ModeSettingsViewModel,
@@ -52,8 +67,7 @@ fun NeptuneOutlinedTextField(
     focusedBorderColor: Color = White,
     unfocusedBorderColor: Color = Color.Gray,
     focusedLabelColor: Color = White,
-    textStyle: TextStyle = TextStyle(color = White),
-    cursorColor: Color = White
+    textStyle: TextStyle = TextStyle(color = White)
 ) {
     OutlinedTextField(
         value = modeSettingsViewModel.getCurrentPlaylistLinkInput(),
@@ -63,32 +77,7 @@ fun NeptuneOutlinedTextField(
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = focusedBorderColor,
             unfocusedBorderColor = unfocusedBorderColor,
-            cursorColor = cursorColor
-        ),
-        textStyle = textStyle
-    )
-}
-
-@Composable
-fun NeptuneOutlinedTextField(
-    sessionEntitiesSearchViewModel: SessionEntitiesSearchViewModel,
-    labelText: String,
-    modifier: Modifier = Modifier,
-    focusedBorderColor: Color = White,
-    unfocusedBorderColor: Color = Color.Gray,
-    focusedLabelColor: Color = White,
-    textStyle: TextStyle = TextStyle(color = White),
-    cursorColor: Color = White
-) {
-    OutlinedTextField(
-        value = sessionEntitiesSearchViewModel.getSearchInput(),
-        onValueChange = { sessionEntitiesSearchViewModel.onSearchInputChange(it) },
-        modifier = modifier.fillMaxWidth().padding(end = 8.dp),
-        label = { Text(text = labelText, color = focusedLabelColor) },
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = focusedBorderColor,
-            unfocusedBorderColor = unfocusedBorderColor,
-            cursorColor = cursorColor
+            cursorColor = White
         ),
         textStyle = textStyle
     )

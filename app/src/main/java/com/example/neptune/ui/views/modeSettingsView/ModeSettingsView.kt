@@ -43,6 +43,11 @@ import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
 import kotlinx.coroutines.delay
 
+/**
+ * The composable for the ModeSettingsView.
+ *
+ * @param navController The NavController needed to navigate to another view.
+ */
 @Composable
 fun ModeSettingsView(navController: NavController) {
 

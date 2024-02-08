@@ -34,6 +34,11 @@ import com.example.neptune.ui.commons.TopBar
 import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
 
+/**
+ * The composable for the SessionEntitiesSearchView.
+ *
+ * @param navController The NavController needed to navigate to another view.
+ */
 @Composable
 fun SessionEntitiesSearchView(navController: NavController) {
 

@@ -37,35 +37,35 @@
     <string name="track_cooldown_text">Track Cooldown</string>
     <string name="playlist_link_invalid">Ungültiger Playlist-Link</string>
 
-    <!--The German strings for tracks-->
+    <!--The German strings for Tracks-->
     <string name="unlock_track_text">Track entsperren</string>
     <string name="lock_track_text">Track sperren</string>
     <string name="add_track_to_queue_text">Zur Queue hinzufügen</string>
     <string name="remove_track_from_queue_text">Aus Queue entfernen</string>
 
-    <!--The German strings for the voteView-->
+    <!--The German strings for the VoteView-->
     <string name="leave_session_text">Session verlassen</string>
     <string name="leave_session_confirmation_text">Bist du sicher, dass du die Session verlassen willst?</string>
 
-    <!--The German strings for the controlView-->
+    <!--The German strings for the ControlView-->
     <string name="queue_list_name">Queue:</string>
     <string name="vote_list_name">Vorschlagsliste:</string>
     <string name="terminate_session_text">Session beenden</string>
     <string name="terminate_session_confirmation_text">Bist du sicher, dass du die Session für alle beenden willst?</string>
 
-    <!--The German strings for the searchView-->
+    <!--The German strings for the SearchView-->
     <string name="locked_filter_name">Gesperrt</string>
     <string name="cooldown_filter_name">Cooldown</string>
     <string name="search_text">Track suchen</string>
     <string name="finished">Fertig</string>
 
-    <!--The German strings for the infoView-->
+    <!--The German strings for the InfoView-->
     <string name="artists_text">Artists:</string>
     <string name="genre_text">Genres:</string>
     <string name="session_code_text">Beitrittscode:</string>
     <string name="share_text">Teilen</string>
 
-    <!--The German strings for the statsView-->
+    <!--The German strings for the StatsView-->
     <string name="statistics_text">Statistiken</string>
     <string name="most_popular_track_text">Beliebtester Track:</string>
     <string name="most_popular_genre_text">Beliebtestes Genre:</string>
@@ -74,6 +74,5 @@
     <string name="total_upvote_text">Insgesamte Anzahl Upvotes:</string>
     <string name="total_participant_text">Insgesamte Anzahl Teilnehmer:</string>
     <string name="session_duration_text">Session Dauer:</string>
-
 
 </resources>

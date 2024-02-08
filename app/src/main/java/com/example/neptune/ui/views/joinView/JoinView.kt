@@ -54,6 +54,11 @@ import com.google.mlkit.vision.common.InputImage
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
+/**
+ * The Composable for the JoinView.
+ *
+ * @param navController The NavController needed to navigate to another view.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JoinView(navController: NavController) {
