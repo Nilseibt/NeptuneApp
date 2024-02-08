@@ -25,6 +25,18 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
 
+/**
+ * Represents the current state of the application, especially contains the user and the sessionBuilder.
+ * @property streamingEstablisher The object responsible for establishing streaming connections.
+ * @property sessionBuilder The builder for creating sessions.
+ * @property appDatabase The database wrapper for storing application state-related data.
+ * @property backendConnector The connector for interacting with the backend server.
+ * @property backendConnectorVolleyQueue The Volley request queue for backend connections.
+ * @property streamingConnector The connector for streaming services.
+ * @property streamingConnectorVolleyQueue The Volley request queue for streaming connections.
+ * @property session The current session.
+ * @property upvoteDatabase The database wrapper for storing upvote-related data.
+ */
 class AppState(
     val streamingEstablisher: StreamingEstablisher,
     var sessionBuilder: SessionBuilder,
@@ -37,22 +49,31 @@ class AppState(
     private val upvoteDatabase: UpvoteDatabase
 ) {
 
+    /**
+     * Represents the current user, is not null when inside any session view.
+     */
     var user: User? = null
 
-    var initialBackendConnector: BackendConnector? = null
-
+    private var initialBackendConnector: BackendConnector? = null
 
 
     private var deviceId = ""
 
 
+    /**
+     * Recreates the user's session state initially.
+     * @param navController The navigation controller for navigating between views.
+     * @param joinLinkUsed A flag indicating whether a join link was used.
+     * @param onUserNotInSession A callback function to execute when the user is not in a session.
+     */
     fun recreateUserSessionStateInitially(
         navController: NavController,
         joinLinkUsed: Boolean,
         onUserNotInSession: () -> Unit
     ) {
         initialBackendConnector = BackendConnector(getDeviceId(), backendConnectorVolleyQueue)
-        initialBackendConnector!!.getUserSessionState { userSessionState, sessionId, timestamp, mode, artists, genres ->
+        initialBackendConnector!!.getUserSessionState { userSessionState, sessionId,
+                                                        timestamp, mode, artists, genres ->
             callbackRecreateUserSessionState(
                 userSessionState,
                 sessionId,
@@ -80,69 +101,17 @@ class AppState(
         joinLinkUsed: Boolean
     ) {
         if (userSessionState == "HOST") {
-            backendConnector =
-                HostBackendConnector(getDeviceId(), backendConnectorVolleyQueue)
-            streamingConnector = HostSpotifyConnector(
-                streamingConnectorVolleyQueue,
-                streamingEstablisher.getAccessToken(),
-                streamingEstablisher.getRefreshToken()
+            recreateHostSessionState(sessionId, timestamp, mode, artists, genres, navController)
+
+        } else if (userSessionState == "PARTICIPANT") {
+            recreateParticipantSessionState(
+                sessionId,
+                timestamp,
+                mode,
+                artists,
+                genres,
+                navController
             )
-
-            sessionBuilder.setSessionTypeFromBackendString(mode)
-            if (mode == "Artist") {
-                sessionBuilder.setSelectedEntities(artists)
-            }
-            if (mode == "Genre") {
-                sessionBuilder.setSelectedEntities(genres)
-            }
-
-            session = sessionBuilder.createSession(sessionId, timestamp)
-            user = Host(
-                session!!,
-                backendConnector!! as HostBackendConnector,
-                streamingConnector!! as HostStreamingConnector,
-                upvoteDatabase
-            )
-            sessionBuilder.reset()
-            navController.navigate(ViewsCollection.CONTROL_VIEW.name)
-
-        }
-        if (userSessionState == "PARTICIPANT") {
-            backendConnector =
-                ParticipantBackendConnector(getDeviceId(), backendConnectorVolleyQueue)
-
-            sessionBuilder.setSessionTypeFromBackendString(mode)
-            if (mode == "Artist") {
-                sessionBuilder.setSelectedEntities(artists)
-            }
-            if (mode == "Genre") {
-                sessionBuilder.setSelectedEntities(genres)
-            }
-
-            session = sessionBuilder.createSession(sessionId, timestamp)
-
-            if (streamingEstablisher.getStreamingLevel().value != StreamingLevel.UNLINKED) {
-                streamingConnector = SpotifyConnector(
-                    streamingConnectorVolleyQueue,
-                    streamingEstablisher.getAccessToken(),
-                    streamingEstablisher.getRefreshToken()
-                )
-                user = FullParticipant(
-                    session!!,
-                    backendConnector!! as ParticipantBackendConnector,
-                    streamingConnector!!,
-                    upvoteDatabase
-                )
-            } else {
-                user = User(
-                    session!!,
-                    backendConnector!! as ParticipantBackendConnector,
-                    upvoteDatabase
-                )
-            }
-
-            sessionBuilder.reset()
-            navController.navigate(ViewsCollection.VOTE_VIEW.name)
         }
         if (userSessionState == "NONE") {
             if (!joinLinkUsed) {
@@ -152,6 +121,90 @@ class AppState(
         }
     }
 
+    private fun recreateHostSessionState(
+        sessionId: Int,
+        timestamp: Int,
+        mode: String,
+        artists: List<String>,
+        genres: List<String>,
+        navController: NavController
+    ) {
+        backendConnector =
+            HostBackendConnector(getDeviceId(), backendConnectorVolleyQueue)
+        streamingConnector = HostSpotifyConnector(
+            streamingConnectorVolleyQueue,
+            streamingEstablisher.getAccessToken(),
+            streamingEstablisher.getRefreshToken()
+        )
+
+        sessionBuilder.setSessionTypeFromBackendString(mode)
+        if (mode == "Artist") {
+            sessionBuilder.setSelectedEntities(artists)
+        }
+        if (mode == "Genre") {
+            sessionBuilder.setSelectedEntities(genres)
+        }
+
+        session = sessionBuilder.createSession(sessionId, timestamp)
+        user = Host(
+            session!!,
+            backendConnector!! as HostBackendConnector,
+            streamingConnector!! as HostStreamingConnector,
+            upvoteDatabase
+        )
+        sessionBuilder.reset()
+        navController.navigate(ViewsCollection.CONTROL_VIEW.name)
+    }
+
+    private fun recreateParticipantSessionState(
+        sessionId: Int,
+        timestamp: Int,
+        mode: String,
+        artists: List<String>,
+        genres: List<String>,
+        navController: NavController
+    ) {
+        backendConnector =
+            ParticipantBackendConnector(getDeviceId(), backendConnectorVolleyQueue)
+
+        sessionBuilder.setSessionTypeFromBackendString(mode)
+        if (mode == "Artist") {
+            sessionBuilder.setSelectedEntities(artists)
+        }
+        if (mode == "Genre") {
+            sessionBuilder.setSelectedEntities(genres)
+        }
+
+        session = sessionBuilder.createSession(sessionId, timestamp)
+
+        if (streamingEstablisher.getStreamingLevel().value != StreamingLevel.UNLINKED) {
+            streamingConnector = SpotifyConnector(
+                streamingConnectorVolleyQueue,
+                streamingEstablisher.getAccessToken(),
+                streamingEstablisher.getRefreshToken()
+            )
+            user = FullParticipant(
+                session!!,
+                backendConnector!! as ParticipantBackendConnector,
+                streamingConnector!!,
+                upvoteDatabase
+            )
+        } else {
+            user = User(
+                session!!,
+                backendConnector!! as ParticipantBackendConnector,
+                upvoteDatabase
+            )
+        }
+
+        sessionBuilder.reset()
+        navController.navigate(ViewsCollection.VOTE_VIEW.name)
+    }
+
+    /**
+     * Creates a new session and joins it as a host user, redirects to the control view.
+     * @param navController The navigation controller for navigating between views.
+     */
     fun createNewSessionAndJoin(navController: NavController) {
         backendConnector = HostBackendConnector(getDeviceId(), backendConnectorVolleyQueue)
         streamingConnector = HostSpotifyConnector(
@@ -193,6 +246,12 @@ class AppState(
     }
 
 
+    /**
+     * Attempts to join an existing session as a participant user.
+     * @param sessionId The ID of the session to join, must be a 6 digit number.
+     * @param navController The navigation controller for navigating between views.
+     * @param onFail Callback function to execute if joining the session fails (usually invalid id).
+     */
     fun tryToJoinSession(sessionId: Int, navController: NavController, onFail: () -> Unit) {
         backendConnector =
             ParticipantBackendConnector(getDeviceId(), backendConnectorVolleyQueue)
@@ -241,13 +300,10 @@ class AppState(
         }
     }
 
-    fun participantLeaveCurrentSession(onCallbackFinished: () -> Unit) {
-        (user!!.backendConnector as ParticipantBackendConnector).participantLeaveSession {
-            onCallbackFinished()
-        }
-    }
 
-
+    /**
+     * Deletes upvotes from the upvote database associated with already closed sessions.
+     */
     suspend fun deleteIrrelevantUpvotes() {
         val backendConnectorWithoutDeviceId = BackendConnector("", backendConnectorVolleyQueue)
         val sessionsWithUpvotes = upvoteDatabase.getStoredSessions()
@@ -263,6 +319,9 @@ class AppState(
     }
 
 
+    /**
+     * Refreshes the connection with Spotify by exchanging the access token for a fresh one with the refresh token.
+     */
     suspend fun refreshSpotifyConnection() {
         streamingEstablisher.restoreConnectionIfPossible {
             if (user is Host) {
@@ -281,11 +340,18 @@ class AppState(
     }
 
 
-    fun getDeviceId(): String{
+    /**
+     * Getter for the device ID.
+     * @return The device ID.
+     */
+    fun getDeviceId(): String {
         return deviceId
     }
 
 
+    /**
+     * Generates a new deviceId or retrieves the device ID from the database.
+     */
     suspend fun generateOrRetrieveDeviceId() {
         if (appDatabase.hasDeviceId()) {
             deviceId = appDatabase.getDeviceId()

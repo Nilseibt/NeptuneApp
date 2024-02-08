@@ -12,14 +12,26 @@ import com.example.neptune.data.model.track.Track
 import org.json.JSONArray
 import org.json.JSONObject
 
+/**
+ * Base class for interacting with the backend server to retrieve and manipulate data.
+ * @param deviceId The unique identifier of this device.
+ * @param volleyQueue The Volley request queue for network communication.
+ */
 open class BackendConnector(
     private val deviceId: String,
     private val volleyQueue: RequestQueue
 ) {
 
+    /**
+     * The base URL of the backend server.
+     */
     protected val baseUrl = NeptuneApp.context.getString(R.string.backend_url)
 
 
+    /**
+     * Retrieves the current session state of the user.
+     * @param callback Callback function to handle the response containing session state information.
+     */
     fun getUserSessionState(
         callback: (
             userSessionState: String, sessionId: Int,
@@ -68,6 +80,10 @@ open class BackendConnector(
     }
 
 
+    /**
+     * Retrieves all track data from the backend server.
+     * @param callback Callback function to handle the response containing all tracks of the session.
+     */
     fun getAllTrackData(callback: (listOfTracks: List<Track>) -> Unit) {
         val postData = JSONObject()
         postData.put("deviceID", deviceId)
@@ -119,6 +135,10 @@ open class BackendConnector(
     }
 
 
+    /**
+     * Retrieves statistical information from the backend server.
+     * @param callback Callback function to handle the response containing the statistical data.
+     */
     fun getStatistics(
         callback: (
             mostUpvotedTrack: String,
@@ -189,6 +209,12 @@ open class BackendConnector(
     }
 
 
+    /**
+     * Checks if a session is open based on the provided session ID and timestamp.
+     * @param sessionId The ID of the session to check.
+     * @param sessionTimestamp The timestamp of the session to check.
+     * @param callback Callback function to handle the response indicating whether the session is open.
+     */
     fun isSessionOpen(sessionId: Int, sessionTimestamp: Int, callback: (isOpen: Boolean) -> Unit) {
         val postData = JSONObject()
         postData.put("sessionID", sessionId)
@@ -205,6 +231,11 @@ open class BackendConnector(
     }
 
 
+    /**
+     * Adds a track to the current session.
+     * @param track The track to add.
+     * @param callback Callback function to execute after adding the track successfully.
+     */
     fun addTrackToSession(track: Track, callback: () -> Unit = {}) {
 
         val artistsJSONArray = JSONArray()
@@ -228,6 +259,10 @@ open class BackendConnector(
     }
 
 
+    /**
+     * Adds an upvote to a track.
+     * @param track The track to upvote (the id is the unique identifier, other attributes do not matter)
+     */
     fun addUpvoteToTrack(track: Track) {
         val postData = JSONObject()
         postData.put("deviceID", deviceId)
@@ -237,6 +272,10 @@ open class BackendConnector(
     }
 
 
+    /**
+     * Removes an upvote from a track.
+     * @param track The track to remove the upvote from (the id is the unique identifier, other attributes do not matter)
+     */
     fun removeUpvoteFromTrack(track: Track) {
         val postData = JSONObject()
         postData.put("deviceID", deviceId)
@@ -246,6 +285,12 @@ open class BackendConnector(
     }
 
 
+    /**
+     * Sends a request to the backend server with the specified URL path and data.
+     * @param urlPath The path to append to the base URL to form the complete request URL.
+     * @param postData The data to send with the request, as a json object.
+     * @param callback Callback function to handle the successful response from the server.
+     */
     protected fun sendRequest(
         urlPath: String,
         postData: JSONObject,

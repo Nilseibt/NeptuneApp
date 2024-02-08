@@ -6,12 +6,22 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import org.json.JSONObject
 
+/**
+ * Connector class for participant-specific backend interactions, extending the base [BackendConnector].
+ * @param deviceId The unique identifier of this participant device.
+ * @param volleyQueue The Volley request queue for network communication.
+ */
 class ParticipantBackendConnector(
     private val deviceId: String,
     private val volleyQueue: RequestQueue
 ) : BackendConnector(deviceId, volleyQueue) {
 
 
+    /**
+     * Allows a participant to join a session with the specified session ID.
+     * @param sessionId The ID of the session to join.
+     * @param callback Callback function to handle the response of the join operation, containing information on the session.
+     */
     fun participantJoinSession(
         sessionId: Int,
         callback: (success: Boolean, timestamp: Int, mode: String, artists: List<String>, genres: List<String>) -> Unit
@@ -59,6 +69,10 @@ class ParticipantBackendConnector(
     }
 
 
+    /**
+     * Allows a participant to leave the current session.
+     * @param onCallbackFinished Callback function to execute after leaving the session successfully.
+     */
     fun participantLeaveSession(onCallbackFinished: () -> Unit = {}) {
         val postData = JSONObject()
         postData.put("participantDeviceID", deviceId)
