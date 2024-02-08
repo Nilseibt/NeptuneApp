@@ -64,6 +64,7 @@ class ControlViewModel(
 
     fun onToggleBlock(track: Track) {
         host.toggleBlockTrack(track)
+        expandedDropdownIndexQueue = -1
     }
 
     fun onMoveUp(index: Int) {

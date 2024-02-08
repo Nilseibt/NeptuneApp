@@ -95,6 +95,7 @@ class SearchViewModel(
 
     fun onToggleBlock(track: Track) {
         (user as Host).toggleBlockTrack(track)
+        expandedDropdownIndex = -1
     }
 
     fun getSearchList(): SnapshotStateList<MutableState<Track>> {
