@@ -89,11 +89,12 @@ class SearchViewModel(
     }
 
     fun onAddToQueue(track: Track) {
-        (user as Host).addTrackToQueue(track)
         expandedDropdownIndex = -1
+        (user as Host).addTrackToQueue(track)
     }
 
     fun onToggleBlock(track: Track) {
+        expandedDropdownIndex = -1
         (user as Host).toggleBlockTrack(track)
     }
 

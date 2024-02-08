@@ -16,6 +16,7 @@ import com.example.neptune.ui.theme.White
 import com.example.neptune.ui.views.joinView.JoinViewModel
 import com.example.neptune.ui.views.modeSettingsView.ModeSettingsViewModel
 import com.example.neptune.ui.views.searchView.SearchViewModel
+import com.example.neptune.ui.views.sessionEntitiesSearchView.SessionEntitiesSearchViewModel
 
 @Composable
 fun NeptuneOutlinedTextField(
@@ -57,7 +58,31 @@ fun NeptuneOutlinedTextField(
     OutlinedTextField(
         value = modeSettingsViewModel.getCurrentPlaylistLinkInput(),
         onValueChange = { modeSettingsViewModel.onPlaylistLinkInputChange(it) },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        modifier = modifier.fillMaxWidth().padding(end = 8.dp),
+        label = { Text(text = labelText, color = focusedLabelColor) },
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = focusedBorderColor,
+            unfocusedBorderColor = unfocusedBorderColor,
+            cursorColor = cursorColor
+        ),
+        textStyle = textStyle
+    )
+}
+
+@Composable
+fun NeptuneOutlinedTextField(
+    sessionEntitiesSearchViewModel: SessionEntitiesSearchViewModel,
+    labelText: String,
+    modifier: Modifier = Modifier,
+    focusedBorderColor: Color = White,
+    unfocusedBorderColor: Color = Color.Gray,
+    focusedLabelColor: Color = White,
+    textStyle: TextStyle = TextStyle(color = White),
+    cursorColor: Color = White
+) {
+    OutlinedTextField(
+        value = sessionEntitiesSearchViewModel.getSearchInput(),
+        onValueChange = { sessionEntitiesSearchViewModel.onSearchInputChange(it) },
         modifier = modifier.fillMaxWidth().padding(end = 8.dp),
         label = { Text(text = labelText, color = focusedLabelColor) },
         colors = OutlinedTextFieldDefaults.colors(
