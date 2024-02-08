@@ -54,6 +54,7 @@ fun VoteView(navController: NavController) {
         voteViewModel.onBack(navController)
     }
 
+    // Synchronizes the view with the server.
     LaunchedEffect(
         key1 = Unit,
         block = {

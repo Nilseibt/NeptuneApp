@@ -54,6 +54,7 @@ fun SearchView(navController: NavController) {
         searchViewModel.onBack(navController)
     }
 
+    // Synchronizes the view with the search entry.
     LaunchedEffect(
         key1 = Unit,
         block = {
@@ -64,6 +65,7 @@ fun SearchView(navController: NavController) {
         }
     )
 
+    // Synchronizes the view with the server.
     LaunchedEffect(
         key1 = Unit,
         block = {

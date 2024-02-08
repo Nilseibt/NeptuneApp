@@ -62,6 +62,7 @@ fun ControlView(navController: NavController) {
         controlViewModel.onBack(navController)
     }
 
+    // Synchronizes the view with the server.
     LaunchedEffect(
         key1 = Unit,
         block = {
