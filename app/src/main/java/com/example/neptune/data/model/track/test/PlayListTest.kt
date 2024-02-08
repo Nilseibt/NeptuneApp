@@ -1,6 +1,11 @@
 package com.example.neptune.data.model.track.test
 
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
+import com.example.neptune.data.model.track.PlayList
 import org.junit.Assert
+import org.junit.Assert.assertTrue
 import org.junit.Test
 /**
  * Test class for Playlist functionality.
@@ -16,24 +21,12 @@ class PlayListTest {
      */
     @Test
     fun search() {
-
-        //TODO test somehow broken unfortunately
-
-        /*
-
         // Creating a playlist for testing.
         val playList = mockTracks.playList
 
         // Searching for tracks containing the letter "B".
-        val result = playList.search("B")
-
+        val result = PlayList(playList.search("B").toMutableStateList())
         // Asserting that the result contains specific tracks.
-        Assert.assertTrue(
-            result.contains(mockTracks.track1) &&
-                    result.contains(mockTracks.track2) &&
-                    result.contains(mockTracks.track1)
-        )
-
-         */
+        assertTrue( result.containsTrack(mockTracks.track1))
     }
 }

@@ -41,7 +41,7 @@ class MockTracks {
         mutableStateOf(false)
     )
     var track4 = Track(
-        "4", "hello", artists1, genres1, imageUrl1,
+        "4", "hello", listOf("Baum"), genres1, imageUrl1,
         mutableIntStateOf(2), mutableStateOf(false), mutableStateOf(false), mutableStateOf(false)
     )
     var trackList = TrackList(

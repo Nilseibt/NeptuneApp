@@ -1,6 +1,7 @@
 package com.example.neptune.data.model.track.test
 
 import com.example.neptune.data.model.track.Track
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -22,6 +23,15 @@ class TrackTest {
     fun toggleUpvote() {
         track1.toggleUpvote()
         assertTrue(track1.getUpvotes() == 2)
+        track1.toggleUpvote()
+        assertTrue(track1.getUpvotes() == 1)
+    }
+    @Test
+    fun checkAttributes(){
+        val track = mockTracks.track1
+        track.setBlocked(false)
+        assertFalse(track.isBlocked())
+        assertFalse(track.hasCooldown())
     }
 
     /**

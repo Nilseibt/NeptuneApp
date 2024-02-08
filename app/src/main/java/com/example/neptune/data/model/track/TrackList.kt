@@ -58,7 +58,7 @@ open class TrackList (private val tracks: SnapshotStateList<MutableState<Track>>
             tracks.removeAt(0)
             return output.value
         } else{
-            throw Exception("No track in Queue, cannot pop first track")
+            throw ArrayIndexOutOfBoundsException("No track in Queue, cannot pop first track")
         }
     }
 

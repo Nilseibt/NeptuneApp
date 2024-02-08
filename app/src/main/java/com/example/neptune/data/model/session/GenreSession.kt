@@ -11,7 +11,7 @@ class GenreSession(
     Session(id, timestamp, cooldown, SessionType.GENRE) {
     override fun validateTrack(track: Track): Boolean {
         for (genre in track.genres) {
-            if (genre.capitalize() in genres) {
+            if (genre in genres) {
                 return true
             }
         }
