@@ -34,7 +34,7 @@ import kotlinx.coroutines.delay
 /**
  * The composable for the top bar for most of the views.
  *
- * @param onBack the function for the back button which navigates to the last visited view
+ * @param onBack The function for the back button which navigates to the last visited view.
  */
 @Composable
 fun TopBar(onBack: () -> Unit) {
@@ -66,9 +66,9 @@ fun TopBar(onBack: () -> Unit) {
 /**
  * The composable for the session info bar needed in the views in a session.
  *
- * @param onStatistics the function for the statistics button which navigates to the statsView
- * @param onInfo the function for the info button which navigates to the infoView
- * @param description the description of the session type
+ * @param onStatistics The function for the statistics button which navigates to the statsView.
+ * @param onInfo The function for the info button which navigates to the infoView.
+ * @param description The description of the session type.
  */
 @Composable
 fun SessionInfoBar(onStatistics: () -> Unit, onInfo: () -> Unit, description: SessionType) {
@@ -135,7 +135,7 @@ private fun BackButton(onBack: () -> Unit) {
 private fun NeptuneText() {
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -144,9 +144,7 @@ private fun NeptuneText() {
             text = stringResource(id = R.string.app_name),
             color = MaterialTheme.colorScheme.onPrimary,
             style = MaterialTheme.typography.headlineLarge,
-            modifier = Modifier
-                .padding(4.dp)
-                .fillMaxWidth(),
+            modifier = Modifier.padding(4.dp),
             textAlign = TextAlign.Center
         )
 

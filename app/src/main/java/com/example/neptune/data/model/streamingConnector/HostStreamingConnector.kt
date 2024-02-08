@@ -2,7 +2,6 @@ package com.example.neptune.data.model.streamingConnector
 
 import androidx.compose.runtime.MutableState
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.PlaybackState
-import com.example.neptune.data.model.track.PlayList
 import com.example.neptune.data.model.track.Track
 
 interface HostStreamingConnector : StreamingConnector {
@@ -24,12 +23,10 @@ interface HostStreamingConnector : StreamingConnector {
 
     fun setPlayProgress(progress: Float, onCallback: () -> Unit)
 
-    fun isPlaylistLinkValid(): Boolean
-
-    fun getPlaylist(link: String): PlayList
-
     fun getPlaybackState(): MutableState<PlaybackState>
 
     fun setPlaybackState(playbackState: PlaybackState)
+
+    fun checkIfPlayerDeviceAvailable(onDeviceAvailable: () -> Unit, onNoDeviceAvailable: () -> Unit)
 
 }

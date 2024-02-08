@@ -164,4 +164,12 @@ class ControlViewModel(
         host.syncState()
     }
 
+    fun isStreamingHintAvailable(): Boolean {
+        return host.getStreamingHint().value != ""
+    }
+
+    fun getStreamingHint(): String{
+        return host.getStreamingHint().value
+    }
+
 }

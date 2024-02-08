@@ -2,6 +2,7 @@ package com.example.neptune.ui.views.controlView
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -43,7 +45,7 @@ import kotlinx.coroutines.delay
 /**
  * The composable for the controlView.
  *
- * @param navController the NavController needed to navigate to another view
+ * @param navController The NavController needed to navigate to another view.
  */
 @Composable
 fun ControlView(navController: NavController) {
@@ -60,6 +62,7 @@ fun ControlView(navController: NavController) {
         controlViewModel.onBack(navController)
     }
 
+    // Synchronizes the view with the server.
     LaunchedEffect(
         key1 = Unit,
         block = {
@@ -95,10 +98,15 @@ private fun ControlViewContent(controlViewModel: ControlViewModel, navController
             description = controlViewModel.getTopBarDescription()
         )
 
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(10.dp)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
         ) {
+
+            if (controlViewModel.isStreamingHintAvailable()) {
+                StreamingHintText(controlViewModel)
+            }
 
             QueueText()
 
@@ -146,8 +154,28 @@ private fun ControlViewContent(controlViewModel: ControlViewModel, navController
 
     }
 
-    if(controlViewModel.isDeleteSessionDialogShown()) {
+    if (controlViewModel.isDeleteSessionDialogShown()) {
         TerminateSessionDialog(controlViewModel, navController)
+    }
+
+}
+
+@Composable
+private fun StreamingHintText(controlViewModel: ControlViewModel) {
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+
+        Text(
+            text = controlViewModel.getStreamingHint(),
+            color = Color.Red,
+            style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Center
+        )
+
     }
 
 }
@@ -158,7 +186,8 @@ private fun QueueText() {
     Text(
         text = stringResource(id = R.string.queue_list_name),
         color = MaterialTheme.colorScheme.onBackground,
-        style = MaterialTheme.typography.titleMedium
+        style = MaterialTheme.typography.titleMedium,
+        modifier = Modifier.fillMaxSize()
     )
 
 }
@@ -169,7 +198,8 @@ private fun VoteListText() {
     Text(
         text = stringResource(id = R.string.vote_list_name),
         color = MaterialTheme.colorScheme.onBackground,
-        style = MaterialTheme.typography.titleMedium
+        style = MaterialTheme.typography.titleMedium,
+        modifier = Modifier.fillMaxSize()
     )
 
 }
@@ -178,7 +208,7 @@ private fun VoteListText() {
 private fun TrackControlBar(controlViewModel: ControlViewModel) {
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -257,7 +287,7 @@ private fun TrackSlider(controlViewModel: ControlViewModel) {
 private fun SearchButton(controlViewModel: ControlViewModel, navController: NavController) {
 
     Button(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         onClick = { controlViewModel.onSearchTracks(navController) },
         shape = RoundedCornerShape(10.dp)
     ) {
@@ -294,7 +324,10 @@ private fun SearchButton(controlViewModel: ControlViewModel, navController: NavC
 }
 
 @Composable
-private fun TerminateSessionDialog(controlViewModel: ControlViewModel, navController: NavController) {
+private fun TerminateSessionDialog(
+    controlViewModel: ControlViewModel,
+    navController: NavController
+) {
 
     AlertDialog(
         title = { Text(text = stringResource(id = R.string.terminate_session_text)) },

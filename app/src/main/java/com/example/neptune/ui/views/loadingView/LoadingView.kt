@@ -30,7 +30,7 @@ import com.example.neptune.ui.views.util.viewModelFactory
 /**
  * The composable for the loadingView.
  *
- * @param navController the NavController needed to navigate to another view
+ * @param navController The NavController needed to navigate to another view.
  * @param activity //TODO
  * @param argument //TODO
  */

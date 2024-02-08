@@ -37,7 +37,7 @@ import kotlinx.coroutines.delay
 /**
  * The composable for the voteView.
  *
- * @param navController the NavController needed to navigate to another view
+ * @param navController The NavController needed to navigate to another view.
  */
 @Composable
 fun VoteView(navController: NavController) {
@@ -54,6 +54,7 @@ fun VoteView(navController: NavController) {
         voteViewModel.onBack(navController)
     }
 
+    // Synchronizes the view with the server.
     LaunchedEffect(
         key1 = Unit,
         block = {
@@ -119,7 +120,7 @@ private fun VoteViewContent(voteViewModel: VoteViewModel, navController: NavCont
 private fun SearchButton(voteViewModel: VoteViewModel, navController: NavController) {
 
     Button(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         onClick = { voteViewModel.onSearchTracks(navController) },
         shape = RoundedCornerShape(10.dp)
     ) {

@@ -38,7 +38,7 @@ import com.example.neptune.ui.views.util.viewModelFactory
 /**
  * The composable for the infoView.
  *
- * @param navController the NavController needed to navigate to another view
+ * @param navController The NavController needed to navigate to another view.
  */
 @Composable
 fun InfoView(navController: NavController, activity: MainActivity) {
@@ -119,7 +119,7 @@ private fun InfoViewContent(infoViewModel: InfoViewModel, navController: NavCont
 private fun SessionModeText(infoViewModel: InfoViewModel) {
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -146,7 +146,7 @@ private fun SessionModeText(infoViewModel: InfoViewModel) {
 private fun GenreDescription(infoViewModel: InfoViewModel) {
 
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
     ) {
 
         Text(
@@ -174,7 +174,7 @@ private fun GenreDescription(infoViewModel: InfoViewModel) {
 private fun ArtistDescription(infoViewModel: InfoViewModel) {
 
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
     ) {
 
         Text(
@@ -202,7 +202,7 @@ private fun ArtistDescription(infoViewModel: InfoViewModel) {
 private fun SessionCodeText() {
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -244,7 +244,7 @@ private fun SessionCode(infoViewModel: InfoViewModel) {
 
     Row(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(horizontal = 40.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
