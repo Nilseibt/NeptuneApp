@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -95,10 +96,16 @@ private fun ControlViewContent(controlViewModel: ControlViewModel, navController
             description = controlViewModel.getTopBarDescription()
         )
 
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(10.dp)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
         ) {
+
+            //TODO Stephan please make nice
+            if (controlViewModel.isStreamingHintAvailable()) {
+                Text(text = controlViewModel.getStreamingHint(), color = Color.Red)
+            }
 
             QueueText()
 
@@ -146,7 +153,7 @@ private fun ControlViewContent(controlViewModel: ControlViewModel, navController
 
     }
 
-    if(controlViewModel.isDeleteSessionDialogShown()) {
+    if (controlViewModel.isDeleteSessionDialogShown()) {
         TerminateSessionDialog(controlViewModel, navController)
     }
 
@@ -294,7 +301,10 @@ private fun SearchButton(controlViewModel: ControlViewModel, navController: NavC
 }
 
 @Composable
-private fun TerminateSessionDialog(controlViewModel: ControlViewModel, navController: NavController) {
+private fun TerminateSessionDialog(
+    controlViewModel: ControlViewModel,
+    navController: NavController
+) {
 
     AlertDialog(
         title = { Text(text = stringResource(id = R.string.terminate_session_text)) },
