@@ -11,6 +11,15 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 
+val Color01 = Color(0xff080912)
+val Color02 = Color(0xffEFF1ED)
+val Color03 = Color(0xff1481BA)
+val Color04 = Color(0xff150578)
+val Color05 = Color(0xff07004D)
+
+
+
+
 val BlueMain = Color(0xff10165a)
 val WhiteSecondary = Color(0xffF4F4FB)
 val DarkBlueAccent = Color(0xff0A2938)
@@ -19,9 +28,6 @@ val ButtonBlue = Color(0xff363a96)
 val PrimaryBackgroundColor = Color(0xff161a23)
 val PrimaryColor = Color(0xff101123)
 val White = Color(0xffeaefff)
-
-
-
 
 val Blue10 = Color(0xff0a1429)
 val Blue20 = Color(0xff142952)
@@ -44,7 +50,11 @@ val BlueGrey40 = Color(0xff3e3e8e)
 val BlueGrey80 = Color(0xffb8b8e0)
 val BlueGrey90 = Color(0xffdcdcef)
 
+//val PrimaryColor = Color(0xff000537)
+val SecondaryColor = Color(0xffF4F4FB)
+val TertiaryColor = Color(0xff000305)
 
 val SpotifyBrandGreen = Color(0xff1DB954)
+val InvalidInputWarningColor = White
 
 
