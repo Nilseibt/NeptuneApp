@@ -12,7 +12,7 @@
     <string name="create_session">Session erstellen</string>
     <string name="leave_application">App verlassen</string>
     <string name="sure_about_leaving_application">Bist du sicher, dass du die App verlassen möchtest?</string>
-    <string name="app_leave_confirmation">Ja</string>
+    <string name="application_leave_confirmation">Ja</string>
     <string name="app_leave_declination">Nein</string>
 
     <!--The German strings for the joinView-->
