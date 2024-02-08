@@ -9,11 +9,11 @@ class UpvoteDatabase(
 ) {
 
     suspend fun addUpvote(session: Session, trackId: String) {
-        upvoteDataDao.upsert(UpvoteData(session.id, session.timestamp, trackId))
+        upvoteDataDao.upsert(UpvoteData(session.sessionId, session.timestamp, trackId))
     }
 
     suspend fun removeUpvote(session: Session, trackId: String) {
-        upvoteDataDao.delete(UpvoteData(session.id, session.timestamp, trackId))
+        upvoteDataDao.delete(UpvoteData(session.sessionId, session.timestamp, trackId))
     }
 
     suspend fun removeAllTracksWithSession(sessionId: Int, sessionTimestamp: Int){
@@ -30,7 +30,7 @@ class UpvoteDatabase(
     }
 
     suspend fun getUpvotedTrackIds(session: Session): List<String> {
-        return upvoteDataDao.getUpvotedTrackIds(session.id, session.timestamp)
+        return upvoteDataDao.getUpvotedTrackIds(session.sessionId, session.timestamp)
     }
 
 

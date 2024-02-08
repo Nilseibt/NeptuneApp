@@ -43,11 +43,11 @@ class InfoViewModel(
     }
 
     fun getSessionCode(): String {
-        return user.session.id.toString()
+        return user.session.sessionId.toString()
     }
 
     fun onShareLink() {
-        val shareLink = "http://nep-tune.de/join/" + user.session.id.toString()
+        val shareLink = "http://nep-tune.de/join/" + user.session.sessionId.toString()
         ShareCompat.IntentBuilder.from(activity)
             .setType("text/plain")
             .setText(shareLink)
@@ -64,7 +64,7 @@ class InfoViewModel(
         val writer = QRCodeWriter()
         val size = 500
         val bitMatrix =
-            writer.encode("http://nep-tune.de/join/${user.session.id}",
+            writer.encode("http://nep-tune.de/join/${user.session.sessionId}",
                 BarcodeFormat.QR_CODE, size, size)
         val w = bitMatrix.width
         val h = bitMatrix.height
