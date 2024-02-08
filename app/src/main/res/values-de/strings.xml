@@ -35,6 +35,7 @@
     <string name="artist_search">Artists suchen</string>
     <string name="genre_search">Genres suchen</string>
     <string name="track_cooldown_text">Track Cooldown</string>
+    <string name="playlist_link_invalid">Ungültiger Playlist-Link</string>
 
     <!--The German strings for tracks-->
     <string name="unlock_track_text">Track entsperren</string>
@@ -73,5 +74,6 @@
     <string name="total_upvote_text">Insgesamte Anzahl Upvotes:</string>
     <string name="total_participant_text">Insgesamte Anzahl Teilnehmer:</string>
     <string name="session_duration_text">Session Dauer:</string>
+
 
 </resources>

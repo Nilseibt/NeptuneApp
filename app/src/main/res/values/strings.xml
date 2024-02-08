@@ -79,6 +79,7 @@
     <string name="total_upvote_text">Total number of upvotes:</string>
     <string name="total_participant_text">Total number of participants:</string>
     <string name="session_duration_text">Duration of the session:</string>
+    <string name="playlist_link_invalid">Playlist link is invalid</string>
 
 
 </resources>
