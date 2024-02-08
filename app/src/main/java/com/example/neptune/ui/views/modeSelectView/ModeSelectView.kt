@@ -3,16 +3,11 @@ package com.example.neptune.ui.views.modeSelectView
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -27,20 +22,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.neptune.NeptuneApp
+import com.example.neptune.NeptuneApp.Companion.context
 import com.example.neptune.R
 import com.example.neptune.data.model.session.SessionType
 import com.example.neptune.ui.commons.TopBar
-import com.example.neptune.ui.theme.Blue10
-import com.example.neptune.ui.theme.Blue20
-import com.example.neptune.ui.theme.Blue30
-import com.example.neptune.ui.theme.Blue40
-import com.example.neptune.ui.theme.DarkBlue10
 import com.example.neptune.ui.theme.NeptuneTheme
-import com.example.neptune.ui.theme.SpotifyBrandGreen
 import com.example.neptune.ui.views.util.viewModelFactory
 
 @Composable
@@ -58,149 +47,89 @@ fun ModeSelectView(navController: NavController) {
         modeSelectViewModel.onBack(navController)
     }
 
-    /*fun determineButtonColor(mode: SessionType): Color {
-        val isModeSelected = modeSelectViewModel.isModeSelected(mode)
-        return if (isModeSelected) colorWhenSelected else colorWhenNotSelected
-    }*/
-
     NeptuneTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
+        ModeSelectViewContent(modeSelectViewModel = modeSelectViewModel, navController = navController )
+    }
+}
+
+@Composable
+private fun ModeSelectViewContent(modeSelectViewModel: ModeSelectViewModel, navController: NavController) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
+    ) {
+        Column(modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .fillMaxSize(),
+            verticalArrangement = Arrangement.Center) {
+
+            TopBar(onBack = { modeSelectViewModel.onBack(navController) })
+
             Column(modifier = Modifier
-                .background(MaterialTheme.colorScheme.background)
-                .fillMaxSize(),
-                verticalArrangement = Arrangement.Center) {
+                .weight(2f),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
 
-                TopBar(onBack = { modeSelectViewModel.onBack(navController) })
+                val modeButtonModifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp)
 
-                Column(modifier = Modifier
-                    .weight(2f),
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .padding(32.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f)
-                            .padding(32.dp),
-                        horizontalArrangement = Arrangement.SpaceEvenly
+
+                    ModeButton(
+                        mode = SessionType.GENERAL,
+                        modeSelectViewModel = modeSelectViewModel,
+                        modifier = modeButtonModifier
+                    )
+
+                    ModeButton(
+                        mode = SessionType.ARTIST,
+                        modeSelectViewModel = modeSelectViewModel,
+                        modifier = modeButtonModifier
+                    )
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .padding(32.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+
+
+                    ModeButton(
+                        mode = SessionType.GENRE,
+                        modeSelectViewModel = modeSelectViewModel,
+                        modifier = modeButtonModifier
+                    )
+
+                    ModeButton(
+                        mode = SessionType.PLAYLIST,
+                        modeSelectViewModel = modeSelectViewModel,
+                        modeButtonModifier
+                    )
+                }
+
+                Row(modifier = Modifier
+                    .weight(2f)) {
+
+                    ModeInfoCard(modeSelectViewModel)
+
+                }
+
+                Row(modifier = Modifier
+                    .weight(1f),
+                ) {
+                    Button(onClick = { modeSelectViewModel.onConfirmMode(navController) }
                     ) {
-                        val generalModifier = Modifier
-                            .weight(1f)
-                            .padding(8.dp)
-
-                        ModeButton(
-                            mode = SessionType.GENERAL,
-                            modeName = stringResource(R.string.general_mode_name),
-                            modeSelectViewModel = modeSelectViewModel,
-                            modifier = generalModifier
-                        )
-
-                        /*FilledTonalButton(
-                            onClick = { modeSelectViewModel.onSelectMode(SessionType.GENERAL) },
-                            modifier = generalModifier,
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = determineButtonColor(SessionType.GENERAL)
-                            )
-                        ) {
-                            Text(text = stringResource(id = R.string.general_mode_name))
-                        }*/
-
-                        val artistModifier = Modifier
-                            .weight(1f)
-                            .padding(8.dp)
-
-                        ModeButton(
-                            mode = SessionType.ARTIST,
-                            modeName = stringResource(id = R.string.artist_mode_name),
-                            modeSelectViewModel = modeSelectViewModel,
-                            modifier = artistModifier
-                        )
-
-                        /*FilledTonalButton(
-                            onClick = { modeSelectViewModel.onSelectMode(SessionType.ARTIST) },
-                            modifier = artistModifier,
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = determineButtonColor(SessionType.ARTIST)
-                            )
-                        ) {
-                            Text(text = stringResource(id = R.string.artist_mode_name))
-                        }*/
-                    }
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f)
-                            .padding(32.dp),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        val genreModifier = Modifier
-                            .weight(1f)
-                            .padding(8.dp)
-
-
-                        ModeButton(
-                            mode = SessionType.GENRE,
-                            modeName = stringResource(id = R.string.genre_mode_name),
-                            modeSelectViewModel = modeSelectViewModel,
-                            modifier = genreModifier
-                        )
-
-                        /*FilledTonalButton(
-                            onClick = { modeSelectViewModel.onSelectMode(SessionType.GENRE) },
-                            modifier = genreModifier,
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = determineButtonColor(SessionType.GENRE)
-                            )
-                        ) {
-                            Text(text = stringResource(id = R.string.genre_mode_name))
-                        }*/
-
-                        val playlistModifier = Modifier
-                            .weight(1f)
-                            .padding(8.dp)
-
-                        ModeButton(
-                            mode = SessionType.PLAYLIST,
-                            modeName = stringResource(id =R.string.playlist_mode_name),
-                            modeSelectViewModel = modeSelectViewModel,
-                            genreModifier
-                        )
-
-                        /*FilledTonalButton(
-                            onClick = { modeSelectViewModel.onSelectMode(SessionType.PLAYLIST) },
-                            modifier = playlistModifier,
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = determineButtonColor(SessionType.PLAYLIST)
-                            )
-                        ) {
-                            Text(text = stringResource(id = R.string.playlist_mode_name))
-                        }*/
-                    }
-
-                    Row(modifier = Modifier
-                        .weight(2f)) {
-                        Card(modifier = Modifier
-                            .padding(32.dp)) {
-                            Text(
-                                text = modeSelectViewModel.getSelectedModeDescription(),
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(40.dp),
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                    }
-
-                    Row(modifier = Modifier
-                        .weight(1f),
-                        ) {
-                        Button(onClick = { modeSelectViewModel.onConfirmMode(navController) }
-                        ) {
-                            Text(text = stringResource(id = R.string.confirmation_button_text))
-                        }
+                        Text(text = stringResource(id = R.string.confirmation_button_text))
                     }
                 }
             }
@@ -209,26 +138,38 @@ fun ModeSelectView(navController: NavController) {
 }
 
 @Composable
-fun ModeButton(
+private fun ModeButton(
     mode: SessionType,
-    modeName : String,
     modeSelectViewModel: ModeSelectViewModel,
     modifier : Modifier
 ) {
     val colorWhenSelected = MaterialTheme.colorScheme.secondary
-    val buttonColor: Color = determineButtonColor(mode, modeSelectViewModel, colorWhenSelected)
+    val buttonColor: Color = getButtonColor(mode, modeSelectViewModel, colorWhenSelected)
 
     FilledTonalButton(
         onClick = { modeSelectViewModel.onSelectMode(mode) },
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(containerColor = buttonColor)
     ) {
-        Text(text = modeName)
+        Text(text = getModeButtonText(mode))
     }
 }
 
+@Composable
+private fun ModeInfoCard(modeSelectViewModel: ModeSelectViewModel) {
+    Card(modifier = Modifier
+        .padding(32.dp)) {
+        Text(
+            text = modeSelectViewModel.getSelectedModeDescription(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(40.dp),
+            textAlign = TextAlign.Center
+        )
+    }
+}
 
-fun determineButtonColor(mode : SessionType, modeSelectViewModel : ModeSelectViewModel, colorWhenSelected : Color) : Color {
+private fun getButtonColor(mode : SessionType, modeSelectViewModel : ModeSelectViewModel, colorWhenSelected : Color) : Color {
     val colorWhenNotSelected = Color.Gray
 
     val isModeSelected = modeSelectViewModel.isModeSelected(mode)
@@ -236,180 +177,11 @@ fun determineButtonColor(mode : SessionType, modeSelectViewModel : ModeSelectVie
     return if (isModeSelected) colorWhenSelected else colorWhenNotSelected
 }
 
-
-
-/*
-@Composable
-fun ModeSelectView(navController: NavController) {
-
-    val modeSelectViewModel = viewModel<ModeSelectViewModel>(
-        factory = viewModelFactory {
-            ModeSelectViewModel(
-                NeptuneApp.model.appState
-            )
-        }
-    )
-
-    BackHandler {
-        modeSelectViewModel.onBack(navController)
-    }
-
-    fun determineButtonColor(mode: SessionType): Color {
-        val isModeSelected = modeSelectViewModel.isModeSelected(mode)
-        return if (isModeSelected) colorWhenSelected else colorWhenNotSelected
-    }
-
-    NeptuneTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-
-            Column(modifier = Modifier
-                .fillMaxSize()
-            ) {
-                TopBar(onBack = { modeSelectViewModel.onBack(navController) })
-            }
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.SpaceEvenly,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        val generalModifier = Modifier
-                            .weight(1f)
-                        /*
-                        if (modeSelectViewModel.isModeSelected(SessionType.GENERAL)) {
-
-                            generalModifier.border(5.dp, Color.Black, RoundedCornerShape(50))
-                        }
-                        */
-
-                        FilledTonalButton(
-                            onClick = { modeSelectViewModel.onSelectMode(SessionType.GENERAL) },
-                            modifier = generalModifier,
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = determineButtonColor(SessionType.GENERAL)
-                            )
-                        ) {
-                            //Text(text = "General Mode")
-                            Text(text = stringResource(id = R.string.general_mode_name))
-                        }
-
-                        Spacer(modifier = Modifier.width(16.dp))
-
-                        val artistModifier = Modifier
-                            .weight(1f)
-                        /*
-                        (modeSelectViewModel.isModeSelected(SessionType.ARTIST)) {
-                            artistModifier.border(5.dp, Color.Black, RoundedCornerShape(50))
-                        }
-                        */
-                        FilledTonalButton(
-                            onClick = { modeSelectViewModel.onSelectMode(SessionType.ARTIST) },
-                            modifier = artistModifier,
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = determineButtonColor(SessionType.ARTIST)
-                            )
-                        ) {
-                            //Text(text = "Artist Mode")
-                            Text(text = stringResource(id = R.string.artist_mode_name))
-                        }
-                    }
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        val genreModifier = Modifier
-                            .weight(1f)
-                        /*
-                        if (modeSelectViewModel.isModeSelected(SessionType.GENRE)) {
-                            genreModifier.border(5.dp, Color.Black, RoundedCornerShape(50))
-                        }
-                        */
-                        FilledTonalButton(
-                            onClick = { modeSelectViewModel.onSelectMode(SessionType.GENRE) },
-                            modifier = genreModifier,
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = determineButtonColor(SessionType.GENRE)
-                            )
-                        ) {
-                            //Text(text = "Genre Mode")
-                            Text(text = stringResource(id = R.string.genre_mode_name))
-                        }
-
-                        Spacer(modifier = Modifier.width(16.dp))
-
-                        val playlistModifier = Modifier
-                            .weight(1f)
-                        /*
-                        if (modeSelectViewModel.isModeSelected(SessionType.PLAYLIST)) {
-                            playlistModifier.border(5.dp, Color.Black, RoundedCornerShape(50))
-                        }
-                        */
-                        FilledTonalButton(
-                            onClick = { modeSelectViewModel.onSelectMode(SessionType.PLAYLIST) },
-                            modifier = playlistModifier,
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = determineButtonColor(SessionType.PLAYLIST)
-                            )
-                        ) {
-                            //Text(text = "Playlist Mode")
-                            Text(text = stringResource(id = R.string.playlist_mode_name))
-                        }
-                    }
-
-                }
-
-
-
-                Spacer(modifier = Modifier.height(40.dp))
-
-                Box(
-                    modifier = Modifier
-                        //.border(1.dp, Color.White, RoundedCornerShape(1))
-                        //.padding(8.dp)
-                        .size(300.dp, 100.dp)
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxSize()
-                    ) {
-                        Text(
-                            text = modeSelectViewModel.getSelectedModeDescription(),
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(40.dp),
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.height(40.dp))
-
-                Button(onClick = { modeSelectViewModel.onConfirmMode(navController) }
-                ) {
-                    //Text(text = "Modus Bestätigen")
-                    Text(text = stringResource(id = R.string.confirmation_button_text))
-                }
-            }
-        }
+private fun getModeButtonText(mode: SessionType): String {
+    return when (mode) {
+        SessionType.ARTIST -> context.getString(R.string.artist_mode_name)
+        SessionType.GENRE -> context.getString(R.string.genre_mode_name)
+        SessionType.PLAYLIST -> context.getString(R.string.playlist_mode_name)
+        else -> context.getString(R.string.general_mode_name)
     }
 }
-*/
