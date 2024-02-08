@@ -43,6 +43,7 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
@@ -126,10 +127,8 @@ private fun JoinViewContent(joinViewModel: JoinViewModel, navController: NavCont
 
                 ConfirmationButton(joinViewModel = joinViewModel, navController = navController, joinButtonEnabled = joinButtonEnabled)
 
-
-                OpenQRCodeReaderButton(joinViewModel = joinViewModel, navController = navController)
-
             }
+            OpenQRCodeReaderButton(joinViewModel = joinViewModel, navController = navController)
         }
     }
 }
@@ -192,7 +191,7 @@ fun OpenQRCodeReaderButton(joinViewModel: JoinViewModel, navController: NavContr
     }
 
     if (isCameraViewVisible) {
-        CameraPreviewWithQRCodeScanner { qrCodeText ->
+        CameraPreviewWithQRCodeScanner(modifier = Modifier.fillMaxHeight()) { qrCodeText ->
             joinViewModel.onQRCodeDetected(navController, qrCodeText)
         }
     }
@@ -200,7 +199,7 @@ fun OpenQRCodeReaderButton(joinViewModel: JoinViewModel, navController: NavContr
 
 @Composable
 @androidx.annotation.OptIn(androidx.camera.core.ExperimentalGetImage::class)
-fun CameraPreviewWithQRCodeScanner(onQRCodeDetected: (String) -> Unit) {
+fun CameraPreviewWithQRCodeScanner(modifier: Modifier = Modifier, onQRCodeDetected: (String) -> Unit) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val cameraExecutor: ExecutorService = remember { Executors.newSingleThreadExecutor() }
