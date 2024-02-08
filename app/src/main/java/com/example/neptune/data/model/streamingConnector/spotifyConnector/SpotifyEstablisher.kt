@@ -21,6 +21,11 @@ import java.net.URLEncoder
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
+/**
+ * Class responsible for establishing and managing the connection with the Spotify streaming service.
+ * @param spotifyConnectionDatabase The database interface for managing Spotify connection data.
+ * @param volleyQueue The request queue for making network requests.
+ */
 class SpotifyEstablisher(
     private val spotifyConnectionDatabase: SpotifyConnectionDatabase,
     private val volleyQueue: RequestQueue
@@ -33,14 +38,27 @@ class SpotifyEstablisher(
 
     private var onRestoreFinished: () -> Unit = {}
 
+    /**
+     * Retrieves the access token.
+     * @return The access token.
+     */
     override fun getAccessToken(): String {
         return accessToken
     }
 
+    /**
+     * Retrieves the refresh token.
+     * @return The refresh token.
+     */
     override fun getRefreshToken(): String {
         return refreshToken
     }
 
+
+    /**
+     * Attempts to restore the connection if possible.
+     * @param onRestoreFinished Callback invoked after attempting to restore the connection.
+     */
     override suspend fun restoreConnectionIfPossible(onRestoreFinished: () -> Unit) {
         this.onRestoreFinished = onRestoreFinished
         if (spotifyConnectionDatabase.hasLinkedEntry()) {
@@ -68,10 +86,19 @@ class SpotifyEstablisher(
         }
     }
 
+
+    /**
+     * Retrieves the streaming level.
+     * @return The mutable state of the streaming level.
+     */
     override fun getStreamingLevel(): MutableState<StreamingLevel> {
         return spotifyLevel
     }
 
+
+    /**
+     * Initiates the connection process with Spotify using the authorization flow in a custom tab.
+     */
     override fun initiateConnectWithAuthorize() {
         val spotifyClientId = NeptuneApp.context.getString(R.string.spotify_client_id)
         val url = "https://accounts.spotify.com/authorize?client_id=" +
@@ -86,6 +113,11 @@ class SpotifyEstablisher(
         customTabsIntent.launchUrl(NeptuneApp.context, Uri.parse(url))
     }
 
+
+    /**
+     * Completes the connection process with Spotify using the provided authorization code.
+     * @param code The authorization code.
+     */
     @OptIn(ExperimentalEncodingApi::class)
     override fun finishConnectWithCode(code: String) {
 
@@ -129,6 +161,10 @@ class SpotifyEstablisher(
         volleyQueue.add(stringRequest)
     }
 
+
+    /**
+     * Disconnects/unlinks from the Spotify streaming service, new connection requires new authentication.
+     */
     override fun disconnect() {
         GlobalScope.launch {
             spotifyConnectionDatabase.setLinked(false)
@@ -137,6 +173,12 @@ class SpotifyEstablisher(
         spotifyLevel.value = StreamingLevel.UNLINKED
     }
 
+
+    /**
+     * Searches for artists matching the provided search input.
+     * @param searchInput The search input to find matching artists.
+     * @param callback The callback to handle the list of matching artists.
+     */
     override fun searchMatchingArtists(searchInput: String, callback: (List<String>) -> Unit) {
 
         val baseUrl = "https://api.spotify.com/v1/search"
@@ -163,6 +205,11 @@ class SpotifyEstablisher(
     }
 
 
+    /**
+     * Retrieves the playlist from Spotify with the specified playlist ID.
+     * @param playlistId The ID of the playlist to retrieve.
+     * @param callback The callback to handle the retrieved playlist.
+     */
     override fun getPlaylist(playlistId: String, callback: (MutableList<Track>) -> Unit) {
         val url = "https://api.spotify.com/v1/playlists/$playlistId"
 

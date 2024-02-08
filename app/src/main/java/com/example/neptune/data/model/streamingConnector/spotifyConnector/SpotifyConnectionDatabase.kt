@@ -6,25 +6,41 @@ import com.example.neptune.data.room.streaming.StreamingConnectionData
 import com.example.neptune.data.room.streaming.StreamingConnectionDataDao
 
 
+/**
+ * SpotifyConnectionDatabase is a database wrapper responsible for managing the connection data related to Spotify streaming service.
+ * It implements the StreamingConnectionDatabase interface.
+ * @property streamingConnectionDataDao The DAO (Data Access Object) for accessing and managing streaming connection data in the database.
+ */
 class SpotifyConnectionDatabase(
     private val streamingConnectionDataDao: StreamingConnectionDataDao
 ) : StreamingConnectionDatabase {
 
 
+    /**
+     * Checks if there is at least one linked entry in the database.
+     * @return True if there is at least one linked entry, false otherwise.
+     */
     override suspend fun hasLinkedEntry(): Boolean {
         return streamingConnectionDataDao.entryCount() != 0
     }
 
+    /**
+     * Checks if the Spotify connection is linked.
+     * @return True if the Spotify connection is linked, false otherwise.
+     * @throws Exception if linked is not set but must be already set.
+     */
     override suspend fun isLinked(): Boolean {
         if (hasLinkedEntry()) {
             return streamingConnectionDataDao.isLinked()
         } else {
-            //TODO ist das sinnvoll???
-            Exception("Linked is not set, but must be already set")
-            return false
+            throw Exception("Linked is not set, but must be already set")
         }
     }
 
+    /**
+     * Sets the linked status of the Spotify connection.
+     * @param isLinked Boolean indicating whether the connection is linked.
+     */
     override suspend fun setLinked(isLinked: Boolean) {
         if (!hasLinkedEntry()) {
             streamingConnectionDataDao.upsert(StreamingConnectionData(0, isLinked, ""))
@@ -33,22 +49,29 @@ class SpotifyConnectionDatabase(
         }
     }
 
+    /**
+     * Retrieves the refresh token used for refreshing Spotify access tokens.
+     * @return The refresh token.
+     * @throws Exception if linked is not set but must be already set for getting a refresh token.
+     */
     override suspend fun getRefreshToken(): String {
         if (hasLinkedEntry()) {
             return streamingConnectionDataDao.getRefreshToken()
         } else {
-            //TODO ist das sinnvoll???
-            Exception("Linked is not set, but must be already set for getting a refresh token")
-            return ""
+            throw Exception("Linked is not set, but must be already set for getting a refresh token")
         }
     }
 
+    /**
+     * Sets the refresh token used for refreshing Spotify access tokens.
+     * @param refreshToken The refresh token.
+     * @throws Exception if linked is not set but must be already set for setting a refresh token.
+     */
     override suspend fun setRefreshToken(refreshToken: String) {
         if (hasLinkedEntry()) {
-            return streamingConnectionDataDao.setRefreshToken(refreshToken)
+            streamingConnectionDataDao.setRefreshToken(refreshToken)
         } else {
-            //TODO ist das sinnvoll???
-            Exception("Linked is not set, but must be already set for setting a refresh token")
+            throw Exception("Linked is not set, but must be already set for setting a refresh token")
         }
     }
 

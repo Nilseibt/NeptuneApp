@@ -11,12 +11,23 @@ import com.example.neptune.data.model.track.Track
 import org.json.JSONObject
 import java.net.URLEncoder
 
+
+/**
+ * Class responsible for connecting to the Spotify API and performing various streaming operations.
+ * @property volleyQueue The request queue for handling network requests.
+ * @property accessToken The access token required for authorization with the Spotify API.
+ */
 open class SpotifyConnector(
     private val volleyQueue: RequestQueue,
-    private val accessToken: String,
-    private val refreshToken: String
+    private val accessToken: String
 ) : StreamingConnector {
 
+    /**
+     * Searches for tracks on Spotify based on the given search input.
+     * @param searchInput The search input string.
+     * @param resultLimit The maximum number of results to return.
+     * @param onCallbackFinished The callback function to handle the search results.
+     */
     override fun search(
         searchInput: String,
         resultLimit: Int,
@@ -73,6 +84,12 @@ open class SpotifyConnector(
         onCallbackFinished(resultList)
     }
 
+    /**
+     * Searches for tracks on Spotify based on the given search input and includes genres in the results.
+     * @param searchInput The search input string.
+     * @param resultLimit The maximum number of results to return.
+     * @param onCallbackFinished The callback function to handle the search results.
+     */
     override fun searchWithGenres(
         searchInput: String,
         resultLimit: Int,
@@ -144,6 +161,11 @@ open class SpotifyConnector(
     }
 
 
+    /**
+     * Retrieves the genres of artists associated with the given artist IDs.
+     * @param artistIds The list of artist IDs.
+     * @param onCallbackFinished The callback function to handle the genre information.
+     */
     private fun getGenresOfArtists(
         artistIds: List<String>,
         onCallbackFinished: (resultMap: Map<String, List<String>>) -> Unit
@@ -190,6 +212,13 @@ open class SpotifyConnector(
     }
 
 
+    /**
+     * Sends a new GET request to the Spotify API.
+     * @param url The URL with endpoint for the GET request.
+     * @param headers The headers for the request.
+     * @param parameters The parameters for the request.
+     * @param callback The callback function to handle the JSON response.
+     */
     protected fun newGetRequest(
         url: String,
         headers: Map<String, String> = mapOf(),
@@ -225,6 +254,15 @@ open class SpotifyConnector(
         volleyQueue.add(stringRequest)
     }
 
+
+    /**
+     * Sends a new request to the Spotify API.
+     * @param url The URL with endpoint for the request.
+     * @param method The HTTP method for the request.
+     * @param headers The headers for the request.
+     * @param parameters The parameters for the request.
+     * @param onCallback The optional callback function to execute after the request.
+     */
     protected fun newRequest(
         url: String,
         method: Int,

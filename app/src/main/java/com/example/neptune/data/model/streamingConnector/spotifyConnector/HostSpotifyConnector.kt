@@ -16,11 +16,17 @@ import org.json.JSONObject
 import kotlin.math.min
 
 
+/**
+ * Class representing the Spotify connector for the host device, providing functionalities for controlling playback.
+ * @property volleyQueue The request queue for handling network requests.
+ * @property accessToken The access token required for authorization with the Spotify API.
+ * @property playbackState The current playback state.
+ * @property trackIdWhichShouldBePlayed The ID of the track that should be played.
+ */
 class HostSpotifyConnector(
     private val volleyQueue: RequestQueue,
-    private val accessToken: String,
-    private val refreshToken: String
-) : SpotifyConnector(volleyQueue, accessToken, refreshToken), HostStreamingConnector {
+    private val accessToken: String
+) : SpotifyConnector(volleyQueue, accessToken), HostStreamingConnector {
 
 
     private var playbackState = mutableStateOf(PlaybackState.INITIAL)
@@ -28,6 +34,11 @@ class HostSpotifyConnector(
     private var trackIdWhichShouldBePlayed = ""
 
 
+    /**
+     * Plays the specified track from the given position.
+     * @param track The track to be played.
+     * @param positionMs The position in milliseconds from which to start playback.
+     */
     override fun playTrack(track: Track, positionMs: Int) {
         playTrackById(track.id, positionMs)
     }
@@ -69,6 +80,12 @@ class HostSpotifyConnector(
         trackIdWhichShouldBePlayed = trackId
     }
 
+
+    /**
+     * Sets the play progress of the currently playing track.
+     * @param progress The progress value between 0 and 1.
+     * @param onCallback The optional callback function to execute after setting the play progress.
+     */
     override fun setPlayProgress(progress: Float, onCallback: () -> Unit) {
         var headers: MutableMap<String, String> = HashMap()
         headers["Authorization"] = "Bearer $accessToken"
@@ -95,6 +112,11 @@ class HostSpotifyConnector(
         }
     }
 
+    /**
+     * Adds the specified track to the streaming queue.
+     * @param track The track to be added to the queue.
+     * @param onCallback The optional callback function to execute after adding the track.
+     */
     override fun addTrackToStreamingQueue(track: Track, onCallback: () -> Unit) {
         var headers: MutableMap<String, String> = HashMap()
         headers["Authorization"] = "Bearer $accessToken"
@@ -113,6 +135,9 @@ class HostSpotifyConnector(
         trackIdWhichShouldBePlayed = track.id
     }
 
+    /**
+     * Skips to the next track in the playback queue.
+     */
     override fun skipTrack() {
         var headers: MutableMap<String, String> = HashMap()
         headers["Authorization"] = "Bearer $accessToken"
@@ -128,7 +153,12 @@ class HostSpotifyConnector(
         playbackState.value = PlaybackState.PLAYING
     }
 
-    override fun refillQueueIfNeeded(
+    /**
+     * Refills the playback queue if needed and updates the player state.
+     * @param onRefillQueue The callback function to execute if the queue needs to be refilled.
+     * @param updatePlayProgress The callback function to update the play progress.
+     */
+    override fun getPlayerStateAndRefillQueueIfNeeded(
         onRefillQueue: () -> Unit,
         updatePlayProgress: (Float) -> Unit
     ) {
@@ -138,11 +168,11 @@ class HostSpotifyConnector(
         var parameters: MutableMap<String, String> = HashMap()
 
         newGetRequest("https://api.spotify.com/v1/me/player", headers, parameters) { jsonResponse ->
-            callbackRefillQueueIfNeeded(jsonResponse, onRefillQueue, updatePlayProgress)
+            callbackPlayerStateRefillQueueIfNeeded(jsonResponse, onRefillQueue, updatePlayProgress)
         }
     }
 
-    private fun callbackRefillQueueIfNeeded(
+    private fun callbackPlayerStateRefillQueueIfNeeded(
         jsonResponse: JSONObject,
         onRefillQueueNeeded: () -> Unit,
         updatePlayProgress: (Float) -> Unit
@@ -158,11 +188,14 @@ class HostSpotifyConnector(
         val durationMs = jsonResponse.getJSONObject("item").getInt("duration_ms")
         val currentlyPlayingTrackId = jsonResponse.getJSONObject("item").getString("id")
         updatePlayProgress(min(1f, progressMs.toFloat() / (durationMs.toFloat() - 5000f)))
-        if (durationMs - progressMs < 5000 && currentlyPlayingTrackId == trackIdWhichShouldBePlayed) { //TODO make correct timing here
+        if (durationMs - progressMs < 5000 && currentlyPlayingTrackId == trackIdWhichShouldBePlayed) {
             onRefillQueueNeeded()
         }
     }
 
+    /**
+     * Pauses the playback.
+     */
     override fun pausePlay() {
         var headers: MutableMap<String, String> = HashMap()
         headers["Authorization"] = "Bearer $accessToken"
@@ -178,6 +211,9 @@ class HostSpotifyConnector(
         playbackState.value = PlaybackState.PAUSED
     }
 
+    /**
+     * Resumes the playback.
+     */
     override fun resumePlay() {
         var headers: MutableMap<String, String> = HashMap()
         headers["Authorization"] = "Bearer $accessToken"
@@ -193,14 +229,27 @@ class HostSpotifyConnector(
         playbackState.value = PlaybackState.PLAYING
     }
 
+    /**
+     * Retrieves the current playback state.
+     * @return The playback state.
+     */
     override fun getPlaybackState(): MutableState<PlaybackState> {
         return playbackState
     }
 
+    /**
+     * Sets the playback state to the specified state.
+     * @param playbackState The new playback state.
+     */
     override fun setPlaybackState(playbackState: PlaybackState) {
         this.playbackState.value = playbackState
     }
 
+    /**
+     * Checks if a player device is available for playback.
+     * @param onDeviceAvailable The callback function to execute if a device is available.
+     * @param onNoDeviceAvailable The callback function to execute if no device is available.
+     */
     override fun checkIfPlayerDeviceAvailable(
         onDeviceAvailable: () -> Unit,
         onNoDeviceAvailable: () -> Unit
