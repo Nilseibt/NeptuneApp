@@ -2,9 +2,11 @@ package com.example.neptune.ui.views.statsView
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,6 +24,11 @@ import com.example.neptune.ui.commons.TopBar
 import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
 
+/**
+ * The composable for the statsView.
+ *
+ * @param navController the NavController needed to navigate to another view
+ */
 @Composable
 fun StatsView(navController: NavController) {
 
@@ -39,180 +46,269 @@ fun StatsView(navController: NavController) {
 
     NeptuneTheme {
 
+        StatsViewContent(statsViewModel, navController)
+
+    }
+}
+
+@Composable
+private fun StatsViewContent(statsViewModel: StatsViewModel, navController: NavController) {
+
+    Column(
+        modifier = Modifier
+            .background(color = MaterialTheme.colorScheme.background)
+            .fillMaxSize()
+    ) {
+
+        TopBar { statsViewModel.onBack(navController) }
+
         Column(
             modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.background)
                 .fillMaxSize()
+                .padding(20.dp)
         ) {
 
-            TopBar { statsViewModel.onBack(navController) }
+            Box(modifier = Modifier.weight(1f)) {
+                StatisticsText()
+            }
 
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(20.dp)
-            ) {
+            Box(modifier = Modifier.weight(1f)) {
+                MostPopularTrackText(statsViewModel)
+            }
 
-                Row(
-                    modifier = Modifier.weight(1f),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.statistics_text),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.headlineLarge,
-                        modifier = Modifier.weight(1f),
-                        textAlign = TextAlign.Center
-                    )
+            if (statsViewModel.isGenreSession()) {
+                Box(modifier = Modifier.weight(1f)) {
+                    MostPopularGenreText(statsViewModel)
                 }
+            }
 
-                Row(
-                    modifier = Modifier.weight(1f),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.most_popular_track_text),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.weight(1f)
-                    )
+            Box(modifier = Modifier.weight(1f)) {
+                MostPopularArtistText(statsViewModel)
+            }
 
-                    Text(
-                        text = statsViewModel.mostUpvotedTrack.value,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.weight(1f),
-                        textAlign = TextAlign.Center
-                    )
-                }
+            Box(modifier = Modifier.weight(1f)) {
+                TotalNumberTracksText(statsViewModel)
+            }
 
-                if (statsViewModel.isGenreSession()) {
+            Box(modifier = Modifier.weight(1f)) {
+                TotalNumberUpvotesText(statsViewModel)
+            }
 
-                    Row(
-                        modifier = Modifier.weight(1f),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.most_popular_genre_text),
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = MaterialTheme.typography.titleLarge,
-                            modifier = Modifier.weight(1f)
-                        )
+            Box(modifier = Modifier.weight(1f)) {
+                TotalNumberParticipantsText(statsViewModel)
+            }
 
-                        Text(
-                            text = statsViewModel.mostUpvotedGenre.value,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = MaterialTheme.typography.titleLarge,
-                            modifier = Modifier.weight(1f),
-                            textAlign = TextAlign.Center
-                        )
-                    }
-
-                }
-
-                Row(
-                    modifier = Modifier.weight(1f),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.most_popular_artist_text),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.weight(1f)
-                    )
-
-                    Text(
-                        text = statsViewModel.mostUpvotedArtist.value,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.weight(1f),
-                        textAlign = TextAlign.Center
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.weight(1f),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.total_played_tracks_text),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.weight(1f)
-                    )
-
-                    Text(
-                        text = statsViewModel.totalPlayedTracks.value,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.weight(1f),
-                        textAlign = TextAlign.Center
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.weight(1f),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.total_upvote_text),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.weight(1f)
-                    )
-
-                    Text(
-                        text = statsViewModel.totalUpvotes.value,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.weight(1f),
-                        textAlign = TextAlign.Center
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.weight(1f),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.total_participant_text),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.weight(1f)
-                    )
-
-                    Text(
-                        text = statsViewModel.totalParticipants.value,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.weight(1f),
-                        textAlign = TextAlign.Center
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.weight(1f),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.session_duration_text),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.weight(1f)
-                    )
-
-                    Text(
-                        text = statsViewModel.sessionDuration.value,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.weight(1f),
-                        textAlign = TextAlign.Center
-                    )
-                }
-
+            Box(modifier = Modifier.weight(1f)) {
+                SessionDurationText(statsViewModel)
             }
 
         }
 
     }
+
+}
+
+@Composable
+private fun StatisticsText() {
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = stringResource(id = R.string.statistics_text),
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.headlineLarge,
+            modifier = Modifier.weight(1f),
+            textAlign = TextAlign.Center
+        )
+    }
+
+}
+
+@Composable
+private fun MostPopularTrackText(statsViewModel: StatsViewModel) {
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        Text(
+            text = stringResource(id = R.string.most_popular_track_text),
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.weight(1f)
+        )
+
+        Text(
+            text = statsViewModel.mostUpvotedTrack.value,
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.weight(1f),
+            textAlign = TextAlign.Center
+        )
+
+    }
+
+}
+
+@Composable
+private fun MostPopularGenreText(statsViewModel: StatsViewModel) {
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        Text(
+            text = stringResource(id = R.string.most_popular_genre_text),
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.weight(1f)
+        )
+
+        Text(
+            text = statsViewModel.mostUpvotedGenre.value,
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.weight(1f),
+            textAlign = TextAlign.Center
+        )
+
+    }
+
+}
+
+@Composable
+private fun MostPopularArtistText(statsViewModel: StatsViewModel) {
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = stringResource(id = R.string.most_popular_artist_text),
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.weight(1f)
+        )
+
+        Text(
+            text = statsViewModel.mostUpvotedArtist.value,
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.weight(1f),
+            textAlign = TextAlign.Center
+        )
+    }
+
+}
+
+@Composable
+private fun TotalNumberTracksText(statsViewModel: StatsViewModel) {
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        Text(
+            text = stringResource(id = R.string.total_played_tracks_text),
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.weight(1f)
+        )
+
+        Text(
+            text = statsViewModel.totalPlayedTracks.value,
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.weight(1f),
+            textAlign = TextAlign.Center
+        )
+
+    }
+
+}
+
+@Composable
+private fun TotalNumberUpvotesText(statsViewModel: StatsViewModel) {
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        Text(
+            text = stringResource(id = R.string.total_upvote_text),
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.weight(1f)
+        )
+
+        Text(
+            text = statsViewModel.totalUpvotes.value,
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.weight(1f),
+            textAlign = TextAlign.Center
+        )
+
+    }
+
+}
+
+@Composable
+private fun TotalNumberParticipantsText(statsViewModel: StatsViewModel) {
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        Text(
+            text = stringResource(id = R.string.total_participant_text),
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.weight(1f)
+        )
+
+        Text(
+            text = statsViewModel.totalParticipants.value,
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.weight(1f),
+            textAlign = TextAlign.Center
+        )
+
+    }
+
+}
+
+@Composable
+private fun SessionDurationText(statsViewModel: StatsViewModel) {
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        Text(
+            text = stringResource(id = R.string.session_duration_text),
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.weight(1f)
+        )
+
+        Text(
+            text = statsViewModel.sessionDuration.value,
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.weight(1f),
+            textAlign = TextAlign.Center
+        )
+
+    }
+
 }

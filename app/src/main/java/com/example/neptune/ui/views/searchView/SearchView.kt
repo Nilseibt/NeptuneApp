@@ -14,6 +14,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,6 +34,11 @@ import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
 import kotlinx.coroutines.delay
 
+/**
+ * The composable for the searchView.
+ *
+ * @param navController the NavController needed to navigate to another view
+ */
 @Composable
 fun SearchView(navController: NavController) {
 
@@ -46,98 +52,6 @@ fun SearchView(navController: NavController) {
 
     BackHandler {
         searchViewModel.onBack(navController)
-    }
-
-    NeptuneTheme {
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.background)
-        ) {
-
-            TopBar(onBack = { searchViewModel.onBack(navController) })
-
-            SessionInfoBar(
-                onStatistics = { searchViewModel.onOpenStats(navController) },
-                onInfo = { searchViewModel.onOpenInfo(navController) },
-                description = searchViewModel.getTopBarDescription()
-            )
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(10.dp)
-            ) {
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    if(searchViewModel.isHost()) {
-
-                        IconButton(
-                            onClick = { searchViewModel.onClickFilterIcon() },
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            val icon = when (searchViewModel.getActiveFilter()) {
-                                Filter.NONE -> painterResource(id = R.drawable.baseline_filter_alt_24)
-                                Filter.BLOCKED -> painterResource(id = R.drawable.baseline_block_24)
-                                Filter.COOLDOWN -> painterResource(id = R.drawable.baseline_lock_clock_24)
-                            }
-                            Icon(
-                                painter = icon,
-                                contentDescription = "",
-                                tint = MaterialTheme.colorScheme.onBackground
-                            )
-                        }
-                        DropdownMenu(
-                            expanded = searchViewModel.isFilterDropdownExpanded(),
-                            onDismissRequest = { searchViewModel.collapseFilterDropwdown() }
-                        ) {
-                            DropdownMenuItem(
-                                text = { Text(text = stringResource(id = R.string.locked_filter_name)) },
-                                onClick = { searchViewModel.onSetActiveFilter(Filter.BLOCKED) })
-                            DropdownMenuItem(
-                                text = { Text(text = stringResource(id = R.string.cooldown_filter_name)) },
-                                onClick = { searchViewModel.onSetActiveFilter(Filter.COOLDOWN) })
-                        }
-
-                    }
-
-                    OutlinedTextField(
-                        value = searchViewModel.getTrackSearchInput(),
-                        onValueChange = { searchViewModel.onTrackSearchInputChange(it) },
-                        enabled = searchViewModel.getActiveFilter() == Filter.NONE,
-                        modifier = Modifier.weight(7f),
-                        label = { Text(text = stringResource(id = R.string.search_text)) }
-                    )
-
-                }
-
-                Box(modifier = Modifier.weight(8f)) {
-                    val tracks = when(searchViewModel.getActiveFilter()){
-                        Filter.NONE -> searchViewModel.getSearchList()
-                        Filter.BLOCKED -> searchViewModel.getBlockedTracks()
-                        Filter.COOLDOWN -> searchViewModel.getCooldownTracks()
-                    }
-                    TrackListComposable(
-                        tracks = tracks,
-                        trackListType = searchViewModel.getSearchTrackListType(),
-                        onToggleUpvote = { searchViewModel.onToggleUpvote(it) },
-                        onToggleDropdown = { searchViewModel.onToggleDropdown(it) },
-                        isDropdownExpanded = { searchViewModel.isDropdownExpanded(it) },
-                        onAddToQueue = { searchViewModel.onAddToQueue(it) },
-                        onToggleBlock = { searchViewModel.onToggleBlock(it) })
-                }
-
-            }
-
-        }
-
     }
 
     LaunchedEffect(
@@ -158,6 +72,142 @@ fun SearchView(navController: NavController) {
                 delay(5000)
             }
         }
+    )
+
+    NeptuneTheme {
+
+        SearchViewContent(searchViewModel, navController)
+
+    }
+
+}
+
+@Composable
+private fun SearchViewContent(searchViewModel: SearchViewModel, navController: NavController) {
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.background)
+    ) {
+
+        TopBar(onBack = { searchViewModel.onBack(navController) })
+
+        SessionInfoBar(
+            onStatistics = { searchViewModel.onOpenStats(navController) },
+            onInfo = { searchViewModel.onOpenInfo(navController) },
+            description = searchViewModel.getTopBarDescription()
+        )
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+        ) {
+
+            Box(modifier = Modifier.weight(1f)) {
+                SearchBar(searchViewModel)
+            }
+
+            Box(modifier = Modifier.weight(8f)) {
+
+                val tracks = when (searchViewModel.getActiveFilter()) {
+                    Filter.NONE -> searchViewModel.getSearchList()
+                    Filter.BLOCKED -> searchViewModel.getBlockedTracks()
+                    Filter.COOLDOWN -> searchViewModel.getCooldownTracks()
+                }
+
+                TrackListComposable(
+                    tracks = tracks,
+                    trackListType = searchViewModel.getSearchTrackListType(),
+                    onToggleUpvote = { searchViewModel.onToggleUpvote(it) },
+                    onToggleDropdown = { searchViewModel.onToggleDropdown(it) },
+                    isDropdownExpanded = { searchViewModel.isDropdownExpanded(it) },
+                    onAddToQueue = { searchViewModel.onAddToQueue(it) },
+                    onToggleBlock = { searchViewModel.onToggleBlock(it) }
+                )
+
+            }
+
+        }
+
+    }
+
+}
+
+@Composable
+private fun SearchBar(searchViewModel: SearchViewModel) {
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        if (searchViewModel.isHost()) {
+            Box(modifier = Modifier.weight(1f)) {
+                FilterButton(searchViewModel)
+            }
+        }
+
+        Box(modifier = Modifier.weight(7f)) {
+            SearchField(searchViewModel)
+        }
+
+    }
+
+}
+
+@Composable
+private fun FilterButton(searchViewModel: SearchViewModel) {
+
+    IconButton(onClick = { searchViewModel.onClickFilterIcon() }) {
+
+        val icon = when (searchViewModel.getActiveFilter()) {
+            Filter.NONE -> painterResource(id = R.drawable.baseline_filter_alt_24)
+            Filter.BLOCKED -> painterResource(id = R.drawable.baseline_block_24)
+            Filter.COOLDOWN -> painterResource(id = R.drawable.baseline_lock_clock_24)
+        }
+
+        Icon(
+            painter = icon,
+            contentDescription = "",
+            tint = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(5.dp)
+        )
+
+    }
+
+    DropdownMenu(
+        expanded = searchViewModel.isFilterDropdownExpanded(),
+        onDismissRequest = { searchViewModel.collapseFilterDropwdown() }
+    ) {
+        DropdownMenuItem(
+            text = { Text(text = stringResource(id = R.string.locked_filter_name)) },
+            onClick = { searchViewModel.onSetActiveFilter(Filter.BLOCKED) })
+        DropdownMenuItem(
+            text = { Text(text = stringResource(id = R.string.cooldown_filter_name)) },
+            onClick = { searchViewModel.onSetActiveFilter(Filter.COOLDOWN) })
+    }
+
+}
+
+@Composable
+private fun SearchField(searchViewModel: SearchViewModel) {
+
+    OutlinedTextField(
+        value = searchViewModel.getTrackSearchInput(),
+        onValueChange = { searchViewModel.onTrackSearchInputChange(it) },
+        enabled = searchViewModel.getActiveFilter() == Filter.NONE,
+        label = { Text(text = stringResource(id = R.string.search_text)) },
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = MaterialTheme.colorScheme.onBackground,
+            unfocusedBorderColor = MaterialTheme.colorScheme.onBackground,
+            focusedLabelColor = MaterialTheme.colorScheme.onBackground,
+            cursorColor = MaterialTheme.colorScheme.onBackground
+        ),
+        modifier = Modifier.fillMaxWidth()
     )
 
 }
