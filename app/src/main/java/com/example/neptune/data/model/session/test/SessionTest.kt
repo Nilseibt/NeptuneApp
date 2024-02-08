@@ -2,7 +2,7 @@ package com.example.neptune.data.model.session.test
 
 import com.example.neptune.data.model.session.SessionBuilder
 import com.example.neptune.data.model.session.SessionType
-import com.example.neptune.data.model.track.src.Track
+
 import org.junit.Assert
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertTrue

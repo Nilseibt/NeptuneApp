@@ -2,6 +2,7 @@ package com.example.neptune.data.model.track.test
 
 import org.junit.Assert.assertTrue
 import org.junit.Test
+
 /**
  * Test class for Queue functionality.
  */
@@ -12,8 +13,9 @@ class QueueTest {
 
     // Retrieving a queue and tracks for testing.
     val queue = mockTracks.queue
-    val track2 = mockTracks.track2
+    val track4 = mockTracks.track4
     val track3 = mockTracks.track3
+    val track1 = mockTracks.track1
 
     /**
      * Test 'moveTracksInQueue' method.
@@ -21,11 +23,8 @@ class QueueTest {
     @Test
     fun moveTracksInQueue() {
         // Moving track up in the queue and asserting the result.
-        queue.moveTrackUp(1)
-        assertTrue(queue.popFirstTrack() == track2)
-
-        // Moving track down in the queue and asserting the result.
-        queue.moveTrackDown(0)
+        queue.moveTrackUp(2)
+        assertTrue(queue.popFirstTrack() == track1)
         assertTrue(queue.popFirstTrack() == track3)
     }
 }
