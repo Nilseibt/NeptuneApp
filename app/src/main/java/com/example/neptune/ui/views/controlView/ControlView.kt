@@ -2,6 +2,7 @@ package com.example.neptune.ui.views.controlView
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -102,9 +103,8 @@ private fun ControlViewContent(controlViewModel: ControlViewModel, navController
                 .padding(10.dp)
         ) {
 
-            //TODO Stephan please make nice
             if (controlViewModel.isStreamingHintAvailable()) {
-                Text(text = controlViewModel.getStreamingHint(), color = Color.Red)
+                StreamingHintText(controlViewModel)
             }
 
             QueueText()
@@ -155,6 +155,26 @@ private fun ControlViewContent(controlViewModel: ControlViewModel, navController
 
     if (controlViewModel.isDeleteSessionDialogShown()) {
         TerminateSessionDialog(controlViewModel, navController)
+    }
+
+}
+
+@Composable
+private fun StreamingHintText(controlViewModel: ControlViewModel) {
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+
+        Text(
+            text = controlViewModel.getStreamingHint(),
+            color = Color.Red,
+            style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Center
+        )
+
     }
 
 }
