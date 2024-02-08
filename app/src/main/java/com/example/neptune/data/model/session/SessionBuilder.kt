@@ -3,10 +3,9 @@ package com.example.neptune.data.model.session
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
-import com.example.neptune.data.model.track.src.PlayList
-import com.example.neptune.data.model.track.src.Track
+import com.example.neptune.data.model.track.PlayList
+import com.example.neptune.data.model.track.Track
 import com.example.neptune.data.resources.GenreList
-import java.sql.Timestamp
 import kotlin.math.min
 
 class SessionBuilder {

@@ -1,14 +1,10 @@
-package com.example.neptune.data.model.user.src
+package com.example.neptune.data.model.user
 
 import androidx.compose.runtime.mutableStateOf
 import com.example.neptune.data.model.backendConnector.BackendConnector
 import com.example.neptune.data.model.session.Session
 import com.example.neptune.data.model.session.SessionType
-import com.example.neptune.data.model.streamingConnector.HostStreamingConnector
 import com.example.neptune.data.model.streamingConnector.StreamingConnector
-import com.example.neptune.data.model.streamingConnector.spotifyConnector.SpotifyConnector
-import com.example.neptune.data.model.track.src.Track
-import com.example.neptune.data.model.track.src.TrackList
 
 open class FullParticipant(
     session: Session, backendConnector: BackendConnector,

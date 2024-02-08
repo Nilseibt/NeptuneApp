@@ -1,7 +1,6 @@
-package com.example.neptune.data.model.user.src
+package com.example.neptune.data.model.user
 
 
-import androidx.compose.runtime.MutableFloatState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -11,10 +10,8 @@ import com.example.neptune.data.model.session.Session
 import com.example.neptune.data.model.streamingConnector.HostStreamingConnector
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.PlaybackState
 
-import com.example.neptune.data.model.track.src.Queue
-import com.example.neptune.data.model.track.src.Track
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.example.neptune.data.model.track.Queue
+import com.example.neptune.data.model.track.Track
 
 
 class Host(

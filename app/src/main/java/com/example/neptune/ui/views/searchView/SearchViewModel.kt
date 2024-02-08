@@ -9,9 +9,9 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.neptune.data.model.session.SessionType
-import com.example.neptune.data.model.track.src.Track
-import com.example.neptune.data.model.user.src.Host
-import com.example.neptune.data.model.user.src.User
+import com.example.neptune.data.model.track.Track
+import com.example.neptune.data.model.user.Host
+import com.example.neptune.data.model.user.User
 import com.example.neptune.ui.commons.TrackListType
 import com.example.neptune.ui.views.ViewsCollection
 

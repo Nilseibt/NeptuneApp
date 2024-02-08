@@ -2,8 +2,8 @@ package com.example.neptune.data.model.streamingConnector
 
 import androidx.compose.runtime.MutableState
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.PlaybackState
-import com.example.neptune.data.model.track.src.PlayList
-import com.example.neptune.data.model.track.src.Track
+import com.example.neptune.data.model.track.PlayList
+import com.example.neptune.data.model.track.Track
 
 interface HostStreamingConnector : StreamingConnector {
 

@@ -30,7 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.neptune.R
-import com.example.neptune.data.model.track.src.Track
+import com.example.neptune.data.model.track.Track
 
 @Composable
 fun TrackComposable(

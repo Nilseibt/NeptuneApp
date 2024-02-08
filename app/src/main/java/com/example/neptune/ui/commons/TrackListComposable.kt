@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.neptune.data.model.track.src.Track
+import com.example.neptune.data.model.track.Track
 
 @Composable
 fun TrackListComposable(

@@ -1,4 +1,4 @@
-package com.example.neptune.data.model.track.src
+package com.example.neptune.data.model.track
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -69,7 +69,7 @@ open class TrackList (private val tracks: SnapshotStateList<MutableState<Track>>
     fun clear(){
         tracks.clear()
     }
-    fun trackAt(index: Int):Track{
+    fun trackAt(index: Int): Track {
        return tracks[index].value
     }
 

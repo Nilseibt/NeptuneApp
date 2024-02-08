@@ -1,7 +1,7 @@
 package com.example.neptune.data.model.track.test
 
-import com.example.neptune.data.model.track.src.TrackList
-import com.example.neptune.data.model.track.src.VoteList
+import com.example.neptune.data.model.track.TrackList
+import com.example.neptune.data.model.track.VoteList
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test

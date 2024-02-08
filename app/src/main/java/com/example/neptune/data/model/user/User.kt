@@ -1,6 +1,5 @@
-package com.example.neptune.data.model.user.src
+package com.example.neptune.data.model.user
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -9,9 +8,9 @@ import com.example.neptune.data.model.backendConnector.BackendConnector
 import com.example.neptune.data.model.backendConnector.ParticipantBackendConnector
 import com.example.neptune.data.model.session.Session
 import com.example.neptune.data.model.session.SessionType
-import com.example.neptune.data.model.track.src.Track
-import com.example.neptune.data.model.track.src.TrackList
-import com.example.neptune.data.model.track.src.VoteList
+import com.example.neptune.data.model.track.Track
+import com.example.neptune.data.model.track.TrackList
+import com.example.neptune.data.model.track.VoteList
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

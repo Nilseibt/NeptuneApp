@@ -1,7 +1,6 @@
 package com.example.neptune.data.model.backendConnector
 
 import android.util.Log
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import com.android.volley.Request
@@ -9,11 +8,9 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.example.neptune.NeptuneApp
 import com.example.neptune.R
-import com.example.neptune.data.model.track.src.Track
-import com.example.neptune.data.model.track.src.VoteList
+import com.example.neptune.data.model.track.Track
 import org.json.JSONArray
 import org.json.JSONObject
-import java.sql.Timestamp
 
 open class BackendConnector(
     private val deviceId: String,

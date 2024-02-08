@@ -1,16 +1,5 @@
 package com.example.neptune.data.model.user.test
 
-import androidx.compose.runtime.mutableStateOf
-import com.android.volley.toolbox.Volley
-import com.example.neptune.NeptuneApp
-import com.example.neptune.data.model.backendConnector.ParticipantBackendConnector
-import com.example.neptune.data.model.session.Session
-import com.example.neptune.data.model.track.test.MockTracks
-import com.example.neptune.data.model.user.src.UpvoteDatabase
-import com.example.neptune.data.model.user.src.User
-import com.example.neptune.data.room.upvotes.UpvoteDataDao
-import org.junit.Test
-
 class UserTest {
     //TODO broken due to database unable to be added to the user
     /*

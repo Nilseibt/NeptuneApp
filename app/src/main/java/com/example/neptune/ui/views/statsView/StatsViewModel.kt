@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.neptune.data.model.session.SessionType
-import com.example.neptune.data.model.user.src.User
+import com.example.neptune.data.model.user.User
 import com.example.neptune.ui.views.ViewsCollection
 
 class StatsViewModel(

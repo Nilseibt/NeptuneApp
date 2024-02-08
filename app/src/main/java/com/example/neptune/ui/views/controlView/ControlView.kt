@@ -32,7 +32,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.neptune.NeptuneApp
 import com.example.neptune.R
-import com.example.neptune.data.model.user.src.Host
+import com.example.neptune.data.model.user.Host
 import com.example.neptune.ui.commons.SessionInfoBar
 import com.example.neptune.ui.commons.TopBar
 import com.example.neptune.ui.commons.TrackListComposable

@@ -9,12 +9,9 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.neptune.NeptuneApp
 import com.example.neptune.data.model.appState.AppState
-import com.example.neptune.data.model.session.SessionBuilder
 import com.example.neptune.data.model.session.SessionType
-import com.example.neptune.data.model.track.src.Track
+import com.example.neptune.data.model.track.Track
 import com.example.neptune.ui.views.ViewsCollection
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlin.math.pow
 
 class ModeSettingsViewModel(

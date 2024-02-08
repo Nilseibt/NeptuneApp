@@ -1,6 +1,5 @@
 package com.example.neptune.data.model.streamingConnector.spotifyConnector
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
@@ -8,14 +7,13 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
 import com.example.neptune.NeptuneApp
 import com.example.neptune.R
 import com.example.neptune.data.model.streamingConnector.StreamingEstablisher
-import com.example.neptune.data.model.track.src.Track
+import com.example.neptune.data.model.track.Track
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
