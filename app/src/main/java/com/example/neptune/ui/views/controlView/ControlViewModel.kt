@@ -53,18 +53,19 @@ class ControlViewModel(
     }
 
     fun onAddToQueue(track: Track) {
-        host.addTrackToQueue(track)
         expandedDropdownIndexVote = -1
+        host.addTrackToQueue(track)
     }
 
     fun onRemoveFromQueue(index: Int) {
-        host.removeTrackFromQueue(index)
         expandedDropdownIndexQueue = -1
+        host.removeTrackFromQueue(index)
     }
 
     fun onToggleBlock(track: Track) {
-        host.toggleBlockTrack(track)
         expandedDropdownIndexQueue = -1
+        expandedDropdownIndexVote = -1
+        host.toggleBlockTrack(track)
     }
 
     fun onMoveUp(index: Int) {
