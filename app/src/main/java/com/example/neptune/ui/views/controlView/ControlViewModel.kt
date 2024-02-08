@@ -11,8 +11,8 @@ import androidx.navigation.NavController
 import com.example.neptune.data.model.backendConnector.HostBackendConnector
 import com.example.neptune.data.model.session.SessionType
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.PlaybackState
-import com.example.neptune.data.model.track.src.Track
-import com.example.neptune.data.model.user.src.Host
+import com.example.neptune.data.model.track.Track
+import com.example.neptune.data.model.user.Host
 import com.example.neptune.ui.views.ViewsCollection
 
 class ControlViewModel(
@@ -54,10 +54,12 @@ class ControlViewModel(
 
     fun onAddToQueue(track: Track) {
         host.addTrackToQueue(track)
+        expandedDropdownIndexVote = -1
     }
 
     fun onRemoveFromQueue(index: Int) {
         host.removeTrackFromQueue(index)
+        expandedDropdownIndexQueue = -1
     }
 
     fun onToggleBlock(track: Track) {

@@ -1,19 +1,19 @@
 package com.example.neptune.data.model.streamingConnector.spotifyConnector
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
 import com.example.neptune.NeptuneApp
 import com.example.neptune.R
 import com.example.neptune.data.model.streamingConnector.StreamingEstablisher
+import com.example.neptune.data.model.track.Track
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
@@ -157,6 +157,27 @@ class SpotifyEstablisher(
     }
 
 
+    override fun getPlaylist(playlistId: String, callback: (MutableList<Track>) -> Unit) {
+        val url = "https://api.spotify.com/v1/playlists/$playlistId"
+
+        val stringRequest: StringRequest = object : StringRequest(
+            Request.Method.GET, url,
+            { response ->
+                playlistCallback(JSONObject(response), callback)
+            },
+            { error ->
+                Log.e("VOLLEY", "Spotify Request Error: ${String(error.networkResponse.data)}")
+            }) {
+            override fun getHeaders(): Map<String, String> {
+                var params: MutableMap<String, String> = HashMap()
+                params["Authorization"] = "Bearer $accessToken"
+                return params
+            }
+        }
+        volleyQueue.add(stringRequest)
+    }
+
+
     private fun accessAndRefreshTokenCallback(accessToken: String, refreshToken: String) {
         this.accessToken = accessToken
         this.refreshToken = refreshToken
@@ -265,5 +286,40 @@ class SpotifyEstablisher(
         callback(artistsSearchList)
     }
 
+
+    private fun playlistCallback(
+        jsonResponse: JSONObject,
+        callback: (MutableList<Track>) -> Unit
+    ) {
+        val resultList = mutableListOf<Track>()
+        val tracksJsonList = jsonResponse.getJSONObject("tracks").getJSONArray("items")
+        Log.i("LOG", tracksJsonList.length().toString())
+        for (index in 0 until tracksJsonList.length()) {
+
+            try {
+                val trackJson = tracksJsonList.getJSONObject(index).getJSONObject("track")
+                val trackId = trackJson.getString("id")
+                val trackName = trackJson.getString("name")
+
+                val trackArtistsJsonList = trackJson.getJSONArray("artists")
+                val artistNames = mutableListOf<String>()
+                for (artistIndex in 0 until trackArtistsJsonList.length()) {
+                    val artistJson = trackArtistsJsonList.getJSONObject(artistIndex)
+                    artistNames.add(artistJson.getString("name"))
+                }
+
+                val trackImageUrl = trackJson.getJSONObject("album").getJSONArray("images")
+                    .getJSONObject(0).getString("url")
+
+                val track = Track(
+                    trackId, trackName, artistNames, mutableListOf(), trackImageUrl,
+                    mutableIntStateOf(0), mutableStateOf(false),
+                    mutableStateOf(false), mutableStateOf(false)
+                )
+                resultList.add(track)
+            } catch (exception: Exception){}
+        }
+        callback(resultList)
+    }
 
 }

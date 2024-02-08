@@ -3,12 +3,11 @@ package com.example.neptune.data.model.track.test
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import com.example.neptune.data.model.track.src.PlayList
-import com.example.neptune.data.model.track.src.Queue
-import com.example.neptune.data.model.track.src.Track
-import com.example.neptune.data.model.track.src.TrackList
-import com.example.neptune.data.model.track.src.VoteList
-import java.sql.Timestamp
+import com.example.neptune.data.model.track.PlayList
+import com.example.neptune.data.model.track.Queue
+import com.example.neptune.data.model.track.Track
+import com.example.neptune.data.model.track.TrackList
+import com.example.neptune.data.model.track.VoteList
 
 /**
  * contains a different tracks their properties and TrackLists for all Tests involving tracks

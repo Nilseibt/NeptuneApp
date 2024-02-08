@@ -1,6 +1,8 @@
 package com.example.neptune.ui
 
-import androidx.compose.material3.Text
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.fadeIn
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -14,6 +16,9 @@ fun NeptuneNavGraph(activity: MainActivity) {
 
     val navController = rememberNavController()
 
+    val enterTransition = { EnterTransition.None }
+    val exitTransition = { ExitTransition.None }
+
     NavHost(navController = navController, startDestination = ViewsCollection.LOADING_VIEW.name) {
 
         composable(
@@ -21,48 +26,90 @@ fun NeptuneNavGraph(activity: MainActivity) {
             deepLinks = listOf(navDeepLink {
                 uriPattern = "https://nep-tune.de/join/{argument}"
             }),
+            enterTransition = { enterTransition() },
+            exitTransition = { exitTransition() }
         ) { backStackEntry ->
             val argument = backStackEntry.arguments?.getString("argument")
             ViewsCollection.LOADING_VIEW.ComposableWithActivityAndArgument(navController, activity, argument)
         }
 
-        composable(ViewsCollection.START_VIEW.name) {
+        composable(
+            route = ViewsCollection.START_VIEW.name,
+            enterTransition = { enterTransition() },
+            exitTransition = { exitTransition() }
+        ) {
             ViewsCollection.START_VIEW.ComposableWithActivity(navController, activity)
         }
 
-        composable(ViewsCollection.JOIN_VIEW.name) {
+        composable(
+            route = ViewsCollection.JOIN_VIEW.name,
+            enterTransition = { enterTransition() },
+            exitTransition = { exitTransition() }
+        ) {
             ViewsCollection.JOIN_VIEW.Composable(navController)
         }
 
-        composable(ViewsCollection.VOTE_VIEW.name) {
+        composable(
+            route = ViewsCollection.VOTE_VIEW.name,
+            enterTransition = { enterTransition() },
+            exitTransition = { exitTransition() }
+        ) {
             ViewsCollection.VOTE_VIEW.Composable(navController)
         }
 
-        composable(ViewsCollection.SEARCH_VIEW.name) {
+        composable(
+            route = ViewsCollection.SEARCH_VIEW.name,
+            enterTransition = { enterTransition() },
+            exitTransition = { exitTransition() }
+        ) {
             ViewsCollection.SEARCH_VIEW.Composable(navController)
         }
 
-        composable(ViewsCollection.MODE_SELECT_VIEW.name) {
+        composable(
+            route = ViewsCollection.MODE_SELECT_VIEW.name,
+            enterTransition = { enterTransition() },
+            exitTransition = { exitTransition() }
+        ) {
             ViewsCollection.MODE_SELECT_VIEW.Composable(navController)
         }
 
-        composable(ViewsCollection.MODE_SETTINGS_VIEW.name) {
+        composable(
+            route = ViewsCollection.MODE_SETTINGS_VIEW.name,
+            enterTransition = { enterTransition() },
+            exitTransition = { exitTransition() }
+        ) {
             ViewsCollection.MODE_SETTINGS_VIEW.Composable(navController)
         }
 
-        composable(ViewsCollection.CONTROL_VIEW.name) {
+        composable(
+            route = ViewsCollection.CONTROL_VIEW.name,
+            enterTransition = { enterTransition() },
+            exitTransition = { exitTransition() }
+        ) {
             ViewsCollection.CONTROL_VIEW.Composable(navController)
         }
 
-        composable(ViewsCollection.INFO_VIEW.name) {
+        composable(
+            route = ViewsCollection.INFO_VIEW.name,
+            enterTransition = { enterTransition() },
+            exitTransition = { exitTransition() }
+        ) {
             ViewsCollection.INFO_VIEW.ComposableWithActivity(navController, activity)
         }
 
-        composable(ViewsCollection.STATS_VIEW.name) {
+        composable(
+            route = ViewsCollection.STATS_VIEW.name,
+            enterTransition = { enterTransition() },
+            exitTransition = { exitTransition() }
+            ) {
             ViewsCollection.STATS_VIEW.Composable(navController)
         }
 
-        composable(ViewsCollection.SESSION_ENTITIES_SEARCH_VIEW.name) {
+        composable(
+            route = ViewsCollection.SESSION_ENTITIES_SEARCH_VIEW.name,
+            enterTransition = { enterTransition() },
+            exitTransition = { exitTransition() }
+        ) {
             ViewsCollection.SESSION_ENTITIES_SEARCH_VIEW.Composable(navController)
         }
 

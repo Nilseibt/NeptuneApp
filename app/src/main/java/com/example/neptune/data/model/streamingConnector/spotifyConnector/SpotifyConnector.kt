@@ -2,15 +2,12 @@ package com.example.neptune.data.model.streamingConnector.spotifyConnector
 
 import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.example.neptune.data.model.streamingConnector.StreamingConnector
-import com.example.neptune.data.model.track.src.Track
-import com.example.neptune.data.model.track.src.TrackList
+import com.example.neptune.data.model.track.Track
 import org.json.JSONObject
 import java.net.URLEncoder
 

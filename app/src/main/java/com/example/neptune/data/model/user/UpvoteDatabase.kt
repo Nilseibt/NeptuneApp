@@ -1,4 +1,4 @@
-package com.example.neptune.data.model.user.src
+package com.example.neptune.data.model.user
 
 import com.example.neptune.data.model.session.Session
 import com.example.neptune.data.room.upvotes.UpvoteData

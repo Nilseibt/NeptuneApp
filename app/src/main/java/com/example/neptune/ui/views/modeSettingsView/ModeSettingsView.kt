@@ -1,8 +1,10 @@
 package com.example.neptune.ui.views.modeSettingsView
 
+import NeptuneOutlinedTextField
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +29,11 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,6 +46,7 @@ import com.example.neptune.R
 import com.example.neptune.ui.commons.TopBar
 import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
+import kotlinx.coroutines.delay
 
 @Composable
 fun ModeSettingsView(navController: NavController) {
@@ -78,11 +86,21 @@ fun ModeSettingsView(navController: NavController) {
 
                 if (modeSettingsViewModel.isPlaylistLinkInputAvailable()) {
                     //Text(text = "Standardplaylist", color = Color.White)
-                    OutlinedTextField(
+                    /*OutlinedTextField(
                         value = modeSettingsViewModel.getCurrentPlaylistLinkInput(),
                         onValueChange = { modeSettingsViewModel.onPlaylistLinkInputChange(it) },
                         label = { Text(text = stringResource(id = R.string.default_playlist), color = Color.White) }
-                    )
+                    )*/
+                    
+                    NeptuneOutlinedTextField(modeSettingsViewModel = modeSettingsViewModel, labelText = stringResource(
+                        id = R.string.default_playlist
+                    ))
+
+                    //TODO change color and make string resource
+                    if(!modeSettingsViewModel.isPlaylistLinkValid()){
+                        Text(text = "Playlist link invalid", color = Color.Red)
+                    }
+                    
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
@@ -100,7 +118,9 @@ fun ModeSettingsView(navController: NavController) {
 
                     val itemList = modeSettingsViewModel.getSelectedEntities()
 
-                    LazyRow {
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
                         items(itemList) { item ->
                             // your composable here
                             ElevatedButton(onClick = { modeSettingsViewModel.onToggleSelect(item) }) {
@@ -132,8 +152,9 @@ fun ModeSettingsView(navController: NavController) {
                     Spacer(modifier = Modifier.height(searchSliderDistance))
 
                     val itemList = modeSettingsViewModel.getSelectedEntities()
-
-                    LazyRow {
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
                         items(itemList) { item ->
                             // your composable here
                             ElevatedButton(onClick = { modeSettingsViewModel.onToggleSelect(item) }) {
@@ -165,8 +186,25 @@ fun ModeSettingsView(navController: NavController) {
                 Text(text = modeSettingsViewModel.getTrackCooldownString())
                 
                 Spacer(modifier = Modifier.height(40.dp))
+
+
+                // This is a guard for prohibiting double clicking the confirm button
+                var confirmButtonEnabled by remember { mutableStateOf(true) }
+                LaunchedEffect(confirmButtonEnabled) {
+                    if (confirmButtonEnabled) {
+                        return@LaunchedEffect
+                    } else {
+                        delay(1000)
+                        confirmButtonEnabled = true
+                    }
+                }
                 Button(
-                    onClick = { modeSettingsViewModel.onConfirmSettings(navController) }
+                    onClick = {
+                        if (confirmButtonEnabled) {
+                            confirmButtonEnabled = false
+                            modeSettingsViewModel.onConfirmSettings(navController)
+                        }
+                    }
                 ) {
                     //Text("Bestätigen")
                     Text(text = stringResource(id = R.string.confirmation_button_text))

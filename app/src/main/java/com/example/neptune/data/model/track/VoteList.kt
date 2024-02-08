@@ -1,4 +1,4 @@
-package com.example.neptune.data.model.track.src
+package com.example.neptune.data.model.track
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -6,7 +6,6 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 class VoteList(private val tracks: SnapshotStateList<MutableState<Track>>) : PlayList(tracks) {
 
     fun sortByUpvote() {
-        tracks.sortBy { track -> track.value.getUpvotes() }
-        tracks.reverse()
+        tracks.sortBy { track -> 65000 - track.value.getUpvotes() }
     }
 }

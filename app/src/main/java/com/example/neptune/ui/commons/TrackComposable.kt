@@ -30,7 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.neptune.R
-import com.example.neptune.data.model.track.src.Track
+import com.example.neptune.data.model.track.Track
 
 @Composable
 fun TrackComposable(
@@ -48,10 +48,15 @@ fun TrackComposable(
     onMoveDown: (index: Int) -> Unit
 ) {
 
+    val isLocked = track.isBlocked() || track.hasCooldown()
+
+    //TODO make correct color here
+    val backgroundColor = if(isLocked) Color.Gray else MaterialTheme.colorScheme.tertiary
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = MaterialTheme.colorScheme.tertiary)
+            .background(color = backgroundColor)
             .clip(shape = RoundedCornerShape(10.dp))
             .height(70.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -136,8 +141,9 @@ fun TrackComposable(
             )
 
             IconButton(
-                onClick = { onToggleUpvote(track) },
-                modifier = Modifier.weight(1f)
+                onClick = { if(!isLocked) { onToggleUpvote(track) } },
+                modifier = Modifier.weight(1f),
+                enabled = !isLocked
             ) {
                 Icon(
                     imageVector = if (track.isUpvoted()) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
@@ -200,10 +206,12 @@ fun TrackComposable(
                             onClick = { onToggleBlock(track) }
                         )
 
-                        DropdownMenuItem(
-                            text = { Text(text = stringResource(id = R.string.remove_track_from_queue_text)) },
-                            onClick = { onRemoveFromQueue(trackIndexInList) }
-                        )
+                        if(trackIndexInList != 0) {
+                            DropdownMenuItem(
+                                text = { Text(text = stringResource(id = R.string.remove_track_from_queue_text)) },
+                                onClick = { onRemoveFromQueue(trackIndexInList) }
+                            )
+                        }
 
                     }
 

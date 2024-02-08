@@ -1,6 +1,5 @@
 package com.example.neptune.data.model
 
-import android.content.Context
 import androidx.navigation.NavController
 import androidx.room.Room
 import com.android.volley.toolbox.Volley
@@ -12,19 +11,17 @@ import com.example.neptune.data.model.backendConnector.HostBackendConnector
 import com.example.neptune.data.model.backendConnector.ParticipantBackendConnector
 import com.example.neptune.data.model.session.Session
 import com.example.neptune.data.model.session.SessionBuilder
-import com.example.neptune.data.model.session.SessionType
 import com.example.neptune.data.model.streamingConnector.HostStreamingConnector
-import com.example.neptune.data.model.streamingConnector.StreamingConnectionDatabase
 import com.example.neptune.data.model.streamingConnector.StreamingConnector
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.HostSpotifyConnector
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.SpotifyConnectionDatabase
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.SpotifyConnector
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.SpotifyEstablisher
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.StreamingLevel
-import com.example.neptune.data.model.user.src.FullParticipant
-import com.example.neptune.data.model.user.src.Host
-import com.example.neptune.data.model.user.src.UpvoteDatabase
-import com.example.neptune.data.model.user.src.User
+import com.example.neptune.data.model.user.FullParticipant
+import com.example.neptune.data.model.user.Host
+import com.example.neptune.data.model.user.UpvoteDatabase
+import com.example.neptune.data.model.user.User
 import com.example.neptune.data.room.app.AppDataDatabase
 import com.example.neptune.data.room.streaming.StreamingConnectionDataDatabase
 import com.example.neptune.data.room.upvotes.UpvoteDataDatabase
@@ -235,19 +232,31 @@ class Model() {
                 streamingConnector!! as HostStreamingConnector,
                 upvoteDatabase
             )
-            sessionBuilder.reset()
+            if(mode == "Playlist") {
+                GlobalScope.launch {
+                    sessionBuilder.getPlaylistTracks().forEach {
+                        user!!.backendConnector.addTrackToSession(it)
+                    }
+                    sessionBuilder.reset()
+                }
+            }
             navController.navigate(ViewsCollection.CONTROL_VIEW.name)
         }
     }
 
 
-    fun tryToJoinSession(sessionId: Int, navController: NavController) {
+    fun tryToJoinSession(sessionId: Int, navController: NavController, onFail: () -> Unit) {
         backendConnector =
             ParticipantBackendConnector(appState.getDeviceId(), backendConnectorVolleyQueue)
 
         (backendConnector as ParticipantBackendConnector).participantJoinSession(
             sessionId
-        ) { timestamp, mode, artists, genres ->
+        ) { success, timestamp, mode, artists, genres ->
+
+            if(!success){
+                onFail()
+                return@participantJoinSession
+            }
 
             sessionBuilder.setSessionTypeFromBackendString(mode)
             if (mode == "Artist") {

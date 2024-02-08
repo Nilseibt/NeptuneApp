@@ -1,5 +1,6 @@
 package com.example.neptune.ui.commons
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,12 +8,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -21,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.neptune.R
 import com.example.neptune.data.model.session.SessionType
+import kotlinx.coroutines.delay
 
 @Composable
 fun TopBar(onBack: () -> Unit) {
@@ -32,15 +38,31 @@ fun TopBar(onBack: () -> Unit) {
             .height(60.dp)
     ) {
 
+        // This is a guard for prohibiting double clicking the back button
+        var backButtonEnabled by remember { mutableStateOf(true) }
+        LaunchedEffect(backButtonEnabled) {
+            if (backButtonEnabled) {
+                return@LaunchedEffect
+            } else {
+                delay(500)
+                backButtonEnabled = true
+            }
+        }
         IconButton(
-            onClick = onBack,
+            onClick = {
+                if (backButtonEnabled) {
+                    backButtonEnabled = false
+                    onBack()
+                }
+            },
             modifier = Modifier
                 .weight(1f)
                 .align(alignment = Alignment.CenterVertically)
         ) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
-                contentDescription = ""
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.onPrimary
             )
         }
 
@@ -55,14 +77,13 @@ fun TopBar(onBack: () -> Unit) {
             textAlign = TextAlign.Center
         )
 
-        Button(
-            onClick = { },
+        Image(
+            painter = painterResource(id = R.drawable.neptune_logo),
+            contentDescription = "",
             modifier = Modifier
                 .weight(1f)
-                .align(alignment = Alignment.CenterVertically)
-        ) {
-
-        }
+                .padding(10.dp)
+        )
 
     }
 }
@@ -77,8 +98,23 @@ fun SessionInfoBar(onStatistics: () -> Unit, onInfo: () -> Unit, description: Se
             .height(30.dp)
     ) {
 
+        // This is a guard for prohibiting double clicking the info button
+        var infoButtonEnabled by remember { mutableStateOf(true) }
+        LaunchedEffect(infoButtonEnabled) {
+            if (infoButtonEnabled) {
+                return@LaunchedEffect
+            } else {
+                delay(1000)
+                infoButtonEnabled = true
+            }
+        }
         IconButton(
-            onClick = onInfo,
+            onClick = {
+                if (infoButtonEnabled) {
+                    infoButtonEnabled = false
+                    onInfo()
+                }
+            },
             modifier = Modifier
                 .weight(1f)
                 .align(alignment = Alignment.CenterVertically)
@@ -90,7 +126,7 @@ fun SessionInfoBar(onStatistics: () -> Unit, onInfo: () -> Unit, description: Se
             )
         }
 
-        val title = when(description) {
+        val title = when (description) {
             SessionType.GENERAL -> stringResource(id = R.string.general_mode_name)
             SessionType.ARTIST -> stringResource(id = R.string.artist_mode_name)
             SessionType.GENRE -> stringResource(id = R.string.genre_mode_name)
@@ -107,8 +143,23 @@ fun SessionInfoBar(onStatistics: () -> Unit, onInfo: () -> Unit, description: Se
             textAlign = TextAlign.Center
         )
 
+        // This is a guard for prohibiting double clicking the stats button
+        var statsButtonEnabled by remember { mutableStateOf(true) }
+        LaunchedEffect(statsButtonEnabled) {
+            if (statsButtonEnabled) {
+                return@LaunchedEffect
+            } else {
+                delay(1000)
+                statsButtonEnabled = true
+            }
+        }
         IconButton(
-            onClick = onStatistics,
+            onClick = {
+                if (statsButtonEnabled) {
+                    statsButtonEnabled = false
+                    onStatistics()
+                }
+            },
             modifier = Modifier
                 .weight(1f)
                 .align(alignment = Alignment.CenterVertically)

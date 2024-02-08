@@ -7,11 +7,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.example.neptune.data.model.backendConnector.HostBackendConnector
 import com.example.neptune.data.model.backendConnector.ParticipantBackendConnector
 import com.example.neptune.data.model.session.SessionType
-import com.example.neptune.data.model.track.src.Track
-import com.example.neptune.data.model.user.src.User
+import com.example.neptune.data.model.track.Track
+import com.example.neptune.data.model.user.User
 import com.example.neptune.ui.views.ViewsCollection
 
 class VoteViewModel(

@@ -1,6 +1,5 @@
-package com.example.neptune.data.model.user.src
+package com.example.neptune.data.model.user
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -8,9 +7,10 @@ import androidx.compose.runtime.toMutableStateList
 import com.example.neptune.data.model.backendConnector.BackendConnector
 import com.example.neptune.data.model.backendConnector.ParticipantBackendConnector
 import com.example.neptune.data.model.session.Session
-import com.example.neptune.data.model.track.src.Track
-import com.example.neptune.data.model.track.src.TrackList
-import com.example.neptune.data.model.track.src.VoteList
+import com.example.neptune.data.model.session.SessionType
+import com.example.neptune.data.model.track.Track
+import com.example.neptune.data.model.track.TrackList
+import com.example.neptune.data.model.track.VoteList
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -171,7 +171,7 @@ open class User(
         val updatedBlockList = TrackList(mutableStateListOf())
         val updatedCooldownList = TrackList(mutableStateListOf())
         sessionTracks.forEach { (trackId, track) ->
-            if (track.value.getUpvotes() > 0) {
+            if (track.value.getUpvotes() > 0 || session.sessionType == SessionType.PLAYLIST) {
                 updatedVoteList.addTrack(track)
             }
             if(track.value.isBlocked()){
@@ -179,6 +179,11 @@ open class User(
             }
             if(track.value.hasCooldown()){
                 updatedCooldownList.addTrack(track)
+            }
+            for(searchListIndex in 0 until searchList.value.getTracks().size){
+                if(searchList.value.trackAt(searchListIndex).id == trackId){
+                    searchList.value.exchangeTrack(searchListIndex, track)
+                }
             }
         }
         updatedVoteList.sortByUpvote()

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -31,7 +32,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.neptune.NeptuneApp
 import com.example.neptune.R
-import com.example.neptune.data.model.user.src.Host
+import com.example.neptune.data.model.user.Host
 import com.example.neptune.ui.commons.SessionInfoBar
 import com.example.neptune.ui.commons.TopBar
 import com.example.neptune.ui.commons.TrackListComposable
@@ -71,7 +72,10 @@ fun ControlView(navController: NavController) {
                 description = controlViewModel.getTopBarDescription()
             )
 
-            Column(modifier = Modifier.fillMaxSize().padding(5.dp)) {
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+            ) {
 
                 Text(
                     text = stringResource(id = R.string.queue_list_name),
@@ -162,7 +166,7 @@ fun ControlView(navController: NavController) {
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1.5f),
+                        .weight(2f),
                     onClick = { controlViewModel.onSearchTracks(navController) },
                     shape = RoundedCornerShape(10.dp)
                 ) {
@@ -171,7 +175,9 @@ fun ControlView(navController: NavController) {
                         imageVector = Icons.Filled.Search,
                         contentDescription = "",
                         tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier
+                            .weight(1f)
+                            .size(40.dp)
                     )
 
                     Text(

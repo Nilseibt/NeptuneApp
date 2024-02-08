@@ -37,7 +37,7 @@
     <string name="playlist_mode_description">Beschränkt die Musikauswahl auf eine von dir im Vorhinein festgelegte Playlist.</string>
 
     <!--The German strings for the ModeSettingsView-->
-    <string name="default_playlist">Link zu Default Playlist einfügen</string>
+    <string name="default_playlist">Link zur Playlist einfügen</string>
     <string name="artist_search">Artists suchen</string>
     <string name="genre_search">Genres suchen</string>
     <string name="track_cooldown_text">Track Cooldown</string>

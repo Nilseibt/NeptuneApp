@@ -1,8 +1,7 @@
 package com.example.neptune.data.model.session
 
-import com.example.neptune.data.model.track.src.PlayList
-import com.example.neptune.data.model.track.src.Track
-import java.sql.Timestamp
+import com.example.neptune.data.model.track.PlayList
+import com.example.neptune.data.model.track.Track
 
 class PlaylistSession(
     id: Int,

@@ -9,9 +9,9 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.neptune.data.model.session.SessionType
-import com.example.neptune.data.model.track.src.Track
-import com.example.neptune.data.model.user.src.Host
-import com.example.neptune.data.model.user.src.User
+import com.example.neptune.data.model.track.Track
+import com.example.neptune.data.model.user.Host
+import com.example.neptune.data.model.user.User
 import com.example.neptune.ui.commons.TrackListType
 import com.example.neptune.ui.views.ViewsCollection
 
@@ -25,6 +25,9 @@ class SearchViewModel(
 
     private var activeFilter = mutableStateOf(Filter.NONE)
     private var isFilterDropdownExpanded = mutableStateOf(false)
+
+    private var inputChanged = false
+    private var lastInputChangeTimestamp = 0L
 
     fun getSearchTrackListType(): TrackListType {
         if (user is Host) {
@@ -40,9 +43,21 @@ class SearchViewModel(
 
     fun onTrackSearchInputChange(newInput: String) {
         searchInput = newInput
-        if (user.session.sessionType != SessionType.GENRE) {
+        inputChanged = true
+        lastInputChangeTimestamp = System.currentTimeMillis()
+        if (searchInput == "") {
+            user.searchList.value.clear()
+        }
+    }
+
+    fun checkToUpdateSearch() {
+        val currentTimestamp = System.currentTimeMillis()
+        if (inputChanged && currentTimestamp - lastInputChangeTimestamp > 500) {
+            inputChanged = false
             if (searchInput != "") {
                 user.search(searchInput)
+            } else {
+                user.searchList.value.clear()
             }
         }
     }
@@ -75,6 +90,7 @@ class SearchViewModel(
 
     fun onAddToQueue(track: Track) {
         (user as Host).addTrackToQueue(track)
+        expandedDropdownIndex = -1
     }
 
     fun onToggleBlock(track: Track) {
@@ -101,7 +117,7 @@ class SearchViewModel(
         isFilterDropdownExpanded.value = false
     }
 
-    fun isFilterDropdownExpanded(): Boolean{
+    fun isFilterDropdownExpanded(): Boolean {
         return isFilterDropdownExpanded.value
     }
 
@@ -137,7 +153,12 @@ class SearchViewModel(
 
 
     fun onBack(navController: NavController) {
+        user.searchList.value.clear()
         navController.popBackStack()
+    }
+
+    fun syncState() {
+        user.syncState()
     }
 
 }

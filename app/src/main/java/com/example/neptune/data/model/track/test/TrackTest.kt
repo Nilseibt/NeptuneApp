@@ -1,7 +1,6 @@
 package com.example.neptune.data.model.track.test
 
-import android.util.Log
-import com.example.neptune.data.model.track.src.Track
+import com.example.neptune.data.model.track.Track
 import org.junit.Assert.assertTrue
 import org.junit.Test
 

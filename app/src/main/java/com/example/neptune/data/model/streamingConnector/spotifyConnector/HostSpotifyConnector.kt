@@ -8,16 +8,13 @@ import com.android.volley.NetworkResponse
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
-import com.android.volley.VolleyError
 import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
 import com.example.neptune.data.model.streamingConnector.HostStreamingConnector
-import com.example.neptune.data.model.track.src.PlayList
-import com.example.neptune.data.model.track.src.Track
+import com.example.neptune.data.model.track.PlayList
+import com.example.neptune.data.model.track.Track
 import org.json.JSONArray
 import org.json.JSONObject
-import java.net.URLEncoder
 import kotlin.math.min
 
 

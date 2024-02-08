@@ -11,7 +11,7 @@ import com.example.neptune.MainActivity
 import com.example.neptune.data.model.session.ArtistSession
 import com.example.neptune.data.model.session.GenreSession
 import com.example.neptune.data.model.session.SessionType
-import com.example.neptune.data.model.user.src.User
+import com.example.neptune.data.model.user.User
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
 import com.google.zxing.qrcode.QRCodeWriter

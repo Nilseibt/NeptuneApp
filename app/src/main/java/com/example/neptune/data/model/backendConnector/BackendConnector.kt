@@ -1,7 +1,6 @@
 package com.example.neptune.data.model.backendConnector
 
 import android.util.Log
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import com.android.volley.Request
@@ -9,11 +8,9 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.example.neptune.NeptuneApp
 import com.example.neptune.R
-import com.example.neptune.data.model.track.src.Track
-import com.example.neptune.data.model.track.src.VoteList
+import com.example.neptune.data.model.track.Track
 import org.json.JSONArray
 import org.json.JSONObject
-import java.sql.Timestamp
 
 open class BackendConnector(
     private val deviceId: String,
@@ -208,11 +205,15 @@ open class BackendConnector(
     }
 
 
-    fun addTrackToSession(track: Track, callback: () -> Unit) {
+    fun addTrackToSession(track: Track, callback: () -> Unit = {}) {
 
         val artistsJSONArray = JSONArray()
         track.artists.forEach {
             artistsJSONArray.put(it)
+        }
+        val genreJSONArray = JSONArray()
+        track.genres.forEach {
+            genreJSONArray.put(it)
         }
 
         val postData = JSONObject()
@@ -220,7 +221,7 @@ open class BackendConnector(
         postData.put("trackID", track.id)
         postData.put("trackName", track.name)
         postData.put("artist", artistsJSONArray)
-        postData.put("genre", JSONArray())
+        postData.put("genre", genreJSONArray)
         postData.put("imageURL", track.imageUrl)
 
         sendRequest("addTrackToSession", postData) { callback() }
