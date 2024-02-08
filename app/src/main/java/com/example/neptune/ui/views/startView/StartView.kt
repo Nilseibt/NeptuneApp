@@ -48,81 +48,109 @@ fun StartView(navController: NavController, activity: MainActivity) {
     }
 
     NeptuneTheme {
-        Surface(
-            //modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
+        StartViewContent(navController, startViewModel)
+    }
+}
+
+@Composable
+fun StartViewContent(navController: NavController, startViewModel: StartViewModel) {
+    Surface(
+        color = MaterialTheme.colorScheme.background
+    ) {
+
+        Column(modifier = Modifier
+            .fillMaxSize()
+        ) {
+            TopBar(onBack = { startViewModel.onBack(navController) })
+        }
+
+        Column (
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Column(modifier = Modifier
-                .fillMaxSize()
-            ) {
+            StartViewStandardButton(
+                onClick = { startViewModel.onJoinSession(navController) },
+                buttonText = stringResource(id = R.string.join_session),
+                enabled = true
+            )
 
-                TopBar(onBack = { startViewModel.onBack(navController) })
+            Spacer(modifier = Modifier.height(32.dp))
+            
+            StartViewStandardButton(
+                onClick = { startViewModel.onCreateSession(navController) },
+                buttonText = stringResource(id = R.string.create_session),
+                enabled = startViewModel.createSessionPossible()
+            )
 
-            }
+            Spacer(modifier = Modifier.height(32.dp))
 
-            Column (
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            SpotifyConnectionButton(startViewModel = startViewModel)
+        }
 
-                Button(onClick = { startViewModel.onJoinSession(navController) },
-                    border = BorderStroke(3.dp, ButtonBlue)
-                ) {
-                    Text(text = stringResource(id = R.string.join_session))
-                }
-                Spacer(modifier = Modifier.height(32.dp))
-                Button(
-                    onClick = { startViewModel.onCreateSession(navController) },
-                    border = BorderStroke(3.dp, ButtonBlue),
-                    enabled = startViewModel.createSessionPossible()
-                ) {
-                    Text(text = stringResource(id = R.string.create_session))
-                }
-                Spacer(modifier = Modifier.height(32.dp))
-                Button(onClick = { startViewModel.onToggleConnectedToSpotify() },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = SpotifyBrandGreen
-                    )
-                ) {
-                    Text(text = startViewModel.getSpotifyButtonText())
-                }
-            }
-
-
-            if(startViewModel.isLeaveDialogShown()) {
-
-                AlertDialog(
-                    title = {
-                        Text(text = stringResource(id = R.string.leave_application))
-                    },
-                    text = {
-                        Text(text = stringResource(id = R.string.sure_about_leaving_application))
-                    },
-                    onDismissRequest = { },
-                    confirmButton = {
-                        TextButton(
-                            onClick = {
-                                startViewModel.onConfirmLeave(navController)
-                            }
-                        ) {
-                            Text(text = stringResource(id = R.string.app_leave_confirmation))
-                        }
-                    },
-                    dismissButton = {
-                        TextButton(
-                            onClick = {
-                                startViewModel.onDismissLeave(navController)
-                            }
-                        ) {
-                            Text(text = stringResource(id = R.string.app_leave_declination))
-                        }
-                    }
-                )
-            }
+        if(startViewModel.isLeaveDialogShown()) {
+            LeaveAppDialog(
+                startViewModel = startViewModel,
+                navController = navController
+            )
         }
     }
+}
+
+
+@Composable
+private fun StartViewStandardButton(onClick: () -> Unit, buttonText: String, enabled: Boolean) {
+    Button(
+        onClick = onClick,
+        border = BorderStroke(3.dp, ButtonBlue),
+        enabled = enabled
+    ) {
+        Text(text = buttonText)
+    }
+}
+
+@Composable
+private fun SpotifyConnectionButton(startViewModel: StartViewModel) {
+    Button(onClick = { startViewModel.onToggleConnectedToSpotify() },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = SpotifyBrandGreen
+        )
+    ) {
+        Text(text = startViewModel.getSpotifyButtonText())
+    }
+}
+
+
+@Composable
+private fun LeaveAppDialog(startViewModel: StartViewModel, navController: NavController) {
+    AlertDialog(
+        title = {
+            Text(text = stringResource(id = R.string.leave_application))
+        },
+        text = {
+            Text(text = stringResource(id = R.string.sure_about_leaving_application))
+        },
+        onDismissRequest = { },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    startViewModel.onConfirmLeave(navController)
+                }
+            ) {
+                Text(text = stringResource(id = R.string.application_leave_confirmation))
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = {
+                    startViewModel.onDismissLeave(navController)
+                }
+            ) {
+                Text(text = stringResource(id = R.string.app_leave_declination))
+            }
+        }
+    )
 }
