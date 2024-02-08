@@ -1,16 +1,11 @@
 package com.example.neptune.ui.views.joinView
 
-import android.content.Intent
-import android.provider.MediaStore
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.neptune.NeptuneApp
-import com.example.neptune.ui.NeptuneNavGraph
-import com.example.neptune.ui.views.ViewsCollection
 
 class JoinViewModel() : ViewModel() {
 
@@ -43,6 +38,16 @@ class JoinViewModel() : ViewModel() {
         NeptuneApp.model.tryToJoinSession(sessionCodeInput.toInt(), navController) {
             lastCodeInvalid = true
         }
+    }
+
+    fun onQRCodeDetected(navController: NavController, qrCodeText: String) {
+        if (qrCodeText.length == 6) {
+            NeptuneApp.model.tryToJoinSession(qrCodeText.toInt(), navController) {
+                lastCodeInvalid = true
+            }
+
+        }
+
     }
 
     fun onBack(navController: NavController) {
