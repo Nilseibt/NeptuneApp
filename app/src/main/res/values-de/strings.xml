@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Neptune</string>
-
-    <string name="spotify_client_id">6d6a25295934498f99dfe5dfcc83af82</string>
-    <string name="spotify_client_secret">c36285b319d24084b4b19bff4408cdff</string>
-
-    <string name="backend_url">https://nep-tune.de:5000/</string>
-
 
     <!--German Strings used in multiple Views, e.g. for confirmation buttons-->
     <string name="confirmation_button_text">Bestätigen</string>

@@ -47,7 +47,13 @@ class SpotifyEstablisher(
             if (spotifyConnectionDatabase.isLinked()) {
                 refreshToken = spotifyConnectionDatabase.getRefreshToken()
                 if (refreshToken != "") {
-                    connectWithRefreshToken()
+                    connectWithRefreshToken {
+                        spotifyLevel.value = StreamingLevel.UNLINKED
+                        GlobalScope.launch {
+                            spotifyConnectionDatabase.setLinked(false)
+                            onRestoreFinished()
+                        }
+                    }
                 } else {
                     initiateConnectWithAuthorize()
                 }
@@ -191,7 +197,7 @@ class SpotifyEstablisher(
 
 
     @OptIn(ExperimentalEncodingApi::class)
-    private fun connectWithRefreshToken() {
+    private fun connectWithRefreshToken(onFail: () -> Unit) {
 
         val spotifyClientId = NeptuneApp.context.getString(R.string.spotify_client_id)
         val spotifyClientSecret = NeptuneApp.context.getString(R.string.spotify_client_secret)
@@ -209,6 +215,7 @@ class SpotifyEstablisher(
             },
             { error ->
                 Log.e("VOLLEY", "Spotify Request Error: ${String(error.networkResponse.data)}")
+                onFail()
             }) {
             override fun getHeaders(): Map<String, String> {
                 var params: MutableMap<String, String> = HashMap()
@@ -317,7 +324,8 @@ class SpotifyEstablisher(
                     mutableStateOf(false), mutableStateOf(false)
                 )
                 resultList.add(track)
-            } catch (exception: Exception){}
+            } catch (exception: Exception) {
+            }
         }
         callback(resultList)
     }

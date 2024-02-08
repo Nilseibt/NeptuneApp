@@ -42,6 +42,7 @@ class StartViewModel(
     }
 
     fun getSpotifyButtonText(): String {
+        //TODO make these strings language resources
         return when (getStreamingLevel().value) {
             StreamingLevel.FREE, StreamingLevel.PREMIUM -> "Von Spotify trennen"
             StreamingLevel.UNLINKED -> "Mit Spotify verknüpfen"

@@ -4,12 +4,15 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
 import com.example.neptune.MainActivity
+import com.example.neptune.NeptuneApp
 import com.example.neptune.ui.views.ViewsCollection
+import kotlinx.coroutines.delay
 
 @Composable
 fun NeptuneNavGraph(activity: MainActivity) {
@@ -114,5 +117,16 @@ fun NeptuneNavGraph(activity: MainActivity) {
         }
 
     }
+
+    // refrehes the spotify access token every 20 minutes if connected to spotify
+    LaunchedEffect(
+        key1 = Unit,
+        block = {
+            while (true) {
+                delay(20*60*1000)
+                NeptuneApp.model.refreshSpotifyConnection()
+            }
+        }
+    )
 
 }

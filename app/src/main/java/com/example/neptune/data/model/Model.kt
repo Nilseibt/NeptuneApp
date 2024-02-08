@@ -102,7 +102,11 @@ class Model() {
     var user: User? = null
 
 
-    fun recreateUserSessionStateInitially(navController: NavController, joinLinkUsed: Boolean, onUserNotInSession: () -> Unit) {
+    fun recreateUserSessionStateInitially(
+        navController: NavController,
+        joinLinkUsed: Boolean,
+        onUserNotInSession: () -> Unit
+    ) {
         backendConnector = BackendConnector(appState.getDeviceId(), backendConnectorVolleyQueue)
         backendConnector!!.getUserSessionState { userSessionState, sessionId, timestamp, mode, artists, genres ->
             callbackRecreateUserSessionState(
@@ -115,7 +119,7 @@ class Model() {
                 navController,
                 joinLinkUsed
             )
-            if(user == null) {
+            if (user == null) {
                 onUserNotInSession()
             }
         }
@@ -173,7 +177,7 @@ class Model() {
 
             session = sessionBuilder.createSession(sessionId, timestamp)
 
-            if(streamingEstablisher.getStreamingLevel().value != StreamingLevel.UNLINKED) {
+            if (streamingEstablisher.getStreamingLevel().value != StreamingLevel.UNLINKED) {
                 streamingConnector = SpotifyConnector(
                     streamingConnectorVolleyQueue,
                     streamingEstablisher.getAccessToken(),
@@ -185,7 +189,7 @@ class Model() {
                     streamingConnector!!,
                     upvoteDatabase
                 )
-            }else{
+            } else {
                 user = User(
                     session!!,
                     backendConnector!! as ParticipantBackendConnector,
@@ -197,7 +201,7 @@ class Model() {
             navController.navigate(ViewsCollection.VOTE_VIEW.name)
         }
         if (userSessionState == "NONE") {
-            if(!joinLinkUsed) {
+            if (!joinLinkUsed) {
                 navController.navigate(ViewsCollection.START_VIEW.name)
             }
             user = null
@@ -232,7 +236,7 @@ class Model() {
                 streamingConnector!! as HostStreamingConnector,
                 upvoteDatabase
             )
-            if(mode == "Playlist") {
+            if (mode == "Playlist") {
                 GlobalScope.launch {
                     sessionBuilder.getPlaylistTracks().forEach {
                         user!!.backendConnector.addTrackToSession(it)
@@ -253,7 +257,7 @@ class Model() {
             sessionId
         ) { success, timestamp, mode, artists, genres ->
 
-            if(!success){
+            if (!success) {
                 onFail()
                 return@participantJoinSession
             }
@@ -268,7 +272,7 @@ class Model() {
 
             session = sessionBuilder.createSession(sessionId, timestamp)
 
-            if(streamingEstablisher.getStreamingLevel().value != StreamingLevel.UNLINKED) {
+            if (streamingEstablisher.getStreamingLevel().value != StreamingLevel.UNLINKED) {
                 streamingConnector = SpotifyConnector(
                     streamingConnectorVolleyQueue,
                     streamingEstablisher.getAccessToken(),
@@ -280,7 +284,7 @@ class Model() {
                     streamingConnector!!,
                     upvoteDatabase
                 )
-            }else{
+            } else {
                 user = User(
                     session!!,
                     backendConnector!! as ParticipantBackendConnector,
@@ -293,23 +297,41 @@ class Model() {
         }
     }
 
-    fun participantLeaveCurrentSession(onCallbackFinished: () -> Unit){
-        (user!!.backendConnector as ParticipantBackendConnector).participantLeaveSession{
+    fun participantLeaveCurrentSession(onCallbackFinished: () -> Unit) {
+        (user!!.backendConnector as ParticipantBackendConnector).participantLeaveSession {
             onCallbackFinished()
         }
     }
 
 
-    suspend fun deleteIrrelevantUpvotes(){
+    suspend fun deleteIrrelevantUpvotes() {
         val backendConnectorWithoutDeviceId = BackendConnector("", backendConnectorVolleyQueue)
         val sessionsWithUpvotes = upvoteDatabase.getStoredSessions()
         sessionsWithUpvotes.forEach { session ->
-            backendConnectorWithoutDeviceId.isSessionOpen(session.first, session.second){isOpen ->
-                if(!isOpen){
+            backendConnectorWithoutDeviceId.isSessionOpen(session.first, session.second) { isOpen ->
+                if (!isOpen) {
                     GlobalScope.launch {
-                        upvoteDatabase.removeAllTracksWithSession(session.first,session.second)
+                        upvoteDatabase.removeAllTracksWithSession(session.first, session.second)
                     }
                 }
+            }
+        }
+    }
+
+
+    suspend fun refreshSpotifyConnection() {
+        streamingEstablisher.restoreConnectionIfPossible {
+            if (user is Host) {
+                streamingConnector = HostSpotifyConnector(
+                    streamingConnectorVolleyQueue, streamingEstablisher.getAccessToken(),
+                    streamingEstablisher.getRefreshToken()
+                )
+            } else if (user is FullParticipant) {
+                streamingConnector = SpotifyConnector(
+                    streamingConnectorVolleyQueue,
+                    streamingEstablisher.getAccessToken(),
+                    streamingEstablisher.getRefreshToken()
+                )
             }
         }
     }

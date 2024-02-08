@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">Neptune</string>
+    <string name="app_name" translatable="false">Neptune</string>
 
-    <string name="spotify_client_id">6d6a25295934498f99dfe5dfcc83af82</string>
-    <string name="spotify_client_secret">c36285b319d24084b4b19bff4408cdff</string>
+    <string name="spotify_client_id" translatable="false">6d6a25295934498f99dfe5dfcc83af82</string>
+    <string name="spotify_client_secret" translatable="false">c36285b319d24084b4b19bff4408cdff</string>
 
-    <string name="backend_url">https://nep-tune.de:5000/</string>
+    <string name="backend_url" translatable="false">https://nep-tune.de:5000/</string>
 
 
     <!--Strings used in multiple Views, e.g. for confirmation buttons-->
