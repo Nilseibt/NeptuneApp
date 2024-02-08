@@ -30,6 +30,12 @@ import com.example.neptune.ui.theme.ButtonBlue
 import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
 import com.example.neptune.ui.theme.SpotifyBrandGreen
+
+/**
+ * The composable for the StartView.
+ *
+ * @param navController The NavController needed to navigate to another view.
+ */
 @Composable
 fun StartView(navController: NavController, activity: MainActivity) {
 

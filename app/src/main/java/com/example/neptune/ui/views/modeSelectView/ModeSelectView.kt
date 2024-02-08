@@ -32,6 +32,11 @@ import com.example.neptune.ui.commons.TopBar
 import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
 
+/**
+ * The composable for the ModeSelectView.
+ *
+ * @param navController The NavController needed to navigate to another view.
+ */
 @Composable
 fun ModeSelectView(navController: NavController) {
 
@@ -137,6 +142,13 @@ private fun ModeSelectViewContent(modeSelectViewModel: ModeSelectViewModel, navC
     }
 }
 
+/**
+ * The Composable displayed to the User to select a Mode.
+ *
+ * @param mode Defines the SessionType the Button is used for
+ * @param modeSelectViewModel The ViewModel the Button executes methods on
+ * @param modifier The modifier specified for the Button
+ */
 @Composable
 private fun ModeButton(
     mode: SessionType,

@@ -21,7 +21,7 @@
     <string name="application_leave_confirmation">Yes</string>
     <string name="app_leave_declination">No</string>
 
-    <!--The default strings for the joinView-->
+    <!--The default strings for the JoinView-->
     <string name="enter_six_digit_code">6-digit code</string>
     <string name="scan_qr_code">Scan QR-Code</string>
     <string name="invalid_session_code">Invalid Session Code</string>
@@ -41,36 +41,37 @@
     <string name="artist_mode_description">Restricts the available tracks to a selected handful of artists.</string>
     <string name="genre_mode_description">Restricts the available tracks to a selected handful of genres.</string>
     <string name="playlist_mode_description">Only allows your guests to propose tracks from a specific playlists.</string>
+    <string name="playlist_link_invalid">Playlist link is invalid</string>
 
-    <!--The default strings for tracks-->
+    <!--The default strings for Tracks-->
     <string name="unlock_track_text">Unlock track</string>
     <string name="lock_track_text">Lock track</string>
     <string name="add_track_to_queue_text">Add to queue</string>
     <string name="remove_track_from_queue_text">Remove from queue</string>
 
-    <!--The default strings for the voteView-->
+    <!--The default strings for the VoteView-->
     <string name="leave_session_text">Leave session</string>
     <string name="leave_session_confirmation_text">Are you sure you want to leave the session?</string>
 
-    <!--The default strings for the controlView-->
+    <!--The default strings for the ControlView-->
     <string name="queue_list_name">Queue:</string>
     <string name="vote_list_name">Vote List:</string>
     <string name="terminate_session_text">Terminate session</string>
     <string name="terminate_session_confirmation_text">Are you sure you want to terminate the session for everyone?</string>
 
-    <!--The default strings for the searchView-->
+    <!--The default strings for the SearchView-->
     <string name="locked_filter_name">Locked</string>
     <string name="cooldown_filter_name">Cooldown</string>
     <string name="search_text">Search Track</string>
     <string name="finished">Finished</string>
 
-    <!--The default strings for the infoView-->
+    <!--The default strings for the InfoView-->
     <string name="artists_text">Artists:</string>
     <string name="genre_text">Genres:</string>
     <string name="session_code_text">Session Code:</string>
     <string name="share_text">Share</string>
 
-    <!--The default strings for the statsView-->
+    <!--The default strings for the StatsView-->
     <string name="statistics_text">Statistics</string>
     <string name="most_popular_track_text">Most popular track:</string>
     <string name="most_popular_genre_text">Most popular genre:</string>
@@ -79,7 +80,6 @@
     <string name="total_upvote_text">Total number of upvotes:</string>
     <string name="total_participant_text">Total number of participants:</string>
     <string name="session_duration_text">Duration of the session:</string>
-    <string name="playlist_link_invalid">Playlist link is invalid</string>
 
 
 </resources>
