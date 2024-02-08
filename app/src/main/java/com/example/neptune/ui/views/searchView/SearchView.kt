@@ -37,7 +37,7 @@ import kotlinx.coroutines.delay
 /**
  * The composable for the searchView.
  *
- * @param navController the NavController needed to navigate to another view
+ * @param navController The NavController needed to navigate to another view.
  */
 @Composable
 fun SearchView(navController: NavController) {
@@ -139,7 +139,7 @@ private fun SearchViewContent(searchViewModel: SearchViewModel, navController: N
 private fun SearchBar(searchViewModel: SearchViewModel) {
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -160,7 +160,10 @@ private fun SearchBar(searchViewModel: SearchViewModel) {
 @Composable
 private fun FilterButton(searchViewModel: SearchViewModel) {
 
-    IconButton(onClick = { searchViewModel.onClickFilterIcon() }) {
+    IconButton(
+        onClick = { searchViewModel.onClickFilterIcon() },
+        modifier = Modifier.fillMaxSize()
+    ) {
 
         val icon = when (searchViewModel.getActiveFilter()) {
             Filter.NONE -> painterResource(id = R.drawable.baseline_filter_alt_24)

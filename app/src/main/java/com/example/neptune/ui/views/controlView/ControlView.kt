@@ -43,7 +43,7 @@ import kotlinx.coroutines.delay
 /**
  * The composable for the controlView.
  *
- * @param navController the NavController needed to navigate to another view
+ * @param navController The NavController needed to navigate to another view.
  */
 @Composable
 fun ControlView(navController: NavController) {
@@ -158,7 +158,8 @@ private fun QueueText() {
     Text(
         text = stringResource(id = R.string.queue_list_name),
         color = MaterialTheme.colorScheme.onBackground,
-        style = MaterialTheme.typography.titleMedium
+        style = MaterialTheme.typography.titleMedium,
+        modifier = Modifier.fillMaxSize()
     )
 
 }
@@ -169,7 +170,8 @@ private fun VoteListText() {
     Text(
         text = stringResource(id = R.string.vote_list_name),
         color = MaterialTheme.colorScheme.onBackground,
-        style = MaterialTheme.typography.titleMedium
+        style = MaterialTheme.typography.titleMedium,
+        modifier = Modifier.fillMaxSize()
     )
 
 }
@@ -178,7 +180,7 @@ private fun VoteListText() {
 private fun TrackControlBar(controlViewModel: ControlViewModel) {
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -257,7 +259,7 @@ private fun TrackSlider(controlViewModel: ControlViewModel) {
 private fun SearchButton(controlViewModel: ControlViewModel, navController: NavController) {
 
     Button(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         onClick = { controlViewModel.onSearchTracks(navController) },
         shape = RoundedCornerShape(10.dp)
     ) {

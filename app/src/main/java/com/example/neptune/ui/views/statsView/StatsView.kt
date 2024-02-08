@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,7 +26,7 @@ import com.example.neptune.ui.views.util.viewModelFactory
 /**
  * The composable for the statsView.
  *
- * @param navController the NavController needed to navigate to another view
+ * @param navController The NavController needed to navigate to another view.
  */
 @Composable
 fun StatsView(navController: NavController) {
@@ -112,7 +111,7 @@ private fun StatsViewContent(statsViewModel: StatsViewModel, navController: NavC
 private fun StatisticsText() {
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -130,7 +129,7 @@ private fun StatisticsText() {
 private fun MostPopularTrackText(statsViewModel: StatsViewModel) {
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -157,7 +156,7 @@ private fun MostPopularTrackText(statsViewModel: StatsViewModel) {
 private fun MostPopularGenreText(statsViewModel: StatsViewModel) {
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -184,7 +183,7 @@ private fun MostPopularGenreText(statsViewModel: StatsViewModel) {
 private fun MostPopularArtistText(statsViewModel: StatsViewModel) {
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -209,7 +208,7 @@ private fun MostPopularArtistText(statsViewModel: StatsViewModel) {
 private fun TotalNumberTracksText(statsViewModel: StatsViewModel) {
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -236,7 +235,7 @@ private fun TotalNumberTracksText(statsViewModel: StatsViewModel) {
 private fun TotalNumberUpvotesText(statsViewModel: StatsViewModel) {
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -263,7 +262,7 @@ private fun TotalNumberUpvotesText(statsViewModel: StatsViewModel) {
 private fun TotalNumberParticipantsText(statsViewModel: StatsViewModel) {
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -290,7 +289,7 @@ private fun TotalNumberParticipantsText(statsViewModel: StatsViewModel) {
 private fun SessionDurationText(statsViewModel: StatsViewModel) {
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
