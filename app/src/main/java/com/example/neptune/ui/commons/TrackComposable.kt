@@ -36,18 +36,18 @@ import com.example.neptune.data.model.track.Track
 /**
  * The composable for a track.
  *
- * @param track
- * @param trackIndexInList
- * @param totalTracksInList
- * @param trackListType
- * @param onToggleUpvote
- * @param onToggleDropdown
- * @param isDropdownExpanded
- * @param onAddToQueue
- * @param onRemoveFromQueue
- * @param onToggleBlock
- * @param onMoveUp
- * @param onMoveDown
+ * @param track The track which should be shown.
+ * @param trackIndexInList The index of the track in its track list.
+ * @param totalTracksInList The total number of tracks in the list of this track.
+ * @param trackListType The type of list this track is in.
+ * @param onToggleUpvote The function for the upvote button.
+ * @param onToggleDropdown The function for the dropdown menu button.
+ * @param isDropdownExpanded The function that says if the dropdown menu is expanded.
+ * @param onAddToQueue The function that adds the track to the queue.
+ * @param onRemoveFromQueue The function that removes the track from the queue.
+ * @param onToggleBlock The function that locks and unlocks the track.
+ * @param onMoveUp The function for moving this track upwards in the queue.
+ * @param onMoveDown The function for moving this track downwards in the queue.
  */
 @Composable
 fun TrackComposable(

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -30,7 +29,7 @@ import com.example.neptune.ui.views.util.viewModelFactory
 /**
  * The composable for the loadingView.
  *
- * @param navController the NavController needed to navigate to another view
+ * @param navController The NavController needed to navigate to another view.
  * @param activity //TODO
  * @param argument //TODO
  */
@@ -107,12 +106,19 @@ private fun NeptuneLogo() {
 @Composable
 private fun NeptuneText() {
 
-    Text(
-        text = stringResource(id = R.string.app_name),
-        color = MaterialTheme.colorScheme.onBackground,
-        style = MaterialTheme.typography.headlineLarge,
-        textAlign = TextAlign.Center,
-        modifier = Modifier.fillMaxWidth()
-    )
+    Row(
+        modifier = Modifier.fillMaxSize(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+
+        Text(
+            text = stringResource(id = R.string.app_name),
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.headlineLarge,
+            textAlign = TextAlign.Center
+        )
+
+    }
 
 }
