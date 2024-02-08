@@ -105,41 +105,47 @@ private fun ControlViewContent(controlViewModel: ControlViewModel, navController
         ) {
 
             if (controlViewModel.isStreamingHintAvailable()) {
-                StreamingHintText(controlViewModel)
+                Box(modifier = Modifier.weight(2f)){
+                    StreamingHintText(controlViewModel)
+                }
             }
 
-            QueueText()
-
-            Box(modifier = Modifier.weight(7f)) {
-
-                TrackListComposable(
-                    tracks = controlViewModel.getQueueList(),
-                    trackListType = TrackListType.HOST_QUEUE,
-                    onToggleUpvote = { controlViewModel.onToggleUpvote(it) },
-                    onToggleDropdown = { controlViewModel.onToggleDropdownQueue(it) },
-                    isDropdownExpanded = { controlViewModel.isDropdownExpandedQueue(it) },
-                    onRemoveFromQueue = { controlViewModel.onRemoveFromQueue(it) },
-                    onToggleBlock = { controlViewModel.onToggleBlock(it) },
-                    onMoveUp = { controlViewModel.onMoveUp(it) },
-                    onMoveDown = { controlViewModel.onMoveDown(it) }
-                )
-
+            Box(modifier = Modifier.weight(1f)){
+                QueueText()
             }
 
-            VoteListText()
+            Box(modifier = Modifier.weight(7f)) {
+                Column {
+                    TrackListComposable(
+                        tracks = controlViewModel.getQueueList(),
+                        trackListType = TrackListType.HOST_QUEUE,
+                        onToggleUpvote = { controlViewModel.onToggleUpvote(it) },
+                        onToggleDropdown = { controlViewModel.onToggleDropdownQueue(it) },
+                        isDropdownExpanded = { controlViewModel.isDropdownExpandedQueue(it) },
+                        onRemoveFromQueue = { controlViewModel.onRemoveFromQueue(it) },
+                        onToggleBlock = { controlViewModel.onToggleBlock(it) },
+                        onMoveUp = { controlViewModel.onMoveUp(it) },
+                        onMoveDown = { controlViewModel.onMoveDown(it) }
+                    )
+                }
+            }
+
+            Box(modifier = Modifier.weight(1f)){
+                VoteListText()
+            }
 
             Box(modifier = Modifier.weight(7f)) {
-
-                TrackListComposable(
-                    tracks = controlViewModel.getVoteList(),
-                    trackListType = TrackListType.HOST_VOTE,
-                    onToggleUpvote = { controlViewModel.onToggleUpvote(it) },
-                    onToggleDropdown = { controlViewModel.onToggleDropdownVote(it) },
-                    isDropdownExpanded = { controlViewModel.isDropdownExpandedVote(it) },
-                    onAddToQueue = { controlViewModel.onAddToQueue(it) },
-                    onToggleBlock = { controlViewModel.onToggleBlock(it) }
-                )
-
+                Column {
+                    TrackListComposable(
+                        tracks = controlViewModel.getVoteList(),
+                        trackListType = TrackListType.HOST_VOTE,
+                        onToggleUpvote = { controlViewModel.onToggleUpvote(it) },
+                        onToggleDropdown = { controlViewModel.onToggleDropdownVote(it) },
+                        isDropdownExpanded = { controlViewModel.isDropdownExpandedVote(it) },
+                        onAddToQueue = { controlViewModel.onAddToQueue(it) },
+                        onToggleBlock = { controlViewModel.onToggleBlock(it) }
+                    )
+                }
             }
 
             Box(modifier = Modifier.weight(1f)) {
@@ -172,7 +178,7 @@ private fun StreamingHintText(controlViewModel: ControlViewModel) {
         Text(
             text = controlViewModel.getStreamingHint(),
             color = Color.Red,
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center
         )
 
