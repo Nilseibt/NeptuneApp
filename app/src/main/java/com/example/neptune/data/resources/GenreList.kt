@@ -1,7 +1,15 @@
 package com.example.neptune.data.resources
 
+/**
+ * List of all Spotify/Streaming music genres.
+ * Needed because Spotify does not provide lists of all genres via its API.
+ */
 class GenreList {
 
+    /**
+     * Returns the list of music genres.
+     * @return List of music genres.
+     */
     fun getGenreList(): List<String> {
         return genreList
     }

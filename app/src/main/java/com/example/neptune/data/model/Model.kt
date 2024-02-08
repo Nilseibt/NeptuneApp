@@ -29,6 +29,10 @@ import com.example.neptune.ui.views.ViewsCollection
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+/**
+ * Represents the main model class responsible for holding the relevant model components.
+ * Needed due to strange android behaviour for databases and network connections.
+ */
 class Model() {
 
     private val appDataDatabase by lazy {
@@ -95,7 +99,9 @@ class Model() {
 
     private var session: Session? = null
 
-
+    /**
+     * The application state containing various dependencies and state information.
+     */
     var appState = AppState(
         streamingEstablisher,
         sessionBuilder,
