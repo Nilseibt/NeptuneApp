@@ -58,7 +58,7 @@ class SessionBuilderTest {
         assertTrue(SessionType.GENRE == sessionBuilder.getSessionType())
         assertTrue("Genre" == sessionBuilder.getSessionTypeAsBackendString())
         val session  = sessionBuilder.createSession(212343,345)
-        assertTrue(session.id == 212343)
+        assertTrue(session.sessionId == 212343)
     }
 
     /**
@@ -70,7 +70,7 @@ class SessionBuilderTest {
         sessionBuilder.setSessionType(SessionType.GENERAL)
         sessionBuilder.setTrackCooldown(10)
         val session  = sessionBuilder.createSession(212343,345)
-        assertTrue(session.id == 212343)
+        assertTrue(session.sessionId == 212343)
     }
 
     /**
@@ -85,7 +85,7 @@ class SessionBuilderTest {
         assertTrue("KIZ" in sessionBuilder.getSelectedEntities() )
         sessionBuilder.setTrackCooldown(10)
         val session  = sessionBuilder.createSession(212343,345)
-        assertTrue(session.id == 212343)
+        assertTrue(session.sessionId == 212343)
     }
 
     /**
@@ -98,7 +98,7 @@ class SessionBuilderTest {
         sessionBuilder.setPlaylistTracks(mutableListOf(mockTracks.track1,mockTracks.track2))
         sessionBuilder.setTrackCooldown(10)
         val session  = sessionBuilder.createSession(212343,345)
-        assertTrue(session.id == 212343)
+        assertTrue(session.sessionId == 212343)
         assertTrue(session.cooldown == 10)
     }
 }
