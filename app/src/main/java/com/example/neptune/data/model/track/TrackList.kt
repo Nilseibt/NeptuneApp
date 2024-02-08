@@ -6,88 +6,138 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 
 /**
- * A collection of tracks, with base functionality
- * Acts as a parent class for specialised lists of tracks
+ * Represents a list of tracks with methods to manipulate the list such as adding, removing, and retrieving tracks.
+ * @param tracks A list of mutable states containing tracks.
  */
-open class TrackList (private val tracks: SnapshotStateList<MutableState<Track>>){
+open class TrackList(private val tracks: SnapshotStateList<MutableState<Track>>) {
+
 
     /**
-     * removes track from TrackList at index
+     * Removes the specified track from the list.
+     * @param track The track to be removed.
      */
-    /*fun removeTrack(index: Int){
-        tracks.removeAt(index)
-    }*/ //TODO probably not needed here, put in the queue or nowhere
-
-    /**
-     * removes track from TrackList with matching id to the track given
-     * as an input, if no track with this id is in the input nothing happens
-     */
-    fun removeTrack(track: Track){
-        for (index in tracks.indices){
-            if(tracks[index].value.id == track.id){
+    fun removeTrack(track: Track) {
+        for (index in tracks.indices) {
+            if (tracks[index].value.id == track.id) {
                 tracks.removeAt(index)
                 break
             }
         }
     }
 
-    fun addTrack(track: MutableState<Track>){
+    /**
+     * Adds a track to the list.
+     * @param track The mutable state containing the track to be added.
+     */
+    fun addTrack(track: MutableState<Track>) {
         tracks.add(track)
     }
 
-    fun addTrack(track: Track){
+    /**
+     * Adds a track to the list.
+     * @param track The track to be added.
+     */
+    fun addTrack(track: Track) {
         tracks.add(mutableStateOf(track))
     }
 
-    fun exchangeTrack(index: Int, track: MutableState<Track>){
+    /**
+     * Replaces the track at the specified index with the given track.
+     * @param index The index of the track to be replaced.
+     * @param track The new track.
+     */
+    fun exchangeTrack(index: Int, track: MutableState<Track>) {
         tracks[index] = track
     }
 
-    fun containsTrack(track: Track): Boolean{
-        for (item in tracks){
-            if (item.value.id == track.id){
+    /**
+     * Checks if the list contains the specified track.
+     * @param track The track to be checked.
+     * @return True if the track is found, false otherwise.
+     */
+    fun containsTrack(track: Track): Boolean {
+        for (item in tracks) {
+            if (item.value.id == track.id) {
                 return true
             }
         }
         return false
     }
 
+    /**
+     * Removes and returns the first track from the list.
+     * @return The first track in the list.
+     * @throws ArrayIndexOutOfBoundsException if the list is empty.
+     */
     fun popFirstTrack(): Track {
-        if(tracks.size > 0) {
+        if (tracks.size > 0) {
             var output = tracks.first()
             tracks.removeAt(0)
             return output.value
-        } else{
+        } else {
             throw ArrayIndexOutOfBoundsException("No track in Queue, cannot pop first track")
         }
     }
 
-    fun isEmpty(): Boolean{
+    /**
+     * Checks if the list is empty.
+     * @return True if the list is empty, false otherwise.
+     */
+    fun isEmpty(): Boolean {
         return tracks.isEmpty()
     }
 
-    fun clear(){
+    /**
+     * Clears all tracks from the list.
+     */
+    fun clear() {
         tracks.clear()
     }
+
+    /**
+     * Retrieves the track at the specified index in the list.
+     * @param index The index of the track to be retrieved.
+     * @return The track at the specified index.
+     */
     fun trackAt(index: Int): Track {
-       return tracks[index].value
+        return tracks[index].value
     }
 
-    fun getTracks(): SnapshotStateList<MutableState<Track>>{
+    /**
+     * Retrieves the list of tracks.
+     * @return The list of tracks.
+     */
+    fun getTracks(): SnapshotStateList<MutableState<Track>> {
         return tracks
     }
 
-    override fun toString(): String {
-        val output= StringBuilder()
+    /**
+     * Provides a string representation of the track list including its length and each track.
+     * @return A formatted string representing the track list.
+     */
+    /*override fun toString(): String {
+        val output = StringBuilder()
 
         output.append("length: ${tracks.size}\n")
-        for(track in tracks){
+        for (track in tracks) {
             output.append(track.toString())
             output.append("\n")
         }
         output.append("\n\n")
         return output.toString()
-    }
+    }*/
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+

@@ -117,7 +117,7 @@ class Host(
             (streamingConnector as HostStreamingConnector).checkIfPlayerDeviceAvailable(
                 {
                     streamingHint.value = ""
-                    (streamingConnector as HostStreamingConnector).refillQueueIfNeeded({
+                    (streamingConnector as HostStreamingConnector).getPlayerStateAndRefillQueueIfNeeded({
                         if (!queue.value.isEmpty()) {
                             val playedTrack = queue.value.popFirstTrack()
                             (backendConnector as HostBackendConnector).playedTrack(playedTrack)

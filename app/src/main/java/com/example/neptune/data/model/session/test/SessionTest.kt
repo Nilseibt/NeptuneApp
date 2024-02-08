@@ -48,7 +48,7 @@ class SessionTest {
      */
     @Test
     fun testPlayListSession(){
-        val playListSession = PlaylistSession(343333,3,4, mockTracks.playList)
+        val playListSession = PlaylistSession(343333,3,4)
         assertTrue(playListSession.validateTrack(mockTracks.track1))
     }
 }

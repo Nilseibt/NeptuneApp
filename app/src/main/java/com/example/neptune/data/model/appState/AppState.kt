@@ -133,8 +133,7 @@ class AppState(
             HostBackendConnector(getDeviceId(), backendConnectorVolleyQueue)
         streamingConnector = HostSpotifyConnector(
             streamingConnectorVolleyQueue,
-            streamingEstablisher.getAccessToken(),
-            streamingEstablisher.getRefreshToken()
+            streamingEstablisher.getAccessToken()
         )
 
         sessionBuilder.setSessionTypeFromBackendString(mode)
@@ -180,8 +179,7 @@ class AppState(
         if (streamingEstablisher.getStreamingLevel().value != StreamingLevel.UNLINKED) {
             streamingConnector = SpotifyConnector(
                 streamingConnectorVolleyQueue,
-                streamingEstablisher.getAccessToken(),
-                streamingEstablisher.getRefreshToken()
+                streamingEstablisher.getAccessToken()
             )
             user = FullParticipant(
                 session!!,
@@ -208,8 +206,7 @@ class AppState(
     fun createNewSessionAndJoin(navController: NavController) {
         backendConnector = HostBackendConnector(getDeviceId(), backendConnectorVolleyQueue)
         streamingConnector = HostSpotifyConnector(
-            streamingConnectorVolleyQueue, streamingEstablisher.getAccessToken(),
-            streamingEstablisher.getRefreshToken()
+            streamingConnectorVolleyQueue, streamingEstablisher.getAccessToken()
         )
 
         val mode = sessionBuilder.getSessionTypeAsBackendString()
@@ -278,8 +275,7 @@ class AppState(
             if (streamingEstablisher.getStreamingLevel().value != StreamingLevel.UNLINKED) {
                 streamingConnector = SpotifyConnector(
                     streamingConnectorVolleyQueue,
-                    streamingEstablisher.getAccessToken(),
-                    streamingEstablisher.getRefreshToken()
+                    streamingEstablisher.getAccessToken()
                 )
                 user = FullParticipant(
                     session!!,
@@ -326,14 +322,12 @@ class AppState(
         streamingEstablisher.restoreConnectionIfPossible {
             if (user is Host) {
                 streamingConnector = HostSpotifyConnector(
-                    streamingConnectorVolleyQueue, streamingEstablisher.getAccessToken(),
-                    streamingEstablisher.getRefreshToken()
+                    streamingConnectorVolleyQueue, streamingEstablisher.getAccessToken()
                 )
             } else if (user is FullParticipant) {
                 streamingConnector = SpotifyConnector(
                     streamingConnectorVolleyQueue,
-                    streamingEstablisher.getAccessToken(),
-                    streamingEstablisher.getRefreshToken()
+                    streamingEstablisher.getAccessToken()
                 )
             }
         }
