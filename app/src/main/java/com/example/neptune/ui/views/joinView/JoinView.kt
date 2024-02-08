@@ -218,10 +218,13 @@ fun CameraPreviewWithQRCodeScanner(modifier: Modifier = Modifier, onQRCodeDetect
             .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
             .build()
             .also {
-                it.setAnalyzer(cameraExecutor, { imageProxy ->
+                it.setAnalyzer(cameraExecutor) { imageProxy ->
                     val mediaImage = imageProxy.image
                     if (mediaImage != null) {
-                        val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+                        val image = InputImage.fromMediaImage(
+                            mediaImage,
+                            imageProxy.imageInfo.rotationDegrees
+                        )
                         val scanner = BarcodeScanning.getClient()
 
                         scanner.process(image)
@@ -242,7 +245,7 @@ fun CameraPreviewWithQRCodeScanner(modifier: Modifier = Modifier, onQRCodeDetect
                                 imageProxy.close()
                             }
                     }
-                })
+                }
             }
 
         val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
