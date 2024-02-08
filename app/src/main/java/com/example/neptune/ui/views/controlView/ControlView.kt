@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -41,6 +40,11 @@ import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
 import kotlinx.coroutines.delay
 
+/**
+ * The composable for the controlView.
+ *
+ * @param navController the NavController needed to navigate to another view
+ */
 @Composable
 fun ControlView(navController: NavController) {
 
@@ -56,174 +60,260 @@ fun ControlView(navController: NavController) {
         controlViewModel.onBack(navController)
     }
 
-    NeptuneTheme {
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.background)
-        ) {
-
-            TopBar(onBack = { controlViewModel.onBack(navController) })
-
-            SessionInfoBar(
-                onStatistics = { controlViewModel.onOpenStats(navController) },
-                onInfo = { controlViewModel.onOpenInfo(navController) },
-                description = controlViewModel.getTopBarDescription()
-            )
-
-            Column(modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp)
-            ) {
-
-                Text(
-                    text = stringResource(id = R.string.queue_list_name),
-                    color = MaterialTheme.colorScheme.onBackground,
-                    style = MaterialTheme.typography.titleMedium,
-                    textAlign = TextAlign.Center
-                )
-
-                Box(modifier = Modifier.weight(7f)) {
-
-                    TrackListComposable(
-                        tracks = controlViewModel.getQueueList(),
-                        trackListType = TrackListType.HOST_QUEUE,
-                        onToggleUpvote = { controlViewModel.onToggleUpvote(it) },
-                        onToggleDropdown = { controlViewModel.onToggleDropdownQueue(it) },
-                        isDropdownExpanded = { controlViewModel.isDropdownExpandedQueue(it) },
-                        onRemoveFromQueue = { controlViewModel.onRemoveFromQueue(it) },
-                        onToggleBlock = { controlViewModel.onToggleBlock(it) },
-                        onMoveUp = { controlViewModel.onMoveUp(it) },
-                        onMoveDown = { controlViewModel.onMoveDown(it) }
-                    )
-
-                }
-
-                Text(
-                    text = stringResource(id = R.string.vote_list_name),
-                    color = MaterialTheme.colorScheme.onBackground,
-                    style = MaterialTheme.typography.titleMedium,
-                    textAlign = TextAlign.Center
-                )
-
-                Box(modifier = Modifier.weight(7f)) {
-
-                    TrackListComposable(
-                        tracks = controlViewModel.getVoteList(),
-                        trackListType = TrackListType.HOST_VOTE,
-                        onToggleUpvote = { controlViewModel.onToggleUpvote(it) },
-                        onToggleDropdown = { controlViewModel.onToggleDropdownVote(it) },
-                        isDropdownExpanded = { controlViewModel.isDropdownExpandedVote(it) },
-                        onAddToQueue = { controlViewModel.onAddToQueue(it) },
-                        onToggleBlock = { controlViewModel.onToggleBlock(it) }
-                    )
-
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                        .background(color = MaterialTheme.colorScheme.background),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    IconButton(
-                        onClick = { controlViewModel.onTogglePause() },
-                        enabled = controlViewModel.isTogglePauseAvailable(),
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Icon(
-                            painter = if (!controlViewModel.isPaused()) painterResource(id = R.drawable.baseline_pause_24)
-                            else painterResource(id = R.drawable.baseline_play_arrow_24),
-                            contentDescription = "",
-                            tint = MaterialTheme.colorScheme.onBackground
-                        )
-                    }
-
-                    IconButton(
-                        onClick = { controlViewModel.onSkip() },
-                        enabled = controlViewModel.isSkipAvailable(),
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.baseline_skip_next_24),
-                            contentDescription = "",
-                            tint = MaterialTheme.colorScheme.onBackground
-                        )
-                    }
-
-                    Slider(
-                        value = controlViewModel.getTrackSliderPosition(),
-                        onValueChange = { controlViewModel.onTrackSliderPositionChange(it) },
-                        onValueChangeFinished = { controlViewModel.onTrackSliderFinish() },
-                        modifier = Modifier.weight(7f)
-                    )
-
-                }
-
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(2f),
-                    onClick = { controlViewModel.onSearchTracks(navController) },
-                    shape = RoundedCornerShape(10.dp)
-                ) {
-
-                    Icon(
-                        imageVector = Icons.Filled.Search,
-                        contentDescription = "",
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier
-                            .weight(1f)
-                            .size(40.dp)
-                    )
-
-                    Text(
-                        text = stringResource(id = R.string.track_search_button_text),
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        style = MaterialTheme.typography.headlineLarge,
-                        modifier = Modifier
-                            .weight(9f)
-                            .padding(3.dp),
-                        textAlign = TextAlign.Center
-                    )
-
-                }
-
-            }
-
-        }
-
-        if(controlViewModel.isDeleteSessionDialogShown()) {
-
-            AlertDialog(
-                title = { Text(text = stringResource(id = R.string.terminate_session_text)) },
-                text = { Text(text = stringResource(id = R.string.terminate_session_confirmation_text)) },
-                onDismissRequest = { },
-                confirmButton = {
-                    TextButton(
-                        onClick = { controlViewModel.onConfirmDeleteSession(navController) }
-                    ) {
-                        Text(stringResource(id = R.string.confirmation_text))
-                    }
-                },
-                dismissButton = {
-                    TextButton(
-                        onClick = { controlViewModel.onDismissDeleteSession(navController) }
-                    ) {
-                        Text(stringResource(id = R.string.decline_text))
-                    }
-                }
-            )
-        }
-
-        LaunchedEffect(key1 = Unit, block = {
+    LaunchedEffect(
+        key1 = Unit,
+        block = {
             while (true) {
                 controlViewModel.syncState()
                 delay(3000)
             }
-        })
+        }
+    )
+
+    NeptuneTheme {
+
+        ControlViewContent(controlViewModel, navController)
+
     }
+
+}
+
+@Composable
+private fun ControlViewContent(controlViewModel: ControlViewModel, navController: NavController) {
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.background)
+    ) {
+
+        TopBar(onBack = { controlViewModel.onBack(navController) })
+
+        SessionInfoBar(
+            onStatistics = { controlViewModel.onOpenStats(navController) },
+            onInfo = { controlViewModel.onOpenInfo(navController) },
+            description = controlViewModel.getTopBarDescription()
+        )
+
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp)
+        ) {
+
+            QueueText()
+
+            Box(modifier = Modifier.weight(7f)) {
+
+                TrackListComposable(
+                    tracks = controlViewModel.getQueueList(),
+                    trackListType = TrackListType.HOST_QUEUE,
+                    onToggleUpvote = { controlViewModel.onToggleUpvote(it) },
+                    onToggleDropdown = { controlViewModel.onToggleDropdownQueue(it) },
+                    isDropdownExpanded = { controlViewModel.isDropdownExpandedQueue(it) },
+                    onRemoveFromQueue = { controlViewModel.onRemoveFromQueue(it) },
+                    onToggleBlock = { controlViewModel.onToggleBlock(it) },
+                    onMoveUp = { controlViewModel.onMoveUp(it) },
+                    onMoveDown = { controlViewModel.onMoveDown(it) }
+                )
+
+            }
+
+            VoteListText()
+
+            Box(modifier = Modifier.weight(7f)) {
+
+                TrackListComposable(
+                    tracks = controlViewModel.getVoteList(),
+                    trackListType = TrackListType.HOST_VOTE,
+                    onToggleUpvote = { controlViewModel.onToggleUpvote(it) },
+                    onToggleDropdown = { controlViewModel.onToggleDropdownVote(it) },
+                    isDropdownExpanded = { controlViewModel.isDropdownExpandedVote(it) },
+                    onAddToQueue = { controlViewModel.onAddToQueue(it) },
+                    onToggleBlock = { controlViewModel.onToggleBlock(it) }
+                )
+
+            }
+
+            Box(modifier = Modifier.weight(1f)) {
+                TrackControlBar(controlViewModel)
+            }
+
+            Box(modifier = Modifier.weight(2f)) {
+                SearchButton(controlViewModel, navController)
+            }
+
+        }
+
+    }
+
+    if(controlViewModel.isDeleteSessionDialogShown()) {
+        TerminateSessionDialog(controlViewModel, navController)
+    }
+
+}
+
+@Composable
+private fun QueueText() {
+
+    Text(
+        text = stringResource(id = R.string.queue_list_name),
+        color = MaterialTheme.colorScheme.onBackground,
+        style = MaterialTheme.typography.titleMedium
+    )
+
+}
+
+@Composable
+private fun VoteListText() {
+
+    Text(
+        text = stringResource(id = R.string.vote_list_name),
+        color = MaterialTheme.colorScheme.onBackground,
+        style = MaterialTheme.typography.titleMedium
+    )
+
+}
+
+@Composable
+private fun TrackControlBar(controlViewModel: ControlViewModel) {
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        Box(modifier = Modifier.weight(1f)) {
+            PlayButton(controlViewModel)
+        }
+
+        Box(modifier = Modifier.weight(1f)) {
+            SkipButton(controlViewModel)
+        }
+
+        Box(modifier = Modifier.weight(7f)) {
+            TrackSlider(controlViewModel)
+        }
+
+    }
+
+}
+
+@Composable
+private fun PlayButton(controlViewModel: ControlViewModel) {
+
+    IconButton(
+        onClick = { controlViewModel.onTogglePause() },
+        enabled = controlViewModel.isTogglePauseAvailable(),
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Icon(
+            painter = if (!controlViewModel.isPaused()) painterResource(id = R.drawable.baseline_pause_24)
+            else painterResource(id = R.drawable.baseline_play_arrow_24),
+            contentDescription = "",
+            tint = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+        )
+    }
+
+}
+
+@Composable
+private fun SkipButton(controlViewModel: ControlViewModel) {
+
+    IconButton(
+        onClick = { controlViewModel.onSkip() },
+        enabled = controlViewModel.isSkipAvailable(),
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.baseline_skip_next_24),
+            contentDescription = "",
+            tint = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+        )
+    }
+
+}
+
+@Composable
+private fun TrackSlider(controlViewModel: ControlViewModel) {
+
+    Slider(
+        value = controlViewModel.getTrackSliderPosition(),
+        onValueChange = { controlViewModel.onTrackSliderPositionChange(it) },
+        onValueChangeFinished = { controlViewModel.onTrackSliderFinish() },
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp)
+    )
+
+}
+
+@Composable
+private fun SearchButton(controlViewModel: ControlViewModel, navController: NavController) {
+
+    Button(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = { controlViewModel.onSearchTracks(navController) },
+        shape = RoundedCornerShape(10.dp)
+    ) {
+
+        Box(modifier = Modifier.weight(1f)) {
+
+            Icon(
+                imageVector = Icons.Filled.Search,
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(2.dp)
+            )
+
+        }
+
+        Box(modifier = Modifier.weight(9f)) {
+
+            Text(
+                text = stringResource(id = R.string.track_search_button_text),
+                color = MaterialTheme.colorScheme.onPrimary,
+                style = MaterialTheme.typography.headlineLarge,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp),
+                textAlign = TextAlign.Center
+            )
+
+        }
+
+    }
+
+}
+
+@Composable
+private fun TerminateSessionDialog(controlViewModel: ControlViewModel, navController: NavController) {
+
+    AlertDialog(
+        title = { Text(text = stringResource(id = R.string.terminate_session_text)) },
+        text = { Text(text = stringResource(id = R.string.terminate_session_confirmation_text)) },
+        onDismissRequest = { },
+        confirmButton = {
+            TextButton(
+                onClick = { controlViewModel.onConfirmDeleteSession(navController) }
+            ) {
+                Text(stringResource(id = R.string.confirmation_text))
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = { controlViewModel.onDismissDeleteSession(navController) }
+            ) {
+                Text(stringResource(id = R.string.decline_text))
+            }
+        }
+    )
+
 }

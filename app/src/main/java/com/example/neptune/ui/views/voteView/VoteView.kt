@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -35,6 +34,11 @@ import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
 import kotlinx.coroutines.delay
 
+/**
+ * The composable for the voteView.
+ *
+ * @param navController the NavController needed to navigate to another view
+ */
 @Composable
 fun VoteView(navController: NavController) {
 
@@ -50,98 +54,128 @@ fun VoteView(navController: NavController) {
         voteViewModel.onBack(navController)
     }
 
+    LaunchedEffect(
+        key1 = Unit,
+        block = {
+            while (true) {
+                voteViewModel.syncState(navController)
+                delay(5000)
+            }
+        }
+    )
+
     NeptuneTheme {
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.background)
-        ) {
+        VoteViewContent(voteViewModel, navController)
 
-            TopBar(onBack = { voteViewModel.onBack(navController) })
-
-            SessionInfoBar(
-                onStatistics = { voteViewModel.onOpenStats(navController) },
-                onInfo = { voteViewModel.onOpenInfo(navController) },
-                description = voteViewModel.getTopBarDescription()
-            )
-
-            Column(modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp)) {
-
-                Box(modifier = Modifier.weight(9f)) {
-                    TrackListComposable(
-                        tracks = voteViewModel.getVoteList(),
-                        trackListType = TrackListType.PARTICIPANT_VOTE,
-                        onToggleUpvote = { voteViewModel.onToggleUpvote(it) })
-                }
-
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    onClick = { voteViewModel.onSearchTracks(navController) },
-                    shape = RoundedCornerShape(10.dp)
-                ) {
-
-                    Icon(
-                        imageVector = Icons.Filled.Search,
-                        contentDescription = "",
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier
-                            .weight(1f)
-                            .size(40.dp)
-                    )
-
-                    Text(
-                        text = stringResource(id = R.string.track_search_button_text),
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        style = MaterialTheme.typography.headlineLarge,
-                        modifier = Modifier
-                            .weight(9f)
-                            .padding(3.dp),
-                        textAlign = TextAlign.Center
-                    )
-
-                }
-
-            }
-
-        }
-
-        if (voteViewModel.isLeaveSessionDialogShown()) {
-
-            AlertDialog(
-                title = { Text(text = stringResource(id = R.string.leave_session_text)) },
-                text = { Text(text = stringResource(id = R.string.leave_session_confirmation_text)) },
-                onDismissRequest = { },
-                confirmButton = {
-                    TextButton(
-                        onClick = { voteViewModel.onConfirmLeaveSession(navController) }
-                    ) {
-                        Text(text = stringResource(id = R.string.confirmation_text))
-                    }
-                },
-                dismissButton = {
-                    TextButton(
-                        onClick = { voteViewModel.onDismissLeaveSession(navController) }
-                    ) {
-                        Text(text = stringResource(id = R.string.decline_text))
-                    }
-                }
-            )
-        }
-
-        LaunchedEffect(
-            key1 = Unit,
-            block = {
-                while (true) {
-                    voteViewModel.syncState(navController)
-                    delay(5000)
-                }
-            }
-        )
     }
+
+}
+
+@Composable
+private fun VoteViewContent(voteViewModel: VoteViewModel, navController: NavController) {
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.background)
+    ) {
+
+        TopBar(onBack = { voteViewModel.onBack(navController) })
+
+        SessionInfoBar(
+            onStatistics = { voteViewModel.onOpenStats(navController) },
+            onInfo = { voteViewModel.onOpenInfo(navController) },
+            description = voteViewModel.getTopBarDescription()
+        )
+
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp)) {
+
+            Box(modifier = Modifier.weight(9f)) {
+                TrackListComposable(
+                    tracks = voteViewModel.getVoteList(),
+                    trackListType = TrackListType.PARTICIPANT_VOTE,
+                    onToggleUpvote = { voteViewModel.onToggleUpvote(it) }
+                )
+            }
+
+            Box(modifier = Modifier.weight(1f)) {
+                SearchButton(voteViewModel, navController)
+            }
+
+        }
+
+    }
+
+    if (voteViewModel.isLeaveSessionDialogShown()) {
+        LeaveDialog(voteViewModel, navController)
+    }
+
+}
+
+@Composable
+private fun SearchButton(voteViewModel: VoteViewModel, navController: NavController) {
+
+    Button(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = { voteViewModel.onSearchTracks(navController) },
+        shape = RoundedCornerShape(10.dp)
+    ) {
+
+        Box(modifier = Modifier.weight(1f)) {
+
+            Icon(
+                imageVector = Icons.Filled.Search,
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(2.dp)
+            )
+
+        }
+
+        Box(modifier = Modifier.weight(9f)) {
+
+            Text(
+                text = stringResource(id = R.string.track_search_button_text),
+                color = MaterialTheme.colorScheme.onPrimary,
+                style = MaterialTheme.typography.headlineLarge,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp),
+                textAlign = TextAlign.Center
+            )
+
+        }
+
+    }
+
+}
+
+@Composable
+private fun LeaveDialog(voteViewModel: VoteViewModel, navController: NavController) {
+
+    AlertDialog(
+        title = { Text(text = stringResource(id = R.string.leave_session_text)) },
+        text = { Text(text = stringResource(id = R.string.leave_session_confirmation_text)) },
+        onDismissRequest = { },
+        confirmButton = {
+            TextButton(
+                onClick = { voteViewModel.onConfirmLeaveSession(navController) }
+            ) {
+                Text(text = stringResource(id = R.string.confirmation_text))
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = { voteViewModel.onDismissLeaveSession(navController) }
+            ) {
+                Text(text = stringResource(id = R.string.decline_text))
+            }
+        }
+    )
 
 }
