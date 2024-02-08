@@ -136,12 +136,14 @@ fun JoinView(navController: NavController) {
                     }
                 }
                 Spacer(modifier = Modifier.height(32.dp))
-                FilledTonalButton(
+
+                //TODO Stephan please take this button out
+                /*FilledTonalButton(
                     onClick = { joinViewModel.onScanQrCode() },
                 ) {
                     //Text(text = "QR-Code scannen")
                     Text(text = stringResource(id = R.string.scan_qr_code))
-                }
+                }*/
             }
         }
     }
