@@ -1,5 +1,6 @@
 package com.example.neptune.ui.views.joinView
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -41,11 +42,12 @@ class JoinViewModel() : ViewModel() {
     }
 
     fun onQRCodeDetected(navController: NavController, qrCodeText: String) {
-        if (qrCodeText.length == 6) {
-            NeptuneApp.model.tryToJoinSession(qrCodeText.toInt(), navController) {
+        val pattern = Regex("""http://nep-tune.de/join/(\d{6})""")
+        val matchResult = pattern.find(qrCodeText)
+        if (matchResult != null) {
+            NeptuneApp.model.tryToJoinSession(matchResult.groupValues[1].toInt(), navController) {
                 lastCodeInvalid = true
             }
-
         }
 
     }

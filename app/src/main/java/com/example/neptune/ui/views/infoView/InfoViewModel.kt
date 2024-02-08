@@ -47,7 +47,7 @@ class InfoViewModel(
     }
 
     fun onShareLink() {
-        val shareLink = "https://nep-tune.de/join/" + user.session.id.toString()
+        val shareLink = "http://nep-tune.de/join/" + user.session.id.toString()
         ShareCompat.IntentBuilder.from(activity)
             .setType("text/plain")
             .setText(shareLink)
