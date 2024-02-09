@@ -48,6 +48,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import com.example.neptune.NeptuneApp
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
@@ -66,7 +67,7 @@ fun JoinView(navController: NavController) {
     val joinViewModel = viewModel<JoinViewModel>(
         factory = viewModelFactory {
             JoinViewModel(
-                //NeptuneApp.appState
+                NeptuneApp.model.appState
             )
         }
     )

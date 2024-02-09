@@ -10,6 +10,15 @@ import com.example.neptune.ui.views.ViewsCollection
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+
+/**
+ * ViewModel class for controlling the logic of the LoadingView.
+ *
+ * @property appState The current app state.
+ * @property navController The navigation controller used for navigating between different views.
+ * @property activity The main activity context.
+ * @property sessionCode The session code, if provided. Null if not provided.
+ */
 class LoadingViewModel(
     val appState: AppState,
     val navController: NavController,
@@ -18,6 +27,13 @@ class LoadingViewModel(
 ) : ViewModel() {
 
 
+
+    /**
+     * Initializes the loading process and app initialization.
+     *
+     * This method generates or retrieves the device ID, restores streaming connections if possible,
+     * recreates the user session state initially, and deletes irrelevant upvotes.
+     */
     init {
         viewModelScope.launch {
             appState.generateOrRetrieveDeviceId()
@@ -44,6 +60,11 @@ class LoadingViewModel(
         }
     }
 
+    /**
+     * Handles the back action. Closes the app.
+     *
+     * @param navController The navigation controller to perform the back action.
+     */
     fun onBack(navController: NavController) {
         activity.finish()
     }
