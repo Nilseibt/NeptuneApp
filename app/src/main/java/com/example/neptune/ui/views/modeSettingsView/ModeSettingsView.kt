@@ -228,5 +228,3 @@ private fun ConfirmButton(modeSettingsViewModel: ModeSettingsViewModel, navContr
         Text(text = stringResource(id = R.string.confirmation_button_text))
     }
 }
-
-

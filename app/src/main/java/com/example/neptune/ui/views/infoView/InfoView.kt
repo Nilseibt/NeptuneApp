@@ -334,5 +334,4 @@ private fun SessionCodeShareButton(infoViewModel: InfoViewModel) {
         )
 
     }
-
 }

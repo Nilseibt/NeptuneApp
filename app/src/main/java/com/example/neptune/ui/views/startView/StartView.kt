@@ -106,7 +106,6 @@ fun StartViewContent(navController: NavController, startViewModel: StartViewMode
     }
 }
 
-
 @Composable
 private fun StartViewStandardButton(onClick: () -> Unit, buttonText: String, enabled: Boolean) {
     Button(
@@ -128,7 +127,6 @@ private fun SpotifyConnectionButton(startViewModel: StartViewModel) {
         Text(text = startViewModel.getSpotifyButtonText())
     }
 }
-
 
 @Composable
 private fun LeaveAppDialog(startViewModel: StartViewModel, navController: NavController) {
