@@ -200,7 +200,7 @@ fun OpenQRCodeReaderButton(joinViewModel: JoinViewModel, navController: NavContr
             }
         }
     }) {
-        Text("QR-Code Reader öffnen")
+        Text(text = stringResource(id = R.string.scan_qr_code))
     }
 
     if (isCameraViewVisible) {
