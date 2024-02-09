@@ -20,6 +20,8 @@
     <string name="sure_about_leaving_application">Are you sure you want to leave the application?</string>
     <string name="application_leave_confirmation">Yes</string>
     <string name="app_leave_declination">No</string>
+    <string name="disconnect_spotify">Disconnect Spotify</string>
+    <string name="connect_spotify">Connect Spotify</string>
 
     <!--The default strings for the JoinView-->
     <string name="enter_six_digit_code">6-digit code</string>
@@ -42,6 +44,7 @@
     <string name="genre_mode_description">Restricts the available tracks to a selected handful of genres.</string>
     <string name="playlist_mode_description">Only allows your guests to propose tracks from a specific playlists.</string>
     <string name="playlist_link_invalid">Playlist link is invalid</string>
+    <string name="minutes">minutes</string>
 
     <!--The default strings for Tracks-->
     <string name="unlock_track_text">Unlock track</string>

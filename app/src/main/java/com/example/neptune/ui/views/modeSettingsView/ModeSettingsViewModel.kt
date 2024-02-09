@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.neptune.NeptuneApp
+import com.example.neptune.R
 import com.example.neptune.data.model.appState.AppState
 import com.example.neptune.data.model.session.SessionType
 import com.example.neptune.data.model.track.Track
@@ -109,7 +110,8 @@ class ModeSettingsViewModel(
      * @return The string representation of the track cooldown.
      */
     fun getTrackCooldownString(): String {
-        return sliderPositionToCooldownMinutes(sliderPosition).toString() + " Minuten" //TODO make string resource
+        return sliderPositionToCooldownMinutes(sliderPosition).toString() + " " +
+                NeptuneApp.context.getString(R.string.minutes)
     }
 
     /**

@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import com.android.volley.toolbox.Volley
 import com.example.neptune.MainActivity
 import com.example.neptune.NeptuneApp
+import com.example.neptune.R
 import com.example.neptune.data.model.appState.AppState
 import com.example.neptune.data.model.backendConnector.ParticipantBackendConnector
 import com.example.neptune.data.model.streamingConnector.spotifyConnector.StreamingLevel
@@ -62,10 +63,9 @@ class StartViewModel(
      * @return The text for the Spotify button.
      */
     fun getSpotifyButtonText(): String {
-        //TODO make these strings language resources
         return when (getStreamingLevel().value) {
-            StreamingLevel.FREE, StreamingLevel.PREMIUM -> "Von Spotify trennen"
-            StreamingLevel.UNLINKED -> "Mit Spotify verknüpfen"
+            StreamingLevel.FREE, StreamingLevel.PREMIUM -> NeptuneApp.context.getString(R.string.disconnect_spotify)
+            StreamingLevel.UNLINKED -> NeptuneApp.context.getString(R.string.connect_spotify)
             StreamingLevel.UNDETERMINED -> ""
         }
     }
