@@ -2,9 +2,6 @@ package com.example.neptune.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val BlueMain = Color(0xff10165a)
-val WhiteSecondary = Color(0xffF4F4FB)
-val DarkBlueAccent = Color(0xff0A2938)
 val ButtonBlue = Color(0xff363a96)
 
 val PrimaryBackgroundColor = Color(0xff161a23)
