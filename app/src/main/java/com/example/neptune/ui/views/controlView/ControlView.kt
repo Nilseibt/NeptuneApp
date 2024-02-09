@@ -316,7 +316,7 @@ private fun SearchButton(controlViewModel: ControlViewModel, navController: NavC
             Text(
                 text = stringResource(id = R.string.track_search_button_text),
                 color = MaterialTheme.colorScheme.onPrimary,
-                style = MaterialTheme.typography.headlineLarge,
+                style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(5.dp),

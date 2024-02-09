@@ -66,13 +66,22 @@ fun TrackComposable(
 ) {
 
     val isLocked = track.isBlocked() || track.hasCooldown()
-    //TODO make correct color here
-    val backgroundColor = if(isLocked) Color.Gray else MaterialTheme.colorScheme.tertiary
+
+    val elementColor =
+        if (isLocked)
+            Color(
+                MaterialTheme.colorScheme.secondary.red,
+                MaterialTheme.colorScheme.secondary.green,
+                MaterialTheme.colorScheme.secondary.blue,
+                0.3f
+            )
+        else
+            MaterialTheme.colorScheme.secondary
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = backgroundColor)
+            //.background(color = backgroundColor)
             .clip(shape = RoundedCornerShape(10.dp))
             .height(70.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -83,30 +92,38 @@ fun TrackComposable(
         }
 
         Box(modifier = Modifier.weight(5f)) {
-            TrackDescription(track)
+            TrackDescription(track, elementColor)
         }
 
         if (trackListType == TrackListType.HOST_QUEUE) {
 
             Box(modifier = Modifier.weight(2f)) {
-                TrackMoveButtons(trackIndexInList, onMoveUp, onMoveDown, totalTracksInList)
+                TrackMoveButtons(
+                    trackIndexInList,
+                    elementColor,
+                    onMoveUp,
+                    onMoveDown,
+                    totalTracksInList
+                )
             }
 
         }
 
         Box(modifier = Modifier.weight(2f)) {
-            TrackUpvotes(track, isLocked, onToggleUpvote)
+            TrackUpvotes(track, isLocked, elementColor, onToggleUpvote)
         }
 
         if (trackListType == TrackListType.HOST_QUEUE
             || trackListType == TrackListType.HOST_VOTE
-            || trackListType == TrackListType.HOST_SEARCH) {
+            || trackListType == TrackListType.HOST_SEARCH
+        ) {
 
-            Box (modifier = Modifier.weight(1f)) {
+            Box(modifier = Modifier.weight(1f)) {
                 TrackDropdownButton(
                     track,
                     trackIndexInList,
                     trackListType,
+                    elementColor,
                     onToggleDropdown,
                     isDropdownExpanded,
                     onAddToQueue,
@@ -132,7 +149,7 @@ private fun TrackImage(track: Track) {
 }
 
 @Composable
-private fun TrackDescription(track: Track) {
+private fun TrackDescription(track: Track, elementColor: Color) {
 
     Column(
         modifier = Modifier
@@ -142,7 +159,7 @@ private fun TrackDescription(track: Track) {
 
         Text(
             text = track.name,
-            color = MaterialTheme.colorScheme.onTertiary,
+            color = elementColor,
             style = MaterialTheme.typography.titleLarge,
             maxLines = 1,
             modifier = Modifier.weight(3f)
@@ -150,7 +167,7 @@ private fun TrackDescription(track: Track) {
 
         Text(
             text = track.getArtistNames(),
-            color = MaterialTheme.colorScheme.onTertiary,
+            color = elementColor,
             style = MaterialTheme.typography.bodyMedium,
             maxLines = 1,
             modifier = Modifier.weight(2f)
@@ -163,6 +180,7 @@ private fun TrackDescription(track: Track) {
 @Composable
 private fun TrackMoveButtons(
     trackIndexInList: Int,
+    elementColor: Color,
     onMoveUp: (index: Int) -> Unit,
     onMoveDown: (index: Int) -> Unit,
     totalTracksInList: Int
@@ -174,11 +192,11 @@ private fun TrackMoveButtons(
     ) {
 
         Box(modifier = Modifier.weight(1f)) {
-            MoveUpButton(trackIndexInList, onMoveUp)
+            MoveUpButton(trackIndexInList, elementColor, onMoveUp)
         }
 
         Box(modifier = Modifier.weight(1f)) {
-            MoveDownButton(trackIndexInList, onMoveDown, totalTracksInList)
+            MoveDownButton(trackIndexInList, elementColor, onMoveDown, totalTracksInList)
         }
 
     }
@@ -186,15 +204,25 @@ private fun TrackMoveButtons(
 }
 
 @Composable
-private fun MoveUpButton(trackIndexInList: Int, onMoveUp: (index: Int) -> Unit) {
+private fun MoveUpButton(
+    trackIndexInList: Int,
+    elementColor: Color,
+    onMoveUp: (index: Int) -> Unit
+) {
 
-    //TODO change color gray to actual color
     val moveUpAvailable = trackIndexInList > 1
-    val moveUpIconColor =
-        if (moveUpAvailable) MaterialTheme.colorScheme.onTertiary else Color.Gray
+    var moveUpIconColor =
+        if (moveUpAvailable)
+            Color(elementColor.red, elementColor.green, elementColor.blue, elementColor.alpha)
+        else
+            Color(elementColor.red, elementColor.green, elementColor.blue, 0.2f)
 
     IconButton(
-        onClick = { if(moveUpAvailable) { onMoveUp(trackIndexInList) } }
+        onClick = {
+            if (moveUpAvailable) {
+                onMoveUp(trackIndexInList)
+            }
+        }
     ) {
         Icon(
             imageVector = Icons.Outlined.KeyboardArrowUp,
@@ -206,15 +234,26 @@ private fun MoveUpButton(trackIndexInList: Int, onMoveUp: (index: Int) -> Unit) 
 }
 
 @Composable
-private fun MoveDownButton(trackIndexInList: Int, onMoveDown: (index: Int) -> Unit, totalTracksInList: Int) {
+private fun MoveDownButton(
+    trackIndexInList: Int,
+    elementColor: Color,
+    onMoveDown: (index: Int) -> Unit,
+    totalTracksInList: Int
+) {
 
-    //TODO change color gray to actual color
     val moveDownAvailable = trackIndexInList > 0 && trackIndexInList < totalTracksInList - 1
-    val moveDownIconColor =
-        if (moveDownAvailable) MaterialTheme.colorScheme.onTertiary else Color.Gray
+    var moveDownIconColor =
+        if (moveDownAvailable)
+            Color(elementColor.red, elementColor.green, elementColor.blue, elementColor.alpha)
+        else
+            Color(elementColor.red, elementColor.green, elementColor.blue, 0.2f)
 
     IconButton(
-        onClick = { if(moveDownAvailable) { onMoveDown(trackIndexInList) } }
+        onClick = {
+            if (moveDownAvailable) {
+                onMoveDown(trackIndexInList)
+            }
+        }
     ) {
         Icon(
             imageVector = Icons.Outlined.KeyboardArrowDown,
@@ -226,7 +265,12 @@ private fun MoveDownButton(trackIndexInList: Int, onMoveDown: (index: Int) -> Un
 }
 
 @Composable
-private fun TrackUpvotes(track: Track, isLocked: Boolean, onToggleUpvote: (Track) -> Unit) {
+private fun TrackUpvotes(
+    track: Track,
+    isLocked: Boolean,
+    elementColor: Color,
+    onToggleUpvote: (Track) -> Unit
+) {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -235,21 +279,25 @@ private fun TrackUpvotes(track: Track, isLocked: Boolean, onToggleUpvote: (Track
 
         Text(
             text = track.getUpvotes().toString(),
-            color = MaterialTheme.colorScheme.onTertiary,
+            color = elementColor,
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(1f)
         )
 
         IconButton(
-            onClick = { if(!isLocked) { onToggleUpvote(track) } },
+            onClick = {
+                if (!isLocked) {
+                    onToggleUpvote(track)
+                }
+            },
             modifier = Modifier.weight(1f),
             enabled = !isLocked
         ) {
             Icon(
                 imageVector = if (track.isUpvoted()) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                 contentDescription = "",
-                tint = MaterialTheme.colorScheme.onTertiary
+                tint = elementColor
             )
         }
 
@@ -262,6 +310,7 @@ private fun TrackDropdownButton(
     track: Track,
     trackIndexInList: Int,
     trackListType: TrackListType,
+    elementColor: Color,
     onToggleDropdown: (index: Int) -> Unit,
     isDropdownExpanded: (index: Int) -> Boolean,
     onAddToQueue: (Track) -> Unit,
@@ -276,7 +325,7 @@ private fun TrackDropdownButton(
         Icon(
             imageVector = Icons.Filled.MoreVert,
             contentDescription = "",
-            tint = MaterialTheme.colorScheme.onTertiary
+            tint = elementColor
         )
     }
 
@@ -341,7 +390,7 @@ private fun TrackDropdownMenu(
                 onClick = { onToggleBlock(track) }
             )
 
-            if(trackIndexInList != 0) {
+            if (trackIndexInList != 0) {
                 DropdownMenuItem(
                     text = { Text(text = stringResource(id = R.string.remove_track_from_queue_text)) },
                     onClick = { onRemoveFromQueue(trackIndexInList) }
