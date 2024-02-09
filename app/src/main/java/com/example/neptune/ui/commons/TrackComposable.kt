@@ -70,18 +70,17 @@ fun TrackComposable(
     val elementColor =
         if (isLocked)
             Color(
-                MaterialTheme.colorScheme.secondary.red,
-                MaterialTheme.colorScheme.secondary.green,
-                MaterialTheme.colorScheme.secondary.blue,
+                MaterialTheme.colorScheme.onBackground.red,
+                MaterialTheme.colorScheme.onBackground.green,
+                MaterialTheme.colorScheme.onBackground.blue,
                 0.3f
             )
         else
-            MaterialTheme.colorScheme.secondary
+            MaterialTheme.colorScheme.onBackground
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            //.background(color = backgroundColor)
             .clip(shape = RoundedCornerShape(10.dp))
             .height(70.dp),
         verticalAlignment = Alignment.CenterVertically
