@@ -19,6 +19,13 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel class for controlling the logic of the StartView.
+ *
+ * @property appState The current app state.
+ * @property navController The navigation controller used for navigating between different views.
+ * @property activity The main activity context.
+ */
 class StartViewModel(
     val appState: AppState,
     val navController: NavController,
@@ -29,10 +36,18 @@ class StartViewModel(
     private var leaveDialogShown by mutableStateOf(false)
 
 
+    /**
+     * Checks if it's possible to create a session.
+     *
+     * @return True if creating a session is possible, false otherwise.
+     */
     fun createSessionPossible(): Boolean {
         return getStreamingLevel().value == StreamingLevel.PREMIUM
     }
 
+    /**
+     * Handles the action of toggling connection to Spotify.
+     */
     fun onToggleConnectedToSpotify() {
         when (getStreamingLevel().value) {
             StreamingLevel.FREE, StreamingLevel.PREMIUM -> appState.streamingEstablisher.disconnect()
@@ -41,6 +56,11 @@ class StartViewModel(
         }
     }
 
+    /**
+     * Retrieves the text for the Spotify button based on the current streaming level.
+     *
+     * @return The text for the Spotify button.
+     */
     fun getSpotifyButtonText(): String {
         //TODO make these strings language resources
         return when (getStreamingLevel().value) {
@@ -50,27 +70,57 @@ class StartViewModel(
         }
     }
 
+    /**
+     * Navigates to the join session view.
+     *
+     * @param navController The NavController instance.
+     */
     fun onJoinSession(navController: NavController) {
         navController.navigate(ViewsCollection.JOIN_VIEW.name)
     }
 
+    /**
+     * Navigates to the mode select view to create a session.
+     *
+     * @param navController The NavController instance.
+     */
     fun onCreateSession(navController: NavController) {
         navController.navigate(ViewsCollection.MODE_SELECT_VIEW.name)
     }
 
+    /**
+     * Checks if the leave dialog is shown.
+     *
+     * @return True if the leave dialog is shown, false otherwise.
+     */
     fun isLeaveDialogShown(): Boolean {
         return leaveDialogShown
     }
 
+    /**
+     * Handles the back action, toggling the leave dialog.
+     *
+     * @param navController The NavController instance.
+     */
     fun onBack(navController: NavController) {
         leaveDialogShown = !leaveDialogShown
     }
 
+    /**
+     * Confirms leaving the application.
+     *
+     * @param navController The NavController instance.
+     */
     fun onConfirmLeave(navController: NavController) {
         leaveDialogShown = false
         activity.finish()
     }
 
+    /**
+     * Dismisses the leave dialog.
+     *
+     * @param navController The NavController instance.
+     */
     fun onDismissLeave(navController: NavController) {
         leaveDialogShown = false
     }

@@ -14,6 +14,13 @@ import com.example.neptune.NeptuneApp
 import com.example.neptune.ui.views.ViewsCollection
 import kotlinx.coroutines.delay
 
+
+/**
+ * Composable function representing the navigation graph of the Neptune application.
+ * Responsible for defining the navigation routes and transitions between different views.
+ *
+ * @param activity The main activity hosting the navigation graph.
+ */
 @Composable
 fun NeptuneNavGraph(activity: MainActivity) {
 
@@ -118,7 +125,7 @@ fun NeptuneNavGraph(activity: MainActivity) {
 
     }
 
-    // refrehes the spotify access token every 20 minutes if connected to spotify
+    // Refreshes the spotify access token every 20 minutes if connected to spotify
     LaunchedEffect(
         key1 = Unit,
         block = {

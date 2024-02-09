@@ -31,8 +31,8 @@ import com.example.neptune.ui.views.util.viewModelFactory
  * The composable for the loadingView.
  *
  * @param navController The NavController needed to navigate to another view.
- * @param activity //TODO
- * @param argument //TODO
+ * @param activity The main activity context.
+ * @param argument The session code, if provided. Null if not provided.
  */
 @Composable
 fun LoadingView(navController: NavController, activity: MainActivity, argument: String?) {

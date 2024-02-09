@@ -12,6 +12,12 @@ import com.example.neptune.R
 import com.example.neptune.data.model.appState.AppState
 import com.example.neptune.data.model.session.SessionType
 
+
+/**
+ * ViewModel class for controlling the logic of the SessionEntitiesSearchView.
+ *
+ * @property appState The current app state.
+ */
 class SessionEntitiesSearchViewModel(
     val appState: AppState
 ) : ViewModel() {
@@ -20,10 +26,21 @@ class SessionEntitiesSearchViewModel(
 
     private var entitiesSearchList = mutableStateListOf<String>()
 
+
+    /**
+     * Retrieves the current search input string.
+     *
+     * @return The current search input string.
+     */
     fun getSearchInput(): String {
         return entitySearchInput
     }
 
+    /**
+     * Updates the search input string and performs entity search based on the session type.
+     *
+     * @param newInput The new search input string.
+     */
     fun onSearchInputChange(newInput: String) {
         entitySearchInput = newInput
         if (getSessionType() == SessionType.ARTIST) {
@@ -36,6 +53,11 @@ class SessionEntitiesSearchViewModel(
         }
     }
 
+    /**
+     * Toggles the selection state of an entity.
+     *
+     * @param entityName The name of the entity to toggle.
+     */
     fun onToggleSelect(entityName: String) {
         if (appState.sessionBuilder.isEntitySelected(entityName)) {
             appState.sessionBuilder.removeEntity(entityName)
@@ -44,18 +66,39 @@ class SessionEntitiesSearchViewModel(
         }
     }
 
+    /**
+     * Retrieves the list of search results for session entities.
+     *
+     * @return The list of search results for session entities.
+     */
     fun getEntitiesSearchList(): List<String> {
         return entitiesSearchList
     }
 
+    /**
+     * Handles the back navigation action.
+     *
+     * @param navController The NavController instance.
+     */
     fun onBack(navController: NavController) {
         navController.popBackStack()
     }
 
+    /**
+     * Checks if an entity is selected.
+     *
+     * @param entityName The name of the entity.
+     * @return True if the entity is selected, false otherwise.
+     */
     fun isEntitySelected(entityName : String) : Boolean {
         return appState.sessionBuilder.isEntitySelected(entityName)
     }
 
+    /**
+     * Retrieves the description for the current search mode (artist or genre).
+     *
+     * @return The description for the current search mode.
+     */
     fun getSearchDescription(): String{
         return if (getSessionType() == SessionType.ARTIST) {
             NeptuneApp.context.getString(R.string.artist_search)

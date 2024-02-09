@@ -13,6 +13,9 @@ import com.example.neptune.ui.views.statsView.StatsView
 import com.example.neptune.ui.views.voteView.VoteView
 
 
+/**
+ * Object representing the full collection of views in the application navigation graph.
+ */
 object ViewsCollection {
     val LOADING_VIEW =
         View(

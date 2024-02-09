@@ -97,17 +97,7 @@ private fun ModeSettingsViewContent(modeSettingsViewModel: ModeSettingsViewModel
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            // This is a guard for prohibiting double clicking the confirm button
-            var confirmButtonEnabled by remember { mutableStateOf(true) }
-            LaunchedEffect(confirmButtonEnabled) {
-                if (confirmButtonEnabled) {
-                    return@LaunchedEffect
-                } else {
-                    delay(1000)
-                    confirmButtonEnabled = true
-                }
-            }
-            ConfirmButton(modeSettingsViewModel = modeSettingsViewModel, navController = navController, enabled = confirmButtonEnabled)
+            ConfirmButton(modeSettingsViewModel = modeSettingsViewModel, navController = navController)
         }
     }
 }
@@ -210,21 +200,30 @@ private fun GenreSearchFieldButton(modeSettingsViewModel: ModeSettingsViewModel,
 private fun TrackCooldownSlider(modeSettingsViewModel: ModeSettingsViewModel) {
     Slider(
         value = modeSettingsViewModel.getCooldownSliderPosition(),
-        onValueChange = { modeSettingsViewModel.onCooldownSliderPositionChange(it) },
-        onValueChangeFinished = { modeSettingsViewModel.onCooldownSliderFinish() })
+        onValueChange = { modeSettingsViewModel.onCooldownSliderPositionChange(it) })
     Text(text = modeSettingsViewModel.getTrackCooldownString())
 }
 
 @Composable
-private fun ConfirmButton(modeSettingsViewModel: ModeSettingsViewModel, navController: NavController, enabled: Boolean) {
-    var buttonEnabled = enabled
+private fun ConfirmButton(modeSettingsViewModel: ModeSettingsViewModel, navController: NavController) {
+    // This is a guard for prohibiting double clicking the confirm button
+    var confirmButtonEnabled by remember { mutableStateOf(true) }
+    LaunchedEffect(confirmButtonEnabled) {
+        if (confirmButtonEnabled) {
+            return@LaunchedEffect
+        } else {
+            delay(1000)
+            confirmButtonEnabled = true
+        }
+    }
     Button(
         onClick = {
-            if (buttonEnabled) {
-                buttonEnabled = false
+            if (confirmButtonEnabled) {
+                confirmButtonEnabled = false
                 modeSettingsViewModel.onConfirmSettings(navController)
             }
-        }
+        },
+        enabled = !modeSettingsViewModel.isPlaylistSession() || modeSettingsViewModel.isPlaylistLinkValid()
     ) {
         Text(text = stringResource(id = R.string.confirmation_button_text))
     }

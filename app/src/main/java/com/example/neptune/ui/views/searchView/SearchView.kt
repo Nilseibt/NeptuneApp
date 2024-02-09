@@ -54,7 +54,7 @@ fun SearchView(navController: NavController) {
         searchViewModel.onBack(navController)
     }
 
-    // Synchronizes the view with the search entry.
+    // Launches searches on new search inputs after a certain time.
     LaunchedEffect(
         key1 = Unit,
         block = {
