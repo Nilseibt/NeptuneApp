@@ -26,8 +26,17 @@ val DarkBlueAccent = Color(0xff0A2938)
 val ButtonBlue = Color(0xff363a96)
 
 val PrimaryBackgroundColor = Color(0xff161a23)
-val PrimaryColor = Color(0xff101123)
+
+/*
+Here are the 3 colors:
+ */
+//val PrimaryColor = Color(0xff101123)
+//val PrimaryColor = Color(0xFF1E2042)
+val PrimaryColor = Color(0xFF191B44)
+
+
 val White = Color(0xffeaefff)
+
 
 val Blue10 = Color(0xff0a1429)
 val Blue20 = Color(0xff142952)
