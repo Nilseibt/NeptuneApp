@@ -44,6 +44,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
@@ -92,34 +93,37 @@ private fun JoinViewContent(joinViewModel: JoinViewModel, navController: NavCont
         color = MaterialTheme.colorScheme.background
     ) {
 
-        Column(modifier = Modifier
-            .fillMaxSize()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
         ) {
 
             TopBar(onBack = { joinViewModel.onBack(navController) })
 
         }
 
-        Column (modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally){
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
             SessionCodeInputField(joinViewModel = joinViewModel)
 
-            if(joinViewModel.wasLastCodeInvalid()) {
+            if (joinViewModel.wasLastCodeInvalid()) {
 
                 InvalidSessionCodeText()
             }
 
 
-            Row (
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
                 horizontalArrangement = Arrangement.End
-            ){
+            ) {
 
                 ConfirmationButton(joinViewModel = joinViewModel, navController = navController)
 
@@ -134,7 +138,8 @@ private fun JoinViewContent(joinViewModel: JoinViewModel, navController: NavCont
 private fun SessionCodeInputField(joinViewModel: JoinViewModel) {
     NeptuneOutlinedTextField(
         joinViewModel,
-        labelText = stringResource(id = R.string.enter_six_digit_code))
+        labelText = stringResource(id = R.string.enter_six_digit_code)
+    )
 }
 
 @Composable
@@ -142,8 +147,10 @@ private fun InvalidSessionCodeText() {
     Text(
         modifier = Modifier.padding(8.dp),
         text = stringResource(id = R.string.invalid_session_code),
-        color = InvalidInputWarningColor)
+        color = InvalidInputWarningColor
+    )
 }
+
 @Composable
 private fun ConfirmationButton(joinViewModel: JoinViewModel, navController: NavController) {
     // This is a guard for prohibiting double clicking the join button
@@ -174,13 +181,14 @@ private fun ConfirmationButton(joinViewModel: JoinViewModel, navController: NavC
 fun OpenQRCodeReaderButton(joinViewModel: JoinViewModel, navController: NavController) {
     val context = LocalContext.current
     var isCameraViewVisible by remember { mutableStateOf(false) }
-    val requestPermissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-        if (isGranted) {
-            isCameraViewVisible = true
-        } else {
-            // Handle the case where the user denies the permission request
+    val requestPermissionLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                isCameraViewVisible = true
+            } else {
+                isCameraViewVisible = false
+            }
         }
-    }
 
     Button(onClick = {
         when (PackageManager.PERMISSION_GRANTED) {
@@ -204,7 +212,10 @@ fun OpenQRCodeReaderButton(joinViewModel: JoinViewModel, navController: NavContr
 
 @Composable
 @androidx.annotation.OptIn(androidx.camera.core.ExperimentalGetImage::class)
-fun CameraPreviewWithQRCodeScanner(modifier: Modifier = Modifier, onQRCodeDetected: (String) -> Unit) {
+fun CameraPreviewWithQRCodeScanner(
+    modifier: Modifier = Modifier,
+    onQRCodeDetected: (String) -> Unit
+) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val cameraExecutor: ExecutorService = remember { Executors.newSingleThreadExecutor() }
@@ -243,9 +254,6 @@ fun CameraPreviewWithQRCodeScanner(modifier: Modifier = Modifier, onQRCodeDetect
                                     }
                                 }
                             }
-                            .addOnFailureListener {
-                                // Handle any errors
-                            }
                             .addOnCompleteListener {
                                 imageProxy.close()
                             }
@@ -254,14 +262,8 @@ fun CameraPreviewWithQRCodeScanner(modifier: Modifier = Modifier, onQRCodeDetect
             }
 
         val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
-        try {
-            cameraProvider.unbindAll()
-
-            cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, preview, imageAnalysis)
-        } catch (exc: Exception) {
-            // Handle any errors
-        }
+        cameraProvider.unbindAll()
+        cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, preview, imageAnalysis)
     }, ContextCompat.getMainExecutor(context))
 
     // Add the PreviewView to the Compose hierarchy
