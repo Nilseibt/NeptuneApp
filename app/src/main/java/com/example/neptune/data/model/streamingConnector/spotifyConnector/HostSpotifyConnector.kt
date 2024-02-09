@@ -117,7 +117,7 @@ class HostSpotifyConnector(
      * @param track The track to be added to the queue.
      * @param onCallback The optional callback function to execute after adding the track.
      */
-    override fun addTrackToStreamingQueue(track: Track, onCallback: () -> Unit) {
+    override fun addTrackToQueue(track: Track, onCallback: () -> Unit) {
         var headers: MutableMap<String, String> = HashMap()
         headers["Authorization"] = "Bearer $accessToken"
 
@@ -138,7 +138,7 @@ class HostSpotifyConnector(
     /**
      * Skips to the next track in the playback queue.
      */
-    override fun skipTrack() {
+    override fun skip() {
         var headers: MutableMap<String, String> = HashMap()
         headers["Authorization"] = "Bearer $accessToken"
 

@@ -71,7 +71,7 @@ class SessionEntitiesSearchViewModel(
      *
      * @return The list of search results for session entities.
      */
-    fun getEntitiesSearchList(): List<String> {
+    fun getEntitiesList(): List<String> {
         return entitiesSearchList
     }
 
@@ -90,7 +90,7 @@ class SessionEntitiesSearchViewModel(
      * @param entityName The name of the entity.
      * @return True if the entity is selected, false otherwise.
      */
-    fun isEntitySelected(entityName : String) : Boolean {
+    fun isEntitySelected(entityName: String): Boolean {
         return appState.sessionBuilder.isEntitySelected(entityName)
     }
 
@@ -99,7 +99,7 @@ class SessionEntitiesSearchViewModel(
      *
      * @return The description for the current search mode.
      */
-    fun getSearchDescription(): String{
+    fun getSearchDescription(): String {
         return if (getSessionType() == SessionType.ARTIST) {
             NeptuneApp.context.getString(R.string.artist_search)
         } else {

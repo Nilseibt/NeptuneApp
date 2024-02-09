@@ -115,7 +115,7 @@ open class TrackList(private val tracks: SnapshotStateList<MutableState<Track>>)
      * Provides a string representation of the track list including its length and each track.
      * @return A formatted string representing the track list.
      */
-    /*override fun toString(): String {
+    override fun toString(): String {
         val output = StringBuilder()
 
         output.append("length: ${tracks.size}\n")
@@ -125,7 +125,7 @@ open class TrackList(private val tracks: SnapshotStateList<MutableState<Track>>)
         }
         output.append("\n\n")
         return output.toString()
-    }*/
+    }
 
 
 }

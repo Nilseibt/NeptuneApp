@@ -92,7 +92,7 @@ private fun SessionEntitiesSearchViewContent(sessionEntitiesSearchViewModel: Ses
                             .fillMaxHeight(),
                         horizontalAlignment = Alignment.Start
                     ) {
-                        sessionEntitiesSearchViewModel.getEntitiesSearchList().forEach {
+                        sessionEntitiesSearchViewModel.getEntitiesList().forEach {
 
                             val isSelected = sessionEntitiesSearchViewModel.isEntitySelected(it)
                             ElevatedButton(onClick = {

@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.toMutableStateList
 import com.example.neptune.data.model.backendConnector.BackendConnector
-import com.example.neptune.data.model.backendConnector.ParticipantBackendConnector
 import com.example.neptune.data.model.session.Session
 import com.example.neptune.data.model.session.SessionType
 import com.example.neptune.data.model.track.Track
@@ -159,7 +158,7 @@ open class User(
         totalUpvotes: Int
     ) -> Unit
     ){
-        backendConnector.getStatistics(callback)
+        backendConnector.requestStatistics(callback)
     }
 
 

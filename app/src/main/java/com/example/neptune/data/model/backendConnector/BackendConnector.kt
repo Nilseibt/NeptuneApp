@@ -139,7 +139,7 @@ open class BackendConnector(
      * Retrieves statistical information from the backend server.
      * @param callback Callback function to handle the response containing the statistical data.
      */
-    fun getStatistics(
+    fun requestStatistics(
         callback: (
             mostUpvotedTrack: String,
             mostUpvotedGenre: String,

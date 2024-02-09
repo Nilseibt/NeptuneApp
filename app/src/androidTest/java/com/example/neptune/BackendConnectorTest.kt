@@ -1,12 +1,9 @@
 package com.example.neptune
 
-import android.util.Log
-import androidx.compose.ui.platform.isDebugInspectorInfoEnabled
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 
 import com.android.volley.toolbox.Volley
-import com.example.neptune.data.model.backendConnector.BackendConnector
 import com.example.neptune.data.model.backendConnector.HostBackendConnector
 import com.example.neptune.data.model.backendConnector.ParticipantBackendConnector
 import com.example.neptune.data.model.track.Track
@@ -52,7 +49,7 @@ class BackendConnectorTest {
         hostBackendConnector.playedTrack(mockTracks.track1)
         hostBackendConnector.addTrackToSession(mockTracks.track2)
         hostBackendConnector.setBlockTrack(mockTracks.track2, true)
-        hostBackendConnector.getStatistics { mostUpvotedTrack, _, _, totalPlayedTracks, _, _, totalUpvotes ->
+        hostBackendConnector.requestStatistics { mostUpvotedTrack, _, _, totalPlayedTracks, _, _, totalUpvotes ->
             assertTrue(totalUpvotes == 1)
             assertTrue(mostUpvotedTrack == mockTracks.track1.name)
             assertTrue(totalPlayedTracks == 1)
@@ -91,7 +88,7 @@ class BackendConnectorTest {
         participantBackendConnector.addTrackToSession(mockTracks.track1)
         hostBackendConnector.setBlockTrack(mockTracks.track2, true)
         hostBackendConnector.addUpvoteToTrack(mockTracks.track4)
-        participantBackendConnector.getStatistics { mostUpvotedTrack, _, _, totalPlayedTracks, _, _, totalUpvotes ->
+        participantBackendConnector.requestStatistics { mostUpvotedTrack, _, _, totalPlayedTracks, _, _, totalUpvotes ->
             assertTrue(totalUpvotes == 1)
             assertTrue(mostUpvotedTrack == mockTracks.track1.name)
             assertTrue(totalPlayedTracks == 1)

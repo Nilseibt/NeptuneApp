@@ -92,7 +92,6 @@ class JoinViewModel(
                 lastCodeInvalid = true
             }
         }
-
     }
 
     /**

@@ -5,7 +5,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.res.stringResource
 import com.example.neptune.NeptuneApp
 import com.example.neptune.R
 import com.example.neptune.data.model.backendConnector.HostBackendConnector
@@ -92,17 +91,17 @@ class Host(
                 (backendConnector as HostBackendConnector).playedTrack(playedTrack)
                 voteList.value.removeTrack(playedTrack)
                 if (!queue.value.isEmpty()) {
-                    (streamingConnector as HostStreamingConnector).addTrackToStreamingQueue(
+                    (streamingConnector as HostStreamingConnector).addTrackToQueue(
                         queue.value.trackAt(0)
                     ) {
-                        (streamingConnector as HostStreamingConnector).skipTrack()
+                        (streamingConnector as HostStreamingConnector).skip()
                     }
                 } else if (!voteList.value.isEmpty()) {
                     addTrackToQueue(voteList.value.trackAt(0))
-                    (streamingConnector as HostStreamingConnector).addTrackToStreamingQueue(
+                    (streamingConnector as HostStreamingConnector).addTrackToQueue(
                         queue.value.trackAt(0)
                     ) {
-                        (streamingConnector as HostStreamingConnector).skipTrack()
+                        (streamingConnector as HostStreamingConnector).skip()
                     }
                 }
             },
@@ -166,12 +165,12 @@ class Host(
                         voteList.value.removeTrack(playedTrack)
                     }
                     if (!queue.value.isEmpty()) {
-                        (streamingConnector as HostStreamingConnector).addTrackToStreamingQueue(
+                        (streamingConnector as HostStreamingConnector).addTrackToQueue(
                             queue.value.trackAt(0)
                         )
                     } else if (!voteList.value.isEmpty()) {
                         addTrackToQueue(voteList.value.trackAt(0))
-                        (streamingConnector as HostStreamingConnector).addTrackToStreamingQueue(
+                        (streamingConnector as HostStreamingConnector).addTrackToQueue(
                             queue.value.trackAt(0)
                         )
                     } else {

@@ -44,7 +44,7 @@ class StatsViewModel(
     init {
         user.requestStatistics { mostUpvotedTrack, mostUpvotedGenre, mostUpvotedArtist,
                                  totalPlayedTracks, sessionDuration, totalParticipants,
-                                 totalUpvotes  ->
+                                 totalUpvotes ->
             this.mostUpvotedTrack.value = mostUpvotedTrack
             this.mostUpvotedGenre.value = mostUpvotedGenre
             this.mostUpvotedArtist.value = mostUpvotedArtist
@@ -60,7 +60,7 @@ class StatsViewModel(
      *
      * @return True if it's a genre session, false otherwise.
      */
-    fun isGenreSession(): Boolean{
+    fun isGenreSession(): Boolean {
         return user.session.sessionType == SessionType.GENRE
     }
 

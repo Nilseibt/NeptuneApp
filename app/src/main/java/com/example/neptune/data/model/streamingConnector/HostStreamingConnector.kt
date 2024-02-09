@@ -22,7 +22,7 @@ interface HostStreamingConnector : StreamingConnector {
      * @param track The track to add to the queue.
      * @param onCallback Optional callback function to execute after adding the track.
      */
-    fun addTrackToStreamingQueue(track: Track, onCallback: () -> Unit = {})
+    fun addTrackToQueue(track: Track, onCallback: () -> Unit = {})
 
     /**
      * Retrieves the player state and refills the queue if needed.
@@ -39,7 +39,7 @@ interface HostStreamingConnector : StreamingConnector {
     /**
      * Skips to the next track in the playback queue.
      */
-    fun skipTrack()
+    fun skip()
 
     /**
      * Resumes playback.

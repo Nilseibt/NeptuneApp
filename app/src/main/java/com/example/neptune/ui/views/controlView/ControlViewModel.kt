@@ -156,9 +156,9 @@ class ControlViewModel(
      * Toggles the playback state between play and pause.
      */
     fun onTogglePause() {
-        if(host.getPlaybackState().value == PlaybackState.PLAYING) {
+        if (host.getPlaybackState().value == PlaybackState.PLAYING) {
             host.pausePlay()
-        } else if(host.getPlaybackState().value == PlaybackState.PAUSED) {
+        } else if (host.getPlaybackState().value == PlaybackState.PAUSED) {
             host.resumePlay()
         }
     }
@@ -284,11 +284,12 @@ class ControlViewModel(
     fun onConfirmDeleteSession(navController: NavController) {
         deleteSessionDialogShown = false
         (host.backendConnector as HostBackendConnector).deleteSession()
-        if(!navController.popBackStack(
-            ViewsCollection.START_VIEW.name,
-            inclusive = false,
-            saveState = false
-        )){
+        if (!navController.popBackStack(
+                ViewsCollection.START_VIEW.name,
+                inclusive = false,
+                saveState = false
+            )
+        ) {
             navController.navigate(ViewsCollection.START_VIEW.name)
         }
     }
@@ -305,7 +306,7 @@ class ControlViewModel(
     /**
      * Synchronizes the state with the backend and the streaming service.
      */
-    fun syncState(){
+    fun syncState() {
         host.syncState()
     }
 
@@ -323,7 +324,7 @@ class ControlViewModel(
      *
      * @return The streaming hint.
      */
-    fun getStreamingHint(): String{
+    fun getStreamingHint(): String {
         return host.getStreamingHint().value
     }
 
