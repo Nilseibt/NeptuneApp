@@ -1,6 +1,5 @@
 package com.example.neptune.ui.commons
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -210,7 +209,7 @@ private fun MoveUpButton(
 ) {
 
     val moveUpAvailable = trackIndexInList > 1
-    var moveUpIconColor =
+    val moveUpIconColor =
         if (moveUpAvailable)
             Color(elementColor.red, elementColor.green, elementColor.blue, elementColor.alpha)
         else
@@ -241,7 +240,7 @@ private fun MoveDownButton(
 ) {
 
     val moveDownAvailable = trackIndexInList > 0 && trackIndexInList < totalTracksInList - 1
-    var moveDownIconColor =
+    val moveDownIconColor =
         if (moveDownAvailable)
             Color(elementColor.red, elementColor.green, elementColor.blue, elementColor.alpha)
         else

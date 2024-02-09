@@ -59,48 +59,55 @@ private fun StatsViewContent(statsViewModel: StatsViewModel, navController: NavC
             .fillMaxSize()
     ) {
 
-        TopBar { statsViewModel.onBack(navController) }
+        TopBar(onBack = { statsViewModel.onBack(navController) })
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp)
-        ) {
+        StatsViewBody(statsViewModel)
 
+    }
+
+}
+
+@Composable
+private fun StatsViewBody(statsViewModel: StatsViewModel) {
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp)
+    ) {
+
+        Box(modifier = Modifier.weight(1f)) {
+            StatisticsText()
+        }
+
+        Box(modifier = Modifier.weight(1f)) {
+            MostPopularTrackText(statsViewModel)
+        }
+
+        if (statsViewModel.isGenreSession()) {
             Box(modifier = Modifier.weight(1f)) {
-                StatisticsText()
+                MostPopularGenreText(statsViewModel)
             }
+        }
 
-            Box(modifier = Modifier.weight(1f)) {
-                MostPopularTrackText(statsViewModel)
-            }
+        Box(modifier = Modifier.weight(1f)) {
+            MostPopularArtistText(statsViewModel)
+        }
 
-            if (statsViewModel.isGenreSession()) {
-                Box(modifier = Modifier.weight(1f)) {
-                    MostPopularGenreText(statsViewModel)
-                }
-            }
+        Box(modifier = Modifier.weight(1f)) {
+            TotalNumberTracksText(statsViewModel)
+        }
 
-            Box(modifier = Modifier.weight(1f)) {
-                MostPopularArtistText(statsViewModel)
-            }
+        Box(modifier = Modifier.weight(1f)) {
+            TotalNumberUpvotesText(statsViewModel)
+        }
 
-            Box(modifier = Modifier.weight(1f)) {
-                TotalNumberTracksText(statsViewModel)
-            }
+        Box(modifier = Modifier.weight(1f)) {
+            TotalNumberParticipantsText(statsViewModel)
+        }
 
-            Box(modifier = Modifier.weight(1f)) {
-                TotalNumberUpvotesText(statsViewModel)
-            }
-
-            Box(modifier = Modifier.weight(1f)) {
-                TotalNumberParticipantsText(statsViewModel)
-            }
-
-            Box(modifier = Modifier.weight(1f)) {
-                SessionDurationText(statsViewModel)
-            }
-
+        Box(modifier = Modifier.weight(1f)) {
+            SessionDurationText(statsViewModel)
         }
 
     }
