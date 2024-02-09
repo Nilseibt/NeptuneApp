@@ -120,18 +120,8 @@ private fun JoinViewContent(joinViewModel: JoinViewModel, navController: NavCont
                     .padding(8.dp),
                 horizontalArrangement = Arrangement.End
             ){
-                // This is a guard for prohibiting double clicking the join button
-                var joinButtonEnabled by remember { mutableStateOf(true) }
-                LaunchedEffect(joinButtonEnabled) {
-                    if (joinButtonEnabled) {
-                        return@LaunchedEffect
-                    } else {
-                        delay(1000)
-                        joinButtonEnabled = true
-                    }
-                }
 
-                ConfirmationButton(joinViewModel = joinViewModel, navController = navController, joinButtonEnabled = joinButtonEnabled)
+                ConfirmationButton(joinViewModel = joinViewModel, navController = navController)
 
             }
             OpenQRCodeReaderButton(joinViewModel = joinViewModel, navController = navController)
@@ -155,12 +145,21 @@ private fun InvalidSessionCodeText() {
         color = InvalidInputWarningColor)
 }
 @Composable
-private fun ConfirmationButton(joinViewModel: JoinViewModel, navController: NavController,joinButtonEnabled: Boolean) {
-    var buttonEnabled = joinButtonEnabled
+private fun ConfirmationButton(joinViewModel: JoinViewModel, navController: NavController) {
+    // This is a guard for prohibiting double clicking the join button
+    var joinButtonEnabled by remember { mutableStateOf(true) }
+    LaunchedEffect(joinButtonEnabled) {
+        if (joinButtonEnabled) {
+            return@LaunchedEffect
+        } else {
+            delay(1000)
+            joinButtonEnabled = true
+        }
+    }
     Button(
         onClick = {
-            if (buttonEnabled) {
-                buttonEnabled = false
+            if (joinButtonEnabled) {
+                joinButtonEnabled = false
                 joinViewModel.onConfirmSessionCode(navController)
             }
         },
