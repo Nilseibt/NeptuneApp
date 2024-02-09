@@ -177,6 +177,8 @@ class Host(
                         (streamingConnector as HostStreamingConnector).setPlaybackState(
                             PlaybackState.INITIAL
                         )
+                        (streamingConnector as HostStreamingConnector).skip()
+                        (streamingConnector as HostStreamingConnector).pausePlay()
                     }
                 }
                 ) { progress ->
