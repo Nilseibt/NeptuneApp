@@ -101,35 +101,42 @@ private fun SearchViewContent(searchViewModel: SearchViewModel, navController: N
             description = searchViewModel.getTopBarDescription()
         )
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp)
-        ) {
+        SearchViewBody(searchViewModel)
 
-            Box(modifier = Modifier.weight(1f)) {
-                SearchBar(searchViewModel)
+    }
+
+}
+
+@Composable
+private fun SearchViewBody(searchViewModel: SearchViewModel) {
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp)
+    ) {
+
+        Box(modifier = Modifier.weight(1f)) {
+            SearchBar(searchViewModel)
+        }
+
+        Box(modifier = Modifier.weight(8f)) {
+
+            val tracks = when (searchViewModel.getActiveFilter()) {
+                Filter.NONE -> searchViewModel.getSearchList()
+                Filter.BLOCKED -> searchViewModel.getBlockedTracks()
+                Filter.COOLDOWN -> searchViewModel.getCooldownTracks()
             }
 
-            Box(modifier = Modifier.weight(8f)) {
-
-                val tracks = when (searchViewModel.getActiveFilter()) {
-                    Filter.NONE -> searchViewModel.getSearchList()
-                    Filter.BLOCKED -> searchViewModel.getBlockedTracks()
-                    Filter.COOLDOWN -> searchViewModel.getCooldownTracks()
-                }
-
-                TrackListComposable(
-                    tracks = tracks,
-                    trackListType = searchViewModel.getSearchTrackListType(),
-                    onToggleUpvote = { searchViewModel.onToggleUpvote(it) },
-                    onToggleDropdown = { searchViewModel.onToggleDropdown(it) },
-                    isDropdownExpanded = { searchViewModel.isDropdownExpanded(it) },
-                    onAddToQueue = { searchViewModel.onAddToQueue(it) },
-                    onToggleBlock = { searchViewModel.onToggleBlock(it) }
-                )
-
-            }
+            TrackListComposable(
+                tracks = tracks,
+                trackListType = searchViewModel.getSearchTrackListType(),
+                onToggleUpvote = { searchViewModel.onToggleUpvote(it) },
+                onToggleDropdown = { searchViewModel.onToggleDropdown(it) },
+                isDropdownExpanded = { searchViewModel.isDropdownExpanded(it) },
+                onAddToQueue = { searchViewModel.onAddToQueue(it) },
+                onToggleBlock = { searchViewModel.onToggleBlock(it) }
+            )
 
         }
 

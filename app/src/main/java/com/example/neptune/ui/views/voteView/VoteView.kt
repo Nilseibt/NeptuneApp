@@ -90,28 +90,35 @@ private fun VoteViewContent(voteViewModel: VoteViewModel, navController: NavCont
             description = voteViewModel.getTopBarDescription()
         )
 
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(10.dp)) {
-
-            Box(modifier = Modifier.weight(9f)) {
-                TrackListComposable(
-                    tracks = voteViewModel.getVoteList(),
-                    trackListType = TrackListType.PARTICIPANT_VOTE,
-                    onToggleUpvote = { voteViewModel.onToggleUpvote(it) }
-                )
-            }
-
-            Box(modifier = Modifier.weight(1f)) {
-                SearchButton(voteViewModel, navController)
-            }
-
-        }
+        VoteViewBody(voteViewModel, navController)
 
     }
 
     if (voteViewModel.isLeaveSessionDialogShown()) {
         LeaveDialog(voteViewModel, navController)
+    }
+
+}
+
+@Composable
+private fun VoteViewBody(voteViewModel: VoteViewModel, navController: NavController) {
+
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(10.dp)) {
+
+        Box(modifier = Modifier.weight(9f)) {
+            TrackListComposable(
+                tracks = voteViewModel.getVoteList(),
+                trackListType = TrackListType.PARTICIPANT_VOTE,
+                onToggleUpvote = { voteViewModel.onToggleUpvote(it) }
+            )
+        }
+
+        Box(modifier = Modifier.weight(1f)) {
+            SearchButton(voteViewModel, navController)
+        }
+
     }
 
 }

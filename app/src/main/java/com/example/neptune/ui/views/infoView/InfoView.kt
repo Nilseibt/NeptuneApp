@@ -81,40 +81,47 @@ private fun InfoViewContent(infoViewModel: InfoViewModel, navController: NavCont
 
         TopBar(onBack = { infoViewModel.onBack(navController) })
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp)
-        ) {
+        InfoViewBody(infoViewModel)
 
+    }
+
+}
+
+@Composable
+private fun InfoViewBody(infoViewModel: InfoViewModel) {
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp)
+    ) {
+
+        Box(modifier = Modifier.weight(2f)) {
+            SessionModeText(infoViewModel)
+        }
+
+        if (infoViewModel.isGenreMode()) {
             Box(modifier = Modifier.weight(2f)) {
-                SessionModeText(infoViewModel)
+                GenreDescription(infoViewModel)
             }
+        }
 
-            if (infoViewModel.isGenreMode()) {
-                Box(modifier = Modifier.weight(2f)) {
-                    GenreDescription(infoViewModel)
-                }
+        if (infoViewModel.isArtistMode()) {
+            Box(modifier = Modifier.weight(2f)) {
+                ArtistDescription(infoViewModel)
             }
+        }
 
-            if (infoViewModel.isArtistMode()) {
-                Box(modifier = Modifier.weight(2f)) {
-                    ArtistDescription(infoViewModel)
-                }
-            }
+        Box(modifier = Modifier.weight(1f)) {
+            SessionCodeText()
+        }
 
-            Box(modifier = Modifier.weight(1f)) {
-                SessionCodeText()
-            }
+        Box(modifier = Modifier.weight(6f)) {
+            QRCodeImage(infoViewModel)
+        }
 
-            Box(modifier = Modifier.weight(6f)) {
-                QRCodeImage(infoViewModel)
-            }
-
-            Box(modifier = Modifier.weight(1f)) {
-                SessionCode(infoViewModel)
-            }
-
+        Box(modifier = Modifier.weight(1f)) {
+            SessionCode(infoViewModel)
         }
 
     }
