@@ -15,6 +15,7 @@
     <application
         android:name=".NeptuneApp"
         android:allowBackup="true"
+        android:launchMode="singleTask"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -38,7 +39,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <intent-filter  android:autoVerify="true">
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -48,6 +49,15 @@
                     android:host="nep-tune.de"
                     android:pathPrefix="/join"
                     android:scheme="https" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="nep-tune.de"
+                    android:pathPrefix="/join"
+                    android:scheme="neptune" />
             </intent-filter>
 
         </activity>

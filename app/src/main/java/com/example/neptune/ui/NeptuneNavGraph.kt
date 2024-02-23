@@ -2,7 +2,6 @@ package com.example.neptune.ui
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.fadeIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.compose.NavHost
@@ -35,6 +34,8 @@ fun NeptuneNavGraph(activity: MainActivity) {
             ViewsCollection.LOADING_VIEW.name,
             deepLinks = listOf(navDeepLink {
                 uriPattern = "https://nep-tune.de/join/{argument}"
+            }, navDeepLink {
+                uriPattern = "neptune://nep-tune.de/join/{argument}"
             }),
             enterTransition = { enterTransition() },
             exitTransition = { exitTransition() }
