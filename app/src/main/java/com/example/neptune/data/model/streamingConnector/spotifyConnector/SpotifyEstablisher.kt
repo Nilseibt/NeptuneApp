@@ -261,7 +261,11 @@ class SpotifyEstablisher(
                 )
             },
             { error ->
-                Log.e("VOLLEY", "Spotify Request Error: ${String(error.networkResponse.data)}")
+                error.networkResponse?.let {
+                    error.networkResponse.data?.let{
+                        Log.e("VOLLEY", "Spotify Request Error: ${String(error.networkResponse.data)}")
+                    }
+                }
                 onFail()
             }) {
             override fun getHeaders(): Map<String, String> {

@@ -2,9 +2,13 @@ package com.example.neptune.data.model.appState
 
 import android.content.Context
 import android.net.wifi.WifiManager
+import android.util.Log
 import androidx.navigation.NavController
+import com.android.volley.Request
 import com.android.volley.RequestQueue
+import com.android.volley.toolbox.JsonObjectRequest
 import com.example.neptune.NeptuneApp
+import com.example.neptune.R
 import com.example.neptune.data.model.backendConnector.BackendConnector
 import com.example.neptune.data.model.backendConnector.HostBackendConnector
 import com.example.neptune.data.model.backendConnector.ParticipantBackendConnector
@@ -23,6 +27,7 @@ import com.example.neptune.data.model.user.User
 import com.example.neptune.ui.views.ViewsCollection
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import java.security.MessageDigest
 
 /**

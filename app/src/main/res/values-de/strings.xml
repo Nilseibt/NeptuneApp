@@ -6,6 +6,11 @@
     <string name="track_search_button_text">Tracks suchen</string>
     <string name="confirmation_text">Ja</string>
     <string name="decline_text">Nein</string>
+    <string name="accept_text">Ok</string>
+
+    <!--The German strings for the LoadingView-->
+    <string name="loading_error">Fehler beim Laden</string>
+    <string name="loading_error_message">Das Laden ist fehlgeschlagen. Stelle sicher, dass du eine Internetverbindung hast. Ansonsten kontaktiere einen Entwickler. Starte die App neu!</string>
 
     <!--The German strings for the StartView-->
     <string name="join_session">Session beitreten</string>

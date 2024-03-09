@@ -10,9 +10,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -26,6 +29,7 @@ import com.example.neptune.NeptuneApp
 import com.example.neptune.R
 import com.example.neptune.ui.theme.NeptuneTheme
 import com.example.neptune.ui.views.util.viewModelFactory
+import kotlinx.coroutines.delay
 
 /**
  * The composable for the loadingView.
@@ -56,6 +60,30 @@ fun LoadingView(navController: NavController, activity: MainActivity, argument: 
 
         LoadingViewContent()
 
+        // Waits 5 seconds until it shows the popup
+        LaunchedEffect(
+            key1 = Unit,
+            block = {
+                delay(5000)
+                loadingViewModel.showLoadingFailPopup()
+            }
+        )
+
+        if(loadingViewModel.isLoadingFailPopupShown()){
+            AlertDialog(
+                title = { Text(text = stringResource(id = R.string.loading_error)) },
+                text = { Text(text = stringResource(id = R.string.loading_error_message)) },
+                onDismissRequest = { },
+                confirmButton = {
+                    TextButton(
+                        onClick = { loadingViewModel.onBack(navController) }
+                    ) {
+                        Text(text = stringResource(id = R.string.accept_text))
+                    }
+                }
+            )
+        }
+
     }
 
 }
@@ -80,6 +108,7 @@ private fun LoadingViewContent() {
         }
 
     }
+
 
 }
 

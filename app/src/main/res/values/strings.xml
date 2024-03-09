@@ -12,6 +12,11 @@
     <string name="track_search_button_text">Search tracks</string>
     <string name="confirmation_text">Yes</string>
     <string name="decline_text">No</string>
+    <string name="accept_text">Ok</string>
+
+    <!--The default strings for the LoadingView-->
+    <string name="loading_error">Error while loading</string>
+    <string name="loading_error_message">The loading process failed. Make sure you have an internet connection. Otherwise contact a developer. Restart the app!</string>
 
     <!--The default strings for the StartView-->
     <string name="join_session">Join Session</string>

@@ -1,5 +1,9 @@
 package com.example.neptune.ui.views.loadingView
 
+import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
@@ -27,6 +31,8 @@ class LoadingViewModel(
 ) : ViewModel() {
 
 
+    private var loadingFailPopupShown by mutableStateOf(false)
+
 
     /**
      * Initializes the loading process and app initialization.
@@ -39,15 +45,18 @@ class LoadingViewModel(
             appState.generateOrRetrieveDeviceId()
             appState.streamingEstablisher.restoreConnectionIfPossible {
                 val joinLinkUsed = (sessionCode != null)
-                NeptuneApp.model.appState.recreateUserSessionStateInitially(navController, joinLinkUsed) {
-                    if(joinLinkUsed) {
+                NeptuneApp.model.appState.recreateUserSessionStateInitially(
+                    navController,
+                    joinLinkUsed
+                ) {
+                    if (joinLinkUsed) {
                         if (sessionCode!!.toIntOrNull()?.let { true } == true
                             && sessionCode.length == 6
                         ) {
                             NeptuneApp.model.appState.tryToJoinSession(
                                 sessionCode.toInt(),
                                 navController
-                            ){
+                            ) {
                                 navController.navigate(ViewsCollection.START_VIEW.name)
                             }
                         }
@@ -58,6 +67,14 @@ class LoadingViewModel(
         GlobalScope.launch {
             NeptuneApp.model.appState.deleteIrrelevantUpvotes()
         }
+    }
+
+    fun showLoadingFailPopup(){
+        loadingFailPopupShown = true
+    }
+
+    fun isLoadingFailPopupShown(): Boolean {
+        return loadingFailPopupShown
     }
 
     /**
