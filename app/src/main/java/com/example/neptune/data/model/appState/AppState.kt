@@ -243,6 +243,7 @@ class AppState(
                     sessionBuilder.reset()
                 }
             }
+            sessionBuilder.reset()
             navController.navigate(ViewsCollection.CONTROL_VIEW.name)
         }
     }

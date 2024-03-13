@@ -1,5 +1,6 @@
 package com.example.neptune.data.model.user
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import com.example.neptune.data.model.backendConnector.BackendConnector
 import com.example.neptune.data.model.session.Session

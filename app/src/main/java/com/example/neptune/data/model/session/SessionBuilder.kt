@@ -180,7 +180,7 @@ class SessionBuilder {
                 sessionId,
                 sessionTimestamp,
                 trackCooldown,
-                selectedEntities
+                selectedEntities.toList().map { it.lowercase() }
             )
             SessionType.PLAYLIST -> PlaylistSession(
                 sessionId, sessionTimestamp, trackCooldown,
