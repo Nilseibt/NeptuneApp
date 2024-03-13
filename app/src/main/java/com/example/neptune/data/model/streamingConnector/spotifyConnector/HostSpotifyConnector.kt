@@ -33,6 +33,8 @@ class HostSpotifyConnector(
 
     private var trackIdWhichShouldBePlayed = ""
 
+    private var bestDeviceId = ""
+
 
     /**
      * Plays the specified track from the given position.
@@ -43,7 +45,7 @@ class HostSpotifyConnector(
         playTrackById(track.id, positionMs)
     }
 
-    private fun playTrackById(trackId: String, positionMs: Int, onCallback: () -> Unit = {}) {
+    private fun playTrackById(trackId: String, positionMs: Int, retriesLeft: Int = 2, onCallback: () -> Unit = {}) {
         val url = "https://api.spotify.com/v1/me/player/play"
         val jsonData = JSONObject()
         jsonData.put("uris", JSONArray().put("spotify:track:${trackId}"))
@@ -60,6 +62,9 @@ class HostSpotifyConnector(
             },
             { error ->
                 Log.e("SPOTIFY VOLLEY", "$url : Spotify Request Error: ${error}")
+                if(retriesLeft > 0){
+                    playTrackById(trackId, positionMs, retriesLeft - 1, onCallback)
+                }
             }) {
             override fun getHeaders(): Map<String, String> {
                 var headers: MutableMap<String, String> = HashMap()
@@ -75,7 +80,9 @@ class HostSpotifyConnector(
                 }
             }
         }
-        volleyQueue.add(jsonObjectRequest)
+        transferPlaybackToBestDevice {
+            volleyQueue.add(jsonObjectRequest)
+        }
         playbackState.value = PlaybackState.PLAYING
         trackIdWhichShouldBePlayed = trackId
     }
@@ -92,7 +99,11 @@ class HostSpotifyConnector(
 
         var parameters: MutableMap<String, String> = HashMap()
 
-        newGetRequest("https://api.spotify.com/v1/me/player", headers, parameters) { jsonResponse ->
+        newGetRequest(
+            "https://api.spotify.com/v1/me/player",
+            headers,
+            parameters
+        ) { jsonResponse ->
             callbackPlayProgress(jsonResponse, progress, onCallback)
         }
     }
@@ -118,19 +129,26 @@ class HostSpotifyConnector(
      * @param onCallback The optional callback function to execute after adding the track.
      */
     override fun addTrackToQueue(track: Track, onCallback: () -> Unit) {
+        tryToAddTrackToQueue(track, onCallback = onCallback)
+    }
+
+    private fun tryToAddTrackToQueue(track: Track, retriesLeft: Int = 2, onCallback: () -> Unit){
         var headers: MutableMap<String, String> = HashMap()
         headers["Authorization"] = "Bearer $accessToken"
 
         var parameters: MutableMap<String, String> = HashMap()
         parameters["uri"] = "spotify%3Atrack%3A${track.id}"
 
-        newRequest(
-            "https://api.spotify.com/v1/me/player/queue",
-            Request.Method.POST,
-            headers,
-            parameters,
-            onCallback
-        )
+        transferPlaybackToBestDevice {
+            newRequest(
+                "https://api.spotify.com/v1/me/player/queue",
+                Request.Method.POST,
+                headers,
+                parameters,
+                onError = {tryToAddTrackToQueue(track, retriesLeft - 1, onCallback)},
+                onCallback
+            )
+        }
         playbackState.value = PlaybackState.PLAYING
         trackIdWhichShouldBePlayed = track.id
     }
@@ -139,6 +157,7 @@ class HostSpotifyConnector(
      * Skips to the next track in the playback queue.
      */
     override fun skip() {
+        Log.i("SKIP", "skip")
         var headers: MutableMap<String, String> = HashMap()
         headers["Authorization"] = "Bearer $accessToken"
 
@@ -215,17 +234,25 @@ class HostSpotifyConnector(
      * Resumes the playback.
      */
     override fun resumePlay() {
+        tryToResumePlayback()
+    }
+
+    private fun tryToResumePlayback(retriesLeft: Int = 2){
         var headers: MutableMap<String, String> = HashMap()
         headers["Authorization"] = "Bearer $accessToken"
 
         var parameters: MutableMap<String, String> = HashMap()
 
-        newRequest(
-            "https://api.spotify.com/v1/me/player/play",
-            Request.Method.PUT,
-            headers,
-            parameters
-        )
+
+        transferPlaybackToBestDevice {
+            newRequest(
+                "https://api.spotify.com/v1/me/player/play",
+                Request.Method.PUT,
+                headers,
+                parameters,
+                onError = { tryToResumePlayback(retriesLeft - 1) }
+            )
+        }
         playbackState.value = PlaybackState.PLAYING
     }
 
@@ -276,9 +303,36 @@ class HostSpotifyConnector(
     ) {
         val devicesJsonArray = jsonResponse.getJSONArray("devices")
         if (devicesJsonArray.length() > 0) {
+            bestDeviceId = devicesJsonArray.getJSONObject(0).getString("id")
+            for (deviceIndex in 0 until devicesJsonArray.length()) {
+                var deviceJson = devicesJsonArray.getJSONObject(deviceIndex)
+                if(deviceJson.getBoolean("is_active")){
+                    bestDeviceId = deviceJson.getString("id")
+                }
+            }
             onDeviceAvailable()
         } else {
+            bestDeviceId = ""
             onNoDeviceAvailable()
+        }
+    }
+
+
+    private fun transferPlaybackToBestDevice(callback: () -> Unit){
+        var headers: MutableMap<String, String> = HashMap()
+        headers["Authorization"] = "Bearer $accessToken"
+
+        if(bestDeviceId == ""){
+            return
+        }
+
+        newJsonBodyRequest(
+            "https://api.spotify.com/v1/me/player",
+            Request.Method.PUT,
+            headers,
+            JSONObject().put("device_ids", JSONArray().put(bestDeviceId))
+        ) {
+            callback()
         }
     }
 

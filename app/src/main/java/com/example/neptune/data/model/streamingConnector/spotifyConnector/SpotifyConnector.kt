@@ -3,8 +3,12 @@ package com.example.neptune.data.model.streamingConnector.spotifyConnector
 import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import com.android.volley.NetworkResponse
 import com.android.volley.Request
 import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.HttpHeaderParser
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.example.neptune.data.model.streamingConnector.StreamingConnector
 import com.example.neptune.data.model.track.Track
@@ -268,6 +272,7 @@ open class SpotifyConnector(
         method: Int,
         headers: Map<String, String> = mapOf(),
         parameters: Map<String, String>,
+        onError: () -> Unit = {},
         onCallback: () -> Unit = {}
     ) {
         var urlWithParams = url
@@ -289,12 +294,47 @@ open class SpotifyConnector(
             },
             { error ->
                 Log.e("SPOTIFY VOLLEY", "$urlWithParams : Spotify Request Error: ${error}")
+                onError()
             }) {
             override fun getHeaders(): Map<String, String> {
                 return headers
             }
         }
         volleyQueue.add(stringRequest)
+    }
+
+    protected fun newJsonBodyRequest(
+        url: String,
+        method: Int,
+        headers: Map<String, String> = mapOf(),
+        jsonObject: JSONObject,
+        onCallback: () -> Unit = {}
+    ) {
+        val jsonRequest: JsonObjectRequest = object : JsonObjectRequest(
+            method, url,
+            jsonObject,
+            { response ->
+                Log.i(
+                    "SPOTIFY JSON",
+                    "$url $response"
+                )
+                onCallback()
+            },
+            { error ->
+                Log.e("SPOTIFY VOLLEY", "$url : Spotify Request Error: ${error}")
+            }) {
+            override fun getHeaders(): Map<String, String> {
+                return headers
+            }
+            override fun parseNetworkResponse(response: NetworkResponse?): Response<JSONObject> {
+                if (response == null || response.data.isEmpty()) {
+                    return Response.success(null, HttpHeaderParser.parseCacheHeaders(response))
+                } else {
+                    return super.parseNetworkResponse(response);
+                }
+            }
+        }
+        volleyQueue.add(jsonRequest)
     }
 
 
