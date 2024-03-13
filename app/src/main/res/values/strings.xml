@@ -20,7 +20,9 @@
 
     <!--The default strings for the StartView-->
     <string name="join_session">Join Session</string>
+    <string name="join_session_info">Spotify connection needed to suggest new tracks</string>
     <string name="create_session">Create Session</string>
+    <string name="create_session_info">Spotify Premium connection needed to create a session</string>
     <string name="leave_application">Leave Application</string>
     <string name="sure_about_leaving_application">Are you sure you want to leave the application?</string>
     <string name="application_leave_confirmation">Yes</string>
@@ -67,7 +69,7 @@
 
     <!--The default strings for the ControlView-->
     <string name="queue_list_name">Queue:</string>
-    <string name="vote_list_name">Vote List:</string>
+    <string name="vote_list_name">Upvoted tracks:</string>
     <string name="terminate_session_text">Terminate session</string>
     <string name="terminate_session_confirmation_text">Are you sure you want to terminate the session for everyone?</string>
 

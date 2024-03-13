@@ -14,7 +14,9 @@
 
     <!--The German strings for the StartView-->
     <string name="join_session">Session beitreten</string>
+    <string name="join_session_info">Spotify Verbindung benötigt, um neue Tracks vorzuschlagen</string>
     <string name="create_session">Session erstellen</string>
+    <string name="create_session_info">Spotify Premium Verbindung benötigt, um eine Session zu erstellen</string>
     <string name="leave_application">App verlassen</string>
     <string name="sure_about_leaving_application">Bist du sicher, dass du die App verlassen möchtest?</string>
     <string name="application_leave_confirmation">Ja</string>
@@ -61,7 +63,7 @@
 
     <!--The German strings for the ControlView-->
     <string name="queue_list_name">Queue:</string>
-    <string name="vote_list_name">Vorschlagsliste:</string>
+    <string name="vote_list_name">Tracks mit Upvotes:</string>
     <string name="terminate_session_text">Session beenden</string>
     <string name="terminate_session_confirmation_text">Bist du sicher, dass du die Session für alle beenden willst?</string>
 

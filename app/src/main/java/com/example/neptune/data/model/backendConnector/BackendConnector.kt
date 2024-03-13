@@ -191,7 +191,7 @@ open class BackendConnector(
         }
         var totalParticipants = 0
         if (jsonResponse.get("totalParticipants").toString() != "null") {
-            totalParticipants = jsonResponse.getInt("totalParticipants")
+            totalParticipants = jsonResponse.getInt("totalParticipants") + 1
         }
         var totalUpvotes = 0
         if (jsonResponse.get("totalUpvotes").toString() != "null") {

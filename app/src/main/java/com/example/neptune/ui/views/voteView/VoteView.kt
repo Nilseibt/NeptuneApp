@@ -103,9 +103,15 @@ private fun VoteViewContent(voteViewModel: VoteViewModel, navController: NavCont
 @Composable
 private fun VoteViewBody(voteViewModel: VoteViewModel, navController: NavController) {
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(10.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp)
+    ) {
+
+        Box(modifier = Modifier.weight(0.5f)){
+            VoteListText()
+        }
 
         Box(modifier = Modifier.weight(9f)) {
             TrackListComposable(
@@ -120,6 +126,18 @@ private fun VoteViewBody(voteViewModel: VoteViewModel, navController: NavControl
         }
 
     }
+
+}
+
+@Composable
+private fun VoteListText() {
+
+    Text(
+        text = stringResource(id = R.string.vote_list_name),
+        color = MaterialTheme.colorScheme.onBackground,
+        style = MaterialTheme.typography.titleMedium,
+        modifier = Modifier.fillMaxSize()
+    )
 
 }
 
