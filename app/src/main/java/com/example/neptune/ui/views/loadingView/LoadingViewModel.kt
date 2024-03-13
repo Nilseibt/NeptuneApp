@@ -69,10 +69,18 @@ class LoadingViewModel(
         }
     }
 
+    /**
+     * Set the pop up to show due to a loading fail.
+     */
     fun showLoadingFailPopup(){
         loadingFailPopupShown = true
     }
 
+    /**
+     * Determines if loading fail pop up is shown.
+     *
+     * @return true if loading failed and pop up is to be shown.
+     */
     fun isLoadingFailPopupShown(): Boolean {
         return loadingFailPopupShown
     }

@@ -233,7 +233,7 @@ private fun TrackControlBar(controlViewModel: ControlViewModel) {
             SkipButton(controlViewModel)
         }
 
-        Box(modifier = Modifier.weight(7f)) {
+        Box(modifier = Modifier.weight(4.5f)) {
             TrackSlider(controlViewModel)
         }
 
@@ -256,7 +256,7 @@ private fun PlayButton(controlViewModel: ControlViewModel) {
             tint = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(10.dp)
+                .padding(6.dp)
         )
     }
 
@@ -276,7 +276,7 @@ private fun SkipButton(controlViewModel: ControlViewModel) {
             tint = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(10.dp)
+                .padding(6.dp)
         )
     }
 
