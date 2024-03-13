@@ -190,6 +190,7 @@ class SpotifyEstablisher(
             Request.Method.GET, url,
             { response ->
                 matchingArtistsCallback(JSONObject(response), callback)
+                Log.i("ARTISTS", response.substring(1000))
             },
             { error ->
                 Log.e("VOLLEY", "Spotify Request Error: ${String(error.networkResponse.data)}")

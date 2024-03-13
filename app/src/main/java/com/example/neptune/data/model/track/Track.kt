@@ -99,7 +99,7 @@ class Track(
         return artistNames.substring(0, artistNames.length - 2)
     }
 
-    /*override fun toString(): String {
+    override fun toString(): String {
         return "Id:        $id\n" +
                 "name:     $name\n" +
                 "artists   $artists\n" +
@@ -108,5 +108,5 @@ class Track(
                 "upvotes   $upvotes\n" +
                 "isUpvoted $isUpvoted\n" +
                 "isBlocked $isBlocked"
-    }*/
+    }
 }

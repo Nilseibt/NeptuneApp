@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.neptune.R
@@ -160,7 +161,8 @@ private fun TrackDescription(track: Track, elementColor: Color) {
             color = elementColor,
             style = MaterialTheme.typography.titleLarge,
             maxLines = 1,
-            modifier = Modifier.weight(3f)
+            modifier = Modifier.weight(3f),
+            overflow = TextOverflow.Ellipsis
         )
 
         Text(
@@ -168,7 +170,8 @@ private fun TrackDescription(track: Track, elementColor: Color) {
             color = elementColor,
             style = MaterialTheme.typography.bodyMedium,
             maxLines = 1,
-            modifier = Modifier.weight(2f)
+            modifier = Modifier.weight(2f),
+            overflow = TextOverflow.Ellipsis
         )
 
     }

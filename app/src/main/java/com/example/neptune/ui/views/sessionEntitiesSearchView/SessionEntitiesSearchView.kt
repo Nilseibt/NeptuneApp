@@ -79,7 +79,8 @@ private fun SessionEntitiesSearchViewContent(sessionEntitiesSearchViewModel: Ses
                 Box (modifier = Modifier.weight(1f)) {
                     TextField(
                         value = sessionEntitiesSearchViewModel.getSearchInput(),
-                        onValueChange = { sessionEntitiesSearchViewModel.onSearchInputChange(it) })
+                        onValueChange = { sessionEntitiesSearchViewModel.onSearchInputChange(it) },
+                        singleLine = true)
 
                     Spacer(modifier = Modifier.height(16.dp))
                 }

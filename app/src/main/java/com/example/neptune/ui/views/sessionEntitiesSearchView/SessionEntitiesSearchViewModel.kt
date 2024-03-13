@@ -1,5 +1,6 @@
 package com.example.neptune.ui.views.sessionEntitiesSearchView
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -24,7 +25,7 @@ class SessionEntitiesSearchViewModel(
 
     private var entitySearchInput by mutableStateOf("")
 
-    private var entitiesSearchList = mutableStateListOf<String>()
+    private var entitiesSearchList by mutableStateOf(mutableStateListOf<String>())
 
 
     /**
@@ -43,13 +44,16 @@ class SessionEntitiesSearchViewModel(
      */
     fun onSearchInputChange(newInput: String) {
         entitySearchInput = newInput
-        if (getSessionType() == SessionType.ARTIST) {
-            appState.streamingEstablisher.searchMatchingArtists(entitySearchInput) {
-                artistSearchCallback(it)
+        if (entitySearchInput != "") {
+            if (getSessionType() == SessionType.ARTIST) {
+                appState.streamingEstablisher.searchMatchingArtists(entitySearchInput) {
+                    artistSearchCallback(it)
+                }
+            } else if (getSessionType() == SessionType.GENRE) {
+                entitiesSearchList =
+                    appState.sessionBuilder.searchMatchingGenres(entitySearchInput)
+                        .toMutableStateList()
             }
-        } else if (getSessionType() == SessionType.GENRE) {
-            entitiesSearchList =
-                appState.sessionBuilder.searchMatchingGenres(entitySearchInput).toMutableStateList()
         }
     }
 
