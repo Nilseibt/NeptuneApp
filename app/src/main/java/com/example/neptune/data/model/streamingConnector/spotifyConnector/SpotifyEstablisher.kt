@@ -62,18 +62,14 @@ class SpotifyEstablisher(
     override suspend fun restoreConnectionIfPossible(onRestoreFinished: () -> Unit) {
         this.onRestoreFinished = onRestoreFinished
         if (spotifyConnectionDatabase.hasLinkedEntry()) {
-            if (spotifyConnectionDatabase.isLinked()) {
-                refreshToken = spotifyConnectionDatabase.getRefreshToken()
-                if (refreshToken != "") {
-                    connectWithRefreshToken {
-                        spotifyLevel.value = StreamingLevel.UNLINKED
-                        GlobalScope.launch {
-                            spotifyConnectionDatabase.setLinked(false)
-                            onRestoreFinished()
-                        }
+            refreshToken = spotifyConnectionDatabase.getRefreshToken()
+            if (refreshToken != "") {
+                connectWithRefreshToken {
+                    spotifyLevel.value = StreamingLevel.UNLINKED
+                    GlobalScope.launch {
+                        spotifyConnectionDatabase.setLinked(false)
+                        onRestoreFinished()
                     }
-                } else {
-                    initiateConnectWithAuthorize()
                 }
             } else {
                 spotifyLevel.value = StreamingLevel.UNLINKED
@@ -263,8 +259,11 @@ class SpotifyEstablisher(
             },
             { error ->
                 error.networkResponse?.let {
-                    error.networkResponse.data?.let{
-                        Log.e("VOLLEY", "Spotify Request Error: ${String(error.networkResponse.data)}")
+                    error.networkResponse.data?.let {
+                        Log.e(
+                            "VOLLEY",
+                            "Spotify Request Error: ${String(error.networkResponse.data)}"
+                        )
                     }
                 }
                 onFail()
